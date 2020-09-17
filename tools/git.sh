@@ -1,5 +1,14 @@
 #!/bin/zsh
 
+git__prepare () {
+  __message "git__prepare"
+
+  if ! __has_command git; then
+    __message "ERROR. Git not installed. Exiting"
+    clean_up
+  fi
+}
+
 git__setup () {
   __message "git__setup"
   git config --global user.email 'austin@gatlin.io'

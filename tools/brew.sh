@@ -1,7 +1,7 @@
 #!/bin/zsh
 
-brew__install () {
-  __message "brew__install"
+brew__prepare () {
+  __message "brew__prepare"
   if ! __has_command brew; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
   fi

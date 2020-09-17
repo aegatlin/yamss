@@ -1,8 +1,8 @@
 #!/bin/zsh
 
-asdf__install () {
+asdf__prepare () {
   if ! __has_command asdf; then
-    __message "asdf__install"
+    __message "asdf__prepare"
     git clone https://github.com/asdf-vm/asdf.git ~/.asdf
     pushd ~/.asdf || exit
     git checkout "$(git describe --abbrev=0 --tags)"

@@ -8,8 +8,9 @@ bootstrap () {
 setup () {
   load_tools "asdf.sh" "brew.sh" "direnv.sh" "git.sh" "zsh.sh"
  
-  brew__install
-  asdf__install
+  brew__prepare
+  asdf__prepare
+  git__prepare
 
   brew__setup
   git__setup

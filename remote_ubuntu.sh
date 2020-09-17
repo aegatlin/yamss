@@ -6,9 +6,11 @@ bootstrap () {
 }
 
 setup () {
-  load_tools
+  load_tools "git.sh"
 
-  echo "do stuff"
+  git__prepare
+
+  git__setup
   
   clean_up  
 }
