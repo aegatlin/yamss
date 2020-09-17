@@ -1,6 +1,7 @@
 #!/bin/zsh
 
 git__setup () {
+  __message "git__setup"
   git config --global user.email 'austin@gatlin.io'
   git config --global user.name 'Austin Gatlin'
   git config --global alias.co checkout

@@ -2,6 +2,7 @@
 
 asdf__install () {
   if ! __has_command asdf; then
+    __message "asdf__install"
     git clone https://github.com/asdf-vm/asdf.git ~/.asdf
     pushd ~/.asdf || exit
     git checkout "$(git describe --abbrev=0 --tags)"
@@ -10,6 +11,7 @@ asdf__install () {
 }
 
 asdf__setup () {
+  __message "asdf__setup"
   _asdf__ensure_plugin_add nodejs
   _asdf__ensure_plugin_add python
   _asdf__ensure_plugin_add postgres
@@ -24,6 +26,7 @@ _asdf__ensure_plugin_add () {
 }
 
 asdf__augment () {
+  __message "asdf_augment"
   _asdf_append_to_zshrc
 }
 

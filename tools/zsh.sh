@@ -1,11 +1,13 @@
 #!/bin/zsh
 
 zsh__augment () {
+  __message "zsh__augment"
   rm ~/.zshrc
   _zsh__write_universal_zshrc
 }
 
 zsh__initiate () {
+  __message "zsh__initiate"
   source ~/.zshrc
 }
 

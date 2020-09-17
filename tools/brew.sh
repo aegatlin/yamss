@@ -1,12 +1,14 @@
 #!/bin/zsh
 
 brew__install () {
+  __message "brew__install"
   if ! __has_command brew; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
   fi
 }
 
 brew__setup () {
+  __message "brew__setup"
   _brew__ensure_brew_install coreutils
   _brew__ensure_brew_install curl
   _brew__ensure_brew_install git
@@ -22,6 +24,7 @@ _brew__ensure_brew_install () {
 }
 
 brew__augment () {
+  __message "brew__augment"
   _brew__append_to_zshrc
 }
 
