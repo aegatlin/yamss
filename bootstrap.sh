@@ -9,7 +9,7 @@ load_tools () {
 _load_remote_tool () {
   temp="$(mktemp ./temp.sh.XXX)"
   chmod 744 "$temp"
-  curl -fsSL "https://raw.githubusercontent.com/aegatlin/notes/master/tools/$1" > "$temp"
+  curl -fsSL "https://raw.githubusercontent.com/aegatlin/setup/master/tools/$1" > "$temp"
   source "$temp"
 }
 

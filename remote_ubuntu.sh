@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 bootstrap () {
-  /bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/notes/master/create_bootstrap.sh)"
+  /bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/create_bootstrap.sh)"
   source ./bootstrap
 }
 
