@@ -6,7 +6,7 @@ bootstrap () {
 }
 
 setup () {
-  load_files
+  load_tools
 
   echo "do stuff"
   
