@@ -2,7 +2,7 @@
 
 load_tools () {
   for arg in "$@"; do 
-    _load_remote_file "$arg"
+    _load_remote_tool "$arg"
   done
 }
 
