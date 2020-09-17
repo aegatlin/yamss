@@ -2,8 +2,9 @@
 
 load_tools () {
   __message "Setup initiated"
-  __message "Loading remote tools: $@"
-  for arg in "$@"; do 
+  __message "Loading remote tools..."
+  for arg in "$@"; do
+    echo $arg
     _load_remote_tool "$arg"
   done
 }
@@ -20,6 +21,7 @@ clean_up () {
   rm ./temp.sh.*
   rm ./bootstrap.sh
   __message "Setup complete"
+  echo
 }
 
 __message () {
@@ -27,7 +29,6 @@ __message () {
   echo "**********"
   echo "$1"
   echo "**********"
-  echo
 }
 
 __has_command () {
