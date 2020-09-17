@@ -1,6 +1,7 @@
 #!/bin/zsh
 
 load_tools () {
+  __message "Setup initiated"
   for arg in "$@"; do 
     _load_remote_tool "$arg"
   done
@@ -16,6 +17,15 @@ _load_remote_tool () {
 clean_up () {
   rm ./temp.sh.*
   rm ./bootstrap.sh
+  __message "Setup complete"
+}
+
+__message () {
+  echo
+  echo "**********"
+  echo "$1"
+  echo "**********"
+  echo
 }
 
 __has_command () {
@@ -31,5 +41,4 @@ __run_command () {
   fi
 
   eval $1
-  echo
 }
