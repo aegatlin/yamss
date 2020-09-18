@@ -13,7 +13,7 @@ zsh_setup () {
 
 zsh__augment () {
   __message "zsh__augment"
-  rm ~/.zshrc
+  rm -f ~/.zshrc
   _zsh__write_universal_zshrc
 }
 
