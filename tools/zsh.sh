@@ -1,5 +1,16 @@
 #!/bin/zsh
 
+zsh__prepare () {
+  __message "zsh__prepare"
+  __ensure_command zsh
+}
+
+zsh_setup () {
+  if ! [[ "$SHELL" == "/bin/zsh" ]]; then
+    chsh -s /bin/zsh
+  fi
+}
+
 zsh__augment () {
   __message "zsh__augment"
   rm ~/.zshrc

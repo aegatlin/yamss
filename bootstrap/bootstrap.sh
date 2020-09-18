@@ -18,8 +18,8 @@ _load_remote_tool () {
 
 clean_up () {
   __message "Cleaning up"
-  rm ./temp.sh.*
-  rm ./bootstrap.sh
+  rm -f ./temp.sh.*
+  rm -f ./bootstrap.sh
   __message "Setup complete"
   echo
 }
@@ -44,4 +44,14 @@ __run_command () {
   fi
 
   eval $1
+}
+
+__ensure_command () {
+  if ! __has_command "$1"; then
+    __message "ERROR..."
+    echo "$1 not installed..."
+    echo "Exiting..."
+    clean_up
+    exit
+  fi
 }

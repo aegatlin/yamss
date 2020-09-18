@@ -2,11 +2,7 @@
 
 git__prepare () {
   __message "git__prepare"
-
-  if ! __has_command git; then
-    __message "ERROR. Git not installed. Exiting"
-    clean_up
-  fi
+  __ensure_command git
 }
 
 git__setup () {

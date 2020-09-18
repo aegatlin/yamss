@@ -6,8 +6,10 @@ bootstrap () {
 }
 
 setup () {
-  load_tools "git.sh"
+  load_tools "zsh.sh" "apt.sh" "git.sh"
 
+  zsh__prepare
+  apt__prepare
   git__prepare
 
   git__setup
