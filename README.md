@@ -1,12 +1,12 @@
 # Setup
 
 ```zsh
-/bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/mac.sh)"
+/bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/setup_scripts/mac.sh)"
 ```
 
-```zsh
+<!-- ```zsh
 /bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/remote_ubuntu.sh)"
-```
+``` -->
 
 ## Paradigm explanation
 
