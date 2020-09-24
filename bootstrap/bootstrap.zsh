@@ -36,7 +36,7 @@ build_function_list() {
 
 load_tools() {
   load_remote_tool() {
-    temp="$(mktemp ./temp.sh.XXX)"
+    temp="$(mktemp ./temp.zsh.XXX)"
     chmod 744 "$temp"
     curl -fsSL "https://raw.githubusercontent.com/aegatlin/setup/master/tools/$1" >"$temp"
     source "$temp"
@@ -51,8 +51,8 @@ load_tools() {
 
 clean_up() {
   message "Cleaning up"
-  rm -f ./temp.sh.*
-  rm -f ./bootstrap.sh
+  rm -f ./temp.zsh.*
+  rm -f ./bootstrap.zsh
   message "Setup complete"
   echo
 }

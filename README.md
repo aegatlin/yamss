@@ -1,11 +1,11 @@
 # Setup
 
 ```zsh
-/bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/setup_scripts/mac.sh)"
+/bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/setup_scripts/mac.zsh)"
 ```
 
 <!-- ```zsh
-/bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/remote_ubuntu.sh)"
+/bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/remote_ubuntu.zsh)"
 ``` -->
 
 ## Paradigm explanation
@@ -47,7 +47,7 @@ In the most general terms, using a tool on a machine will involve none, some, or
 
 I hypothesize that for every tool I use, and across every machine I use, these four steps will successfully encapsulate the process of using a tool on my machine. The implication here is that if I want to install an arbitrary tool on a machine, I can do so within these four functions.
 
-The first aspect of this setup script paradigm is that each tool will have a shell script, `[tool_name].sh`, and that each of these shell scripts will make available none, some, or all of the above listed functions. Consider these to be the tool's "public functions"
+The first aspect of this setup script paradigm is that each tool will have a shell script, `[tool_name].zsh`, and that each of these shell scripts will make available none, some, or all of the above listed functions. Consider these to be the tool's "public functions"
 
 ## Interleaving steps
 
