@@ -1,8 +1,7 @@
 #!/bin/zsh
 
-asdf__prepare () {
-  if ! __has_command asdf; then
-    __message "asdf__prepare"
+asdf__prepare() {
+  if ! has_command asdf; then
     git clone https://github.com/asdf-vm/asdf.git ~/.asdf
     pushd ~/.asdf || exit
     git checkout "$(git describe --abbrev=0 --tags)"
@@ -10,28 +9,22 @@ asdf__prepare () {
   fi
 }
 
-asdf__setup () {
-  __message "asdf__setup"
-  _asdf__ensure_plugin_add nodejs
-  _asdf__ensure_plugin_add python
-  _asdf__ensure_plugin_add postgres
-  _asdf__ensure_plugin_add erlang
-  _asdf__ensure_plugin_add elixir
+asdf__setup() {
+  ensure_plugin_add() {
+    if ! asdf plugin list | grep -q "$1"; then
+      run_command "asdf plugin add $1"
+    fi
+  }
+
+  ensure_plugin_add nodejs
+  ensure_plugin_add python
+  ensure_plugin_add postgres
+  ensure_plugin_add erlang
+  ensure_plugin_add elixir
 }
 
-_asdf__ensure_plugin_add () {
-  if ! asdf plugin list | grep -q "$1"; then
-    __run_command "asdf plugin add $1"
-  fi
-}
-
-asdf__augment () {
-  __message "asdf_augment"
-  _asdf_append_to_zshrc
-}
-
-_asdf_append_to_zshrc() {
-cat << DELIMIT >> ~/.zshrc
+asdf__augment() {
+  cat <<'DELIMIT' >>~/.zshrc
 ##########
 # asdf setup
 ##########
@@ -44,3 +37,5 @@ compinit
 
 DELIMIT
 }
+
+asdf__bootstrap() {}

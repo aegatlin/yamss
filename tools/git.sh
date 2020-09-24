@@ -1,12 +1,10 @@
 #!/bin/zsh
 
-git__prepare () {
-  __message "git__prepare"
-  __ensure_command git
+git__prepare() {
+  ensure_command git
 }
 
-git__setup () {
-  __message "git__setup"
+git__setup() {
   git config --global user.email 'austin@gatlin.io'
   git config --global user.name 'Austin Gatlin'
   git config --global alias.co checkout
@@ -17,3 +15,7 @@ git__setup () {
   git config --global alias.lol 'log --oneline'
   git config --global alias.lolg 'log --oneline --graph'
 }
+
+git__augment() {}
+
+git__bootstrap() {}

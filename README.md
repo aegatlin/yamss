@@ -8,6 +8,30 @@
 /bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/remote_ubuntu.sh)"
 ```
 
+## Paradigm explanation
+
+### Outline
+
+1. The bundled good principles, practices, and pardigms
+   - Remotely executable
+   - Modular
+   - Personal
+   - Unobstrusive
+   - Idempotent
+1. Observations on "using tools on machines"
+   - The universal 4 steps
+      - Prepare
+      - Setup
+      - Augment
+      - Bootstrap
+   - The interleaving of steps
+1. This implementation
+   - Outstanding problems
+
+## Outdated Notes Below
+
+Everything below this line will be cleaned up to adhere to the outline specified above.
+
 ## Using a tool on a machine
 
 In the most general terms, using a tool on a machine will involve none, some, or all of the following steps:

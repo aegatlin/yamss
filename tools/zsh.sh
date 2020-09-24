@@ -1,40 +1,33 @@
 #!/bin/zsh
 
-zsh__prepare () {
-  __message "zsh__prepare"
-  __ensure_command zsh
+zsh__prepare() {
+  ensure_command zsh
 }
 
-zsh_setup () {
+zsh__setup() {
   if ! [[ "$SHELL" == "/bin/zsh" ]]; then
+    echo "changing shell from $SHELL to /bin/zsh"
     chsh -s /bin/zsh
+    echo "You will need to restart your terminal for shell changes to take effect"
   fi
 }
 
-zsh__augment () {
-  __message "zsh__augment"
+zsh__augment() {
   rm -f ~/.zshrc
-  _zsh__write_universal_zshrc
-}
-
-zsh__initiate () {
-  __message "zsh__initiate"
-  source ~/.zshrc
-}
-
-_zsh__write_universal_zshrc () {
-cat << DELIMIT > ~/.zshrc
+  cat <<'DELIMIT' >~/.zshrc
 ##########
 # zsh aliases
 ##########
+alias g='git'
+alias t='tmux'
+alias v='vim'
 alias ls='ls -G'
 alias ll='ls -al'
-alias g='git'
 alias ..='cd ..'
 alias py='python3'
 alias pr='pipenv run'
 alias nr='npm run'
-alias s='iex -S mix phx.server'
+alias imps='iex -S mix phx.server'
 
 ##########
 # PROMPT setup
@@ -48,4 +41,8 @@ setopt prompt_subst
 export PROMPT=$'\n''%F{blue}%~%f %F{red}${vcs_info_msg_0_}%f'$'\n''%F{cyan}%D %T%f '
 
 DELIMIT
+}
+
+zsh__bootstrap() {
+  source ~/.zshrc
 }

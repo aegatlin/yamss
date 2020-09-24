@@ -1,35 +1,29 @@
 #!/bin/zsh
 
-brew__prepare () {
-  __message "brew__prepare"
-  if ! __has_command brew; then
+brew__prepare() {
+  if ! has_command brew; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
   fi
 }
 
-brew__setup () {
-  __message "brew__setup"
-  _brew__ensure_brew_install coreutils
-  _brew__ensure_brew_install curl
-  _brew__ensure_brew_install git
-  _brew__ensure_brew_install direnv
-  _brew__ensure_brew_install mosh
-  _brew__ensure_brew_install gpg
+brew__setup() {
+  ensure_brew_install() {
+    if ! brew list | grep -q "$1"; then
+      run_command "brew install $1"
+    fi
+  }
+
+  ensure_brew_install coreutils
+  ensure_brew_install curl
+  ensure_brew_install git
+  ensure_brew_install direnv
+  ensure_brew_install mosh
+  ensure_brew_install gpg
+  ensure_brew_install tmux
 }
 
-_brew__ensure_brew_install () {
-  if ! brew list | grep -q "$1"; then
-   __run_command "brew install $1"
-  fi
-}
-
-brew__augment () {
-  __message "brew__augment"
-  _brew__append_to_zshrc
-}
-
-_brew__append_to_zshrc () {
-cat << DELIMIT >> ~/.zshrc
+brew__augment() {
+  cat <<'DELIMIT' >>~/.zshrc
 ##########
 # brew setup
 ##########
@@ -42,3 +36,5 @@ fi
 
 DELIMIT
 }
+
+brew__bootstrap() {}

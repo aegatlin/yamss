@@ -1,10 +1,14 @@
 #!/bin/zsh
 
-apt__prepare () {
-  __message "apt_prepare"
-  __ensure_command apt
+apt__prepare() {
+  ensure_command apt
 }
 
-apt__setup () {
+apt__setup() {
+  apt install curl
   apt install git
 }
+
+apt__augment() {}
+
+apt__bootstrap() {}
