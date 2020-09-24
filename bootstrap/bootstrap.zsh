@@ -38,14 +38,14 @@ load_tools() {
   load_remote_tool() {
     temp="$(mktemp ./temp.zsh.XXX)"
     chmod 744 "$temp"
-    curl -fsSL "https://raw.githubusercontent.com/aegatlin/setup/master/tools/$1" >"$temp"
+    curl -fsSL "https://raw.githubusercontent.com/aegatlin/setup/master/tools/$1.zsh" >"$temp"
     source "$temp"
   }
 
-  message "Setup initiated"
   message "Loading remote tools..."
-  for arg in "$@"; do
-    load_remote_tool "$arg"
+  for tool in "$@"; do
+    echo "$tool"
+    load_remote_tool "$tool"
   done
 }
 
