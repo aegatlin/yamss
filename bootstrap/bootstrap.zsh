@@ -4,14 +4,16 @@ load() {
   message "Setup initiated"
   load_tools "$@"
   local function_list=($(build_function_list $@))
-  for func in $function_list; do
-    run_function $f
-  done
+  run_functions $function_list
+  clean_up
 }
 
-run_function() {
-  message "Running function: $f"
-  $f
+run_functions() {
+  message "Running functions..."
+  for func in $@; do
+    echo "$func"
+    $func
+  done
 }
 
 build_function_list() {
