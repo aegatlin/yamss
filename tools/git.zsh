@@ -12,6 +12,7 @@ git__setup() {
   git config --global alias.c commit
   git config --global alias.cm 'commit -m'
   git config --global alias.cane 'commit --amend --no-edit'
+  git config --global alias.ap 'add -p'
   git config --global alias.st status
   git config --global alias.lol 'log --oneline'
   git config --global alias.lolg 'log --oneline --graph'
