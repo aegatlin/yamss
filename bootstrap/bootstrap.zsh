@@ -8,6 +8,18 @@ load() {
   clean_up
 }
 
+clean_up() {
+  message "Cleaning up"
+  rm -f ./temp.zsh.*
+  rm -f ./bootstrap.zsh
+  message "Setup complete"
+  echo
+}
+
+##########
+# Tool helper functions
+##########
+
 run_functions() {
   message "Running functions..."
   for func in $@; do
@@ -51,20 +63,9 @@ load_tools() {
   done
 }
 
-clean_up() {
-  message "Cleaning up"
-  rm -f ./temp.zsh.*
-  rm -f ./bootstrap.zsh
-  message "Setup complete"
-  echo
-}
-
-message() {
-  echo
-  echo "**********"
-  echo "$1"
-  echo "**********"
-}
+##########
+# Command helper functions
+##########
 
 has_command() {
   command -v $1 1>/dev/null
@@ -83,10 +84,42 @@ run_command() {
 
 ensure_command() {
   if ! has_command "$1"; then
-    message "ERROR"
-    echo "The following command is not on this machine: $1"
-    echo "Exiting"
-    clean_up
-    exit
+    error_and_exit "The following command is not on this machine: $1"
   fi
+}
+
+##########
+# Messaging helper functions
+##########
+
+message() {
+  echo
+  echo "**********"
+  echo "$1"
+  echo "**********"
+}
+
+error_and_exit() {
+  echo
+  echo "**********"
+  echo "ERROR"
+  echo
+  echo "Error message: $1"
+  echo
+  echo "Running clean_up before exiting early"
+  echo "**********"
+  clean_up
+  exit
+}
+
+##########
+# OS helper functions
+##########
+
+is_mac() {
+  [[ uname -eq "Darwin" ]]
+}
+
+is_linux() {
+  [[ uname -eq "Linux" ]]
 }
