@@ -5,8 +5,10 @@ apt__prepare() {
 }
 
 apt__setup() {
-  apt install curl
   apt install git
+  apt install net-tools
+  apt install nmap
+  apt install direnv
 }
 
 apt__augment() {}

@@ -6,6 +6,7 @@ snap__prepare() {
 
 snap__setup() {
   snap install direnv
+  
 }
 
 snap__augment() {}

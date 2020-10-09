@@ -24,7 +24,6 @@ brew__setup() {
   }
 
   ensure_brew_install coreutils
-  ensure_brew_install curl
   ensure_brew_install git
   ensure_brew_install direnv
   ensure_brew_install mosh

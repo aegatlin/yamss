@@ -1,6 +1,8 @@
 #!/bin/zsh
 
-tmux__prepare() {}
+tmux__prepare() {
+  ensure_command tmux
+}
 
 tmux__setup() {}
 

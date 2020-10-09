@@ -1,12 +1,18 @@
 # Setup
 
+Choose a script appropriate for your machine, then copy and paste the line into your terminal. That's it! :D
+
 ```zsh
 /bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/setup_scripts/mac.zsh)"
 ```
 
-<!-- ```zsh
-/bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/remote_ubuntu.zsh)"
-``` -->
+```zsh
+/bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/ubuntu_remote.zsh)"
+```
+
+```zsh
+/bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/ubuntu_desktop.zsh)"
+```
 
 ## Paradigm explanation
 
@@ -64,7 +70,7 @@ In the most general terms, using a tool on a machine will involve none, some, or
 1. `setup`
 1. `augment`
    - Settings are modified
-1. `initiate`
+1. `bootstrap`
    - Scripts, services, or processes are initiated
 
 I hypothesize that for every tool I use, and across every machine I use, these four steps will successfully encapsulate the process of using a tool on a machine. The implication here is that if I want to install an arbitrary tool on an arbitrary machine, I can do so successfully within these four functions.
