@@ -1,12 +1,12 @@
 #!/bin/zsh
 
-direnv__prepare() {
-  ensure_command direnv
-}
+direnv__prepare() {}
 
 direnv__setup() {}
 
 direnv__augment() {
+  ensure_command direnv
+
   cat <<'DELIMIT' >>~/.zshrc
 ##########
 # direnv setup
