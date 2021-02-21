@@ -21,9 +21,17 @@ Copy and paste the machine-appropriate script into your terminal to setup your m
 
 ## Usage Notes
 
-Keeping the `.vimrc` and `.tmux.conf` files up to date is a challenge in this system. 
+If you change your `.vimrc` or `.tmux.conf` scripts and want to update them within `yams` as well, then you need to copy them to the example that live within this repository. Run the following to copy them both at once:
+
+```shell
+$ . ./copy_example_files.zsh
+```
+
+Now, the tool scripts for `vim` and `tmux` will copy those example files into the machines `~/` folder, so long as that tool is actually being install on that machine.
 
 ## Paradigm explanation
+
+This content will eventually become a blog post over at `gatlin.io/blog`.
 
 ### Outline
 

@@ -8,6 +8,7 @@ vim__setup() {}
 
 vim__augment() {
   rm -f ~/.vimrc
+  curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/example.vimrc> ~/.vimrc
   cat <<'DELIMIT' >~/.vimrc
 """"""""""
 " vim-plug settings

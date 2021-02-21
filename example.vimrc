@@ -11,7 +11,7 @@ set splitright
 set splitbelow
 
 """"""""""""
-" Perciversal Keybindings
+" yams keybindings
 """"""""""""
 " Canvas Split
 nnoremap <Leader>v :vsplit<CR>
