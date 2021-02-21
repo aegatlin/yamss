@@ -27,7 +27,7 @@ If you change your `.vimrc` or `.tmux.conf` scripts and want to update them with
 $ . ./copy_example_files.zsh
 ```
 
-Now, the tool scripts for `vim` and `tmux` will copy those example files into the machines `~/` folder, so long as that tool is actually being install on that machine.
+Now, the tool scripts for `vim` and `tmux` will copy those example files into the machines `~/` folder, so long as that tool is actually being install on that machine. (Note: the script is copying into `./example...`, so don't execute the script anywhere other than `yams` root.)
 
 ## Paradigm explanation
 
