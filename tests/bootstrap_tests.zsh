@@ -29,4 +29,5 @@ test_build_function_list() {
 
   echo "PASSED"
 }
+
 test_build_function_list

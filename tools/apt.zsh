@@ -1,4 +1,4 @@
-#!/bin/zsh
+#! /bin/zsh
 
 apt__prepare() {
   ensure_command apt

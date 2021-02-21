@@ -1,18 +1,27 @@
-# Setup
+# Yams
 
-Choose a script appropriate for your machine, then copy and paste the line into your terminal. That's it! :D
+Yet Another Machine Setup
+
+Copy and paste the machine-appropriate script into your terminal to setup your machine.
 
 ```zsh
+# For a local MacOS machine
 /bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/setup_scripts/mac.zsh)"
 ```
 
 ```zsh
+# For a remote Ubuntu Desktop VM
 /bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/ubuntu_remote.zsh)"
 ```
 
 ```zsh
+# For a local Ubuntu Desktop
 /bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/ubuntu_desktop.zsh)"
 ```
+
+## Usage Notes
+
+Keeping the `.vimrc` and `.tmux.conf` files up to date is a challenge in this system. 
 
 ## Paradigm explanation
 
@@ -92,6 +101,6 @@ A robust setup scripting solution will need to account for these possibilities.
 
 ### This implementation
 
-The first aspect of this paradigm is that each tool will have an associated file, `tools/[tool_name].zsh`, with four functions for each phase of setup. The second aspect of this paradigm is that any arbitrary collection of tools will be able to self-sort by defining an `after` relation. This relation will defined a well orded list of functions, such that each function comes after those it stands in `after` relation to, if present.
+The first aspect of this paradigm is that each tool will have an associated file, `tools/[tool_name].zsh`, with four functions for each phase of setup. The second aspect of this paradigm is that any arbitrary collection of tools will be able to self-sort by defining an `after` relation. This relation will define a well-orded list of functions, such that each function comes after those it stands in `after` relation to, if present.
 
 With these aspects combined, you are then able to merely name the tools you wish to use in a setup script and the script will "just work". This will allow you to focus on the harder task of ensuring your tools have well written `after` relations, and well written phase functions.

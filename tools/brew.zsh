@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+# Brew is a MacOS package manager.
+
 brew__prepare() {
   if ! is_mac; then
     error_and_exit "this machine is not a mac"
