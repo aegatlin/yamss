@@ -12,6 +12,8 @@ apt__prepare() {
 apt__setup() {
   apt install curl
   apt install git
+  apt install tmux
+  apt install vim
   apt install net-tools
   apt install nmap
 }
