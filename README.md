@@ -11,12 +11,12 @@ Copy and paste the machine-appropriate script into your terminal to setup your m
 
 ```zsh
 # For a remote Ubuntu Desktop VM
-/bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/ubuntu_remote.zsh)"
+/bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/setup_scripts/ubuntu_remote.zsh)"
 ```
 
 ```zsh
 # For a local Ubuntu Desktop
-/bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/ubuntu_desktop.zsh)"
+/bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/aegatlin/setup/master/setup_scripts/ubuntu_desktop.zsh)"
 ```
 
 ## Usage Notes

@@ -12,6 +12,9 @@ tools=(
   zsh
   apt
   snap
+  git
+  direnv
+  asdf
   tmux
   vim
 )
