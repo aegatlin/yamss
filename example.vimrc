@@ -6,33 +6,43 @@ endif
 
 let mapleader=','
 
-" Improved split behavior
-set splitright
-set splitbelow
-
 """"""""""""
 " yams keybindings
 """"""""""""
-" Canvas Split
+""""""
+" Canvas
+""""""
+" Split
 nnoremap <Leader>v :vsplit<CR>
-nnoremap <Leader>h :split<CR>
-" Canvas Navigate
-nnoremap <Leader>l <C-w><Left>
-nnoremap <Leader>r <C-w><Right>
-nnoremap <Leader>u <C-w><Up>
-nnoremap <Leader>d <C-w><Down>
-" Canvas Move
-nnoremap <Leader>L <C-w>r
-nnoremap <Leader>R <C-w>R
-nnoremap <Leader>U <C-w>R
-nnoremap <Leader>D <C-w>r
-" Canvas Close
+nnoremap <Leader>b :split<CR>
+" Navigate
+nnoremap <Leader>h <C-w><Left>
+nnoremap <Leader>l <C-w><Right>
+nnoremap <Leader>j <C-w><Up>
+nnoremap <Leader>k <C-w><Down>
+" Move
+nnoremap <Leader>H <C-w>r
+nnoremap <Leader>L <C-w>R
+nnoremap <Leader>J <C-w>R
+nnoremap <Leader>K <C-w>r
+" Close
 nnoremap <Leader>w <C-w>q
-
-
+""""""
+" Other
+""""""
+" Explore Directory Toggle
+nnoremap <Leader>e :NERDTreeToggle<CR>
+""""""""""""
+""""""""""""
 
 call plug#begin()
 Plug 'tpope/vim-sensible'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'preservim/nerdtree'
 call plug#end()
+
+" Improved split behavior
+set splitright
+set splitbelow
+
+set number
