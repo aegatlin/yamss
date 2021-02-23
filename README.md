@@ -21,13 +21,13 @@ Copy and paste the machine-appropriate script into your terminal to setup your m
 
 ## Usage Notes
 
-If you change your `.vimrc` or `.tmux.conf` scripts and want to update them within `yams` as well, then you need to copy them to the example that live within this repository. Run the following to copy them both at once:
+If you change your configuration files, you will want to have those changes stored here within `yams` as well. The following command will copy your configuration files (e.g., `~/.tmux.conf` and `~/.vimrc` to the appropriate example files (e.g., `./example.tmux.conf`, and `./example.vimrc`).
 
 ```shell
 $ . ./copy_example_files.zsh
 ```
 
-Now, the tool scripts for `vim` and `tmux` will copy those example files into the machines `~/` folder, so long as that tool is actually being install on that machine. (Note: the script is copying into `./example...`, so don't execute the script anywhere other than `yams` root.)
+Once committed and pushed, the example files can be propogated by running the machine setup script again. (Note: the script is copying into `./example...`, so don't execute the script anywhere other than `yams` root.)
 
 ## Paradigm explanation
 
