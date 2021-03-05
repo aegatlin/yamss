@@ -16,11 +16,12 @@ asdf__setup() {
     fi
   }
 
-  ensure_plugin_add nodejs
-  ensure_plugin_add python
-  ensure_plugin_add postgres
-  ensure_plugin_add erlang
   ensure_plugin_add elixir
+  ensure_plugin_add elm
+  ensure_plugin_add erlang
+  ensure_plugin_add nodejs
+  ensure_plugin_add postgres
+  ensure_plugin_add python
 }
 
 asdf__augment() {
