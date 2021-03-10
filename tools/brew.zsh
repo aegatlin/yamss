@@ -14,7 +14,7 @@ brew__prepare() {
 
 brew__setup() {
   ensure_brew_install() {
-    if ! brew list | grep -q "$1"; then
+    if ! brew list --formula | grep -q "$1"; then
       run_command "brew install $1"
     fi
   }
