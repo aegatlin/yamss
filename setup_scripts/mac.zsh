@@ -13,6 +13,8 @@ tools=(
   git # 2nd, since many things need it to exist
   brew # 3rd, bc it installs direnv
   direnv
+  tmux
+  vim
   asdf # last, bc it's `augment` shims need to be last in the .zshrc file
 )
 

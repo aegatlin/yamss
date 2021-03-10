@@ -41,10 +41,8 @@ brew__augment() {
 # brew setup
 ##########
 if type brew &>/dev/null; then
+  # for zsh completions, append brew completion functions location to FPATH
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-
-  autoload -Uz compinit
-  compinit
 fi
 
 DELIMIT

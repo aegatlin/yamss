@@ -44,5 +44,19 @@ DELIMIT
 }
 
 zsh__bootstrap() {
+  cat <<'DELIMIT' >>~/.zshrc
+##########
+# zsh completions
+##########
+# load and init zsh completions with compinit
+autoload -Uz compinit
+compinit
+
+##########
+# End of yams .zshrc edits
+##########
+
+DELIMIT
+
   source ~/.zshrc
 }

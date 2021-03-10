@@ -37,8 +37,13 @@ nnoremap <Leader>e :NERDTreeToggle<CR>
 
 call plug#begin()
 Plug 'tpope/vim-sensible'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'preservim/nerdtree'
+
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc-html'
+Plug 'neoclide/coc-css'
+Plug 'neoclide/coc-json'
+Plug 'neoclide/coc-prettier', {'do': 'npm install'}
 call plug#end()
 
 " Improved split behavior

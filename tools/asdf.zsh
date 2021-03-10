@@ -30,11 +30,8 @@ asdf__augment() {
 # asdf setup
 ##########
 . $HOME/.asdf/asdf.sh
-# append completions to fpath
+# for zsh completions, append asdf completion function locations to fpath
 fpath=(${ASDF_DIR}/completions $fpath)
-# initialise completions with ZSH's compinit
-autoload -Uz compinit
-compinit
 
 DELIMIT
 }
