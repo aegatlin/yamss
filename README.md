@@ -1,6 +1,6 @@
-# Yams
+# Yamss
 
-Yet Another Machine Setup
+Yet Another Machine Setup Script
 
 Copy and paste the machine-appropriate script into your terminal to setup your machine.
 
