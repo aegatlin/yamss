@@ -1,3 +1,16 @@
+""""""""""""
+" Table Of Contents
+""""""""""""
+" Ch 1: Initial Settings (~ line 10)
+" Ch 2: Yamss Keybindings (~ line 20)
+" Ch 3: vim-plug plugings (~ line 60)
+" Ch 4: General Settings (~ line 80)
+""""""""""""
+""""""""""""
+" Ch 1: Initial Settings
+""""""""""""
+""""""""""""
+
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -7,8 +20,11 @@ endif
 let mapleader=','
 
 """"""""""""
-" yams keybindings
 """"""""""""
+" Ch 2: Yamss Keybindings
+""""""""""""
+"""""""""""
+
 """"""
 " Canvas
 """"""
@@ -27,11 +43,19 @@ nnoremap <Leader>J <C-w>R
 nnoremap <Leader>K <C-w>r
 " Close
 nnoremap <Leader>w <C-w>q
+" Format
+" nmap <Leader>f ???
 """"""
 " Other
 """"""
 " Explore Directory Toggle
 nnoremap <Leader>e :NERDTreeToggle<CR>
+" Reload Configuration
+nnoremap  <Leader>r :source $MYVIMRC<CR>
+
+""""""""""""
+""""""""""""
+" Ch 3: vim-plug Plugins
 """"""""""""
 """"""""""""
 
@@ -46,8 +70,21 @@ Plug 'neoclide/coc-json'
 Plug 'neoclide/coc-prettier', {'do': 'npm install'}
 call plug#end()
 
+""""""""""""
+""""""""""""
+" Ch 4: General Settings
+""""""""""""
+""""""""""""
+
 " Improved split behavior
 set splitright
 set splitbelow
 
+" Base Vim settings
 set number
+set tabstop=2
+set shiftwidth=2
+set expandtab
+set textwidth=80
+set colorcolumn=+1 "" Colors the column 1 after textwidth
+set noswapfile
