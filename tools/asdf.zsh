@@ -22,6 +22,7 @@ asdf__setup() {
   ensure_plugin_add nodejs
   ensure_plugin_add postgres
   ensure_plugin_add python
+  ensure_plugin_add yarn
 }
 
 asdf__augment() {
