@@ -38,7 +38,7 @@ precmd() {
   vcs_info 
 }
 setopt prompt_subst
-export PROMPT=$'\n''%F{blue}%~%f %F{red}${vcs_info_msg_0_}%f'$'\n''%F{cyan}%D %T%f '
+export PROMPT=$'\n''%F{blue}%~%f %F{red}${vcs_info_msg_0_}%f'$'\n''%F{cyan}%n@%M%f '
 
 DELIMIT
 }
