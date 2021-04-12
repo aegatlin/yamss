@@ -19,7 +19,7 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
 endif
 
 " Map the leader key to ,
-let mapleader=','
+let mapleader=' '
 
 " Don't maintain compatibility with Vi, which is outdated and causes problems
 set nocompatible
@@ -99,6 +99,7 @@ Plug 'neoclide/coc-css'
 Plug 'neoclide/coc-json'
 Plug 'neoclide/coc-prettier', {'do': 'npm install'}
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
 call plug#end()
 
 let NERDTreeShowHidden=1
