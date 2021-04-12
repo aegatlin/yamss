@@ -119,9 +119,10 @@ nmap <Leader>p :GFiles<CR>
 """"""""""""
 """"""""""""
 " Ch 4: Coc Configuration
-" from: https://github.com/neoclide/coc.nvim
 """"""""""""
 """"""""""""
+" Settings are taken directly from: https://github.com/neoclide/coc.nvim
+
 " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
 " unicode characters in the file autoload/float.vim
 set encoding=utf-8
@@ -260,3 +261,21 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Mappings for CoCList
+" Show all diagnostics.
+nnoremap <silent><nowait> ,a  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent><nowait> ,e  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent><nowait> ,c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> ,o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent><nowait> ,s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent><nowait> ,j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent><nowait> ,k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent><nowait> ,p  :<C-u>CocListResume<CR>
