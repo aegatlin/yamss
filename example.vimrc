@@ -3,8 +3,8 @@
 """"""""""""
 " Ch 1: Initial Settings (~ line 10)
 " Ch 2: Pucks (~ line 60)
-" Ch 3: vim-plug plugings (~ line 90)
-" Ch 4: Coc Configuration
+" Ch 3: vim-plug plugins (~ line 100)
+" Ch 4: Coc Configuration (~ line 130)
 """"""""""""
 """"""""""""
 " Ch 1: Initial Settings
@@ -52,6 +52,10 @@ set noswapfile
 
 " Set Wildmenu so you can see possible completions when pressing <Tab>
 set wildmenu
+
+" Always show the status-line (the line at the bottom that shows the full
+" filename, etc.)
+set laststatus=2
 
 """"""""""""
 """"""""""""
@@ -103,6 +107,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'elixir-editors/vim-elixir'
+Plug 'tpope/vim-commentary'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'neoclide/coc-html'
@@ -113,7 +118,10 @@ Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
 call plug#end()
 
+" For NERDTree plugin
 let NERDTreeShowHidden=1
+
+" For fzf plugin
 nmap <Leader>p :GFiles<CR>
 
 """"""""""""
