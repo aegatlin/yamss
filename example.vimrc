@@ -108,6 +108,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'elixir-editors/vim-elixir'
 Plug 'tpope/vim-commentary'
+Plug 'vim-airline/vim-airline'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'neoclide/coc-html'
@@ -122,7 +123,14 @@ call plug#end()
 let NERDTreeShowHidden=1
 
 " For fzf plugin
+" This adds fzf completions to vim
+set rtp+=/usr/local/opt/fzf
+" :GFiles searches the codebase filenames
 nmap <Leader>p :GFiles<CR>
+" :Rg uses ripgrep to search file contents
+nmap <C-p> :Rg<CR>
+" :BLines searches the current buffer
+nmap <C-f> :BLines<CR>
 
 """"""""""""
 """"""""""""
