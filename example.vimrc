@@ -57,6 +57,9 @@ set wildmenu
 " filename, etc.)
 set laststatus=2
 
+" Set mouse to perform all normal functionality
+set mouse=a
+
 """"""""""""
 """"""""""""
 " Ch 2: Pucks
@@ -85,8 +88,6 @@ nnoremap <Leader>J <C-w>R
 nnoremap <Leader>K <C-w>r
 " Close
 nnoremap <Leader>w <C-w>q
-" Format
-" nmap <Leader>f ???
 """"""
 " Other
 """"""
@@ -102,6 +103,7 @@ nnoremap  <Leader>r :source $MYVIMRC<CR>
 """"""""""""
 
 call plug#begin()
+" Systemic plugins
 Plug 'preservim/nerdtree'
 Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -110,33 +112,40 @@ Plug 'elixir-editors/vim-elixir'
 Plug 'tpope/vim-commentary'
 Plug 'vim-airline/vim-airline'
 
+" Markdown plugins
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+
+" Coc Plugin (extensions installed in Coc chapter)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'neoclide/coc-html'
-Plug 'neoclide/coc-css'
-Plug 'neoclide/coc-json'
-Plug 'neoclide/coc-prettier', {'do': 'npm install'}
-Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
-Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
 call plug#end()
 
-" For NERDTree plugin
+""""""
+" Ch 3.1: Plugin Mappings
+""""""
+" NERDTree
 let NERDTreeShowHidden=1
 
-" For fzf plugin
+" fzf
 " This adds fzf completions to vim
 set rtp+=/usr/local/opt/fzf
 " :GFiles searches the codebase filenames
 nmap <Leader>p :GFiles<CR>
 " :Rg uses ripgrep to search file contents
 nmap <C-p> :Rg<CR>
-" :BLines searches the current buffer
-nmap <C-f> :BLines<CR>
+
+" coc-prettier
+vmap <leader>f <Plug>(coc-format-selected)
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 """"""""""""
 """"""""""""
 " Ch 4: Coc Configuration
 """"""""""""
 """"""""""""
+
+let g:coc_global_extensions = ['coc-html', 'coc-css', 'coc-json', 'coc-prettier', 'coc-tsserver', 'coc-elixir']
+
 " Settings are taken directly from: https://github.com/neoclide/coc.nvim
 
 " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
