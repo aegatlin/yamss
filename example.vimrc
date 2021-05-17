@@ -4,7 +4,7 @@
 " Ch 1: Initial Settings (~ line 10)
 " Ch 2: Pucks (~ line 60)
 " Ch 3: vim-plug plugins (~ line 100)
-" Ch 4: Coc Configuration (~ line 130)
+" Ch 4: Coc Configuration (~ line 150)
 """"""""""""
 """"""""""""
 " Ch 1: Initial Settings
@@ -18,7 +18,7 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" Map the leader key to ,
+" Map the leader key to space
 let mapleader=' '
 
 " Don't maintain compatibility with Vi, which is outdated and causes problems
@@ -60,6 +60,12 @@ set laststatus=2
 " Set mouse to perform all normal functionality
 set mouse=a
 
+" Use syntax highlighting items as the default fold method
+set foldmethod=syntax
+
+" Use relative number to ease inter-file movement
+set relativenumber
+
 """"""""""""
 """"""""""""
 " Ch 2: Pucks
@@ -94,7 +100,7 @@ nnoremap <Leader>w <C-w>q
 " Explore Directory Toggle
 nnoremap <Leader>e :NERDTreeToggle<CR>
 " Reload Configuration
-nnoremap  <Leader>r :source $MYVIMRC<CR>
+nnoremap <Leader>r :source $MYVIMRC<CR>
 
 """"""""""""
 """"""""""""
@@ -134,19 +140,32 @@ nmap <Leader>p :GFiles<CR>
 " :Rg uses ripgrep to search file contents
 nmap <C-p> :Rg<CR>
 
-" coc-prettier
-vmap <leader>f <Plug>(coc-format-selected)
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-
 """"""""""""
 """"""""""""
 " Ch 4: Coc Configuration
 """"""""""""
 """"""""""""
 
-let g:coc_global_extensions = ['coc-html', 'coc-css', 'coc-json', 'coc-prettier', 'coc-tsserver', 'coc-elixir']
+" CoC Extensions
+let g:coc_global_extensions = ['coc-html', 'coc-css', 'coc-json',
+  \ 'coc-prettier', 'coc-tsserver', 'coc-elixir']
 
+" Formatting selected code.
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+vmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" 4.2: From CoC
 " Settings are taken directly from: https://github.com/neoclide/coc.nvim
+" Over time I will migrate the settings from below, to above, as I make it my own.
 
 " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
 " unicode characters in the file autoload/float.vim
@@ -229,18 +248,6 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
-
-" Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
 
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
