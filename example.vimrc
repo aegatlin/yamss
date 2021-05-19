@@ -2,8 +2,8 @@
 " Table Of Contents
 """"""""""""
 " Ch 1: Initial Settings (~ line 10)
-" Ch 2: Pucks (~ line 60)
-" Ch 3: vim-plug plugins (~ line 100)
+" Ch 2: Pucks (~ line 70)
+" Ch 3: vim-plug plugins (~ line 110)
 " Ch 4: Coc Configuration (~ line 150)
 """"""""""""
 """"""""""""
@@ -29,17 +29,20 @@ syntax on
 
 " Enables filetype detection, loads ftplugin, and loads indent
 " (Not necessary on nvim and may not be necessary on vim 8.2+)
+" To see your file's type: `:set filetype?`
 filetype plugin indent on
 
 " Improved split behavior
 set splitright
 set splitbelow
 
-" Show line numbers
+" Show line numbers and relative numbers
 set number
+set relativenumber
 
 " Sets how many spaces a <Tab> counts for
 set tabstop=2
+
 " Uses spaces when pressing <Tab>
 set expandtab
 
@@ -62,9 +65,14 @@ set mouse=a
 
 " Use syntax highlighting items as the default fold method
 set foldmethod=syntax
+set foldlevelstart=1
 
-" Use relative number to ease inter-file movement
-set relativenumber
+" Experiment with autoformatting text
+" I will likely have to set this for _only_ markdown, etc.
+" a: turn on autoformatting
+" w: trailing whitespace indicates that the paragraph continues on the next
+" line, otherwise, treat the paragraph as having ended
+set formatoptions+=aw
 
 """"""""""""
 """"""""""""
@@ -114,8 +122,10 @@ Plug 'preservim/nerdtree'
 Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/goyo.vim'
 Plug 'elixir-editors/vim-elixir'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 
 " Markdown plugins
@@ -136,7 +146,8 @@ let NERDTreeShowHidden=1
 " This adds fzf completions to vim
 set rtp+=/usr/local/opt/fzf
 " :GFiles searches the codebase filenames
-nmap <Leader>p :GFiles<CR>
+nmap <Leader>p :Files<CR>
+nmap <Leader>P :GFiles<CR>
 " :Rg uses ripgrep to search file contents
 nmap <C-p> :Rg<CR>
 
