@@ -2,9 +2,9 @@
 " Table Of Contents
 """"""""""""
 " Ch 1: Initial Settings (~ line 10)
-" Ch 2: Pucks (~ line 70)
-" Ch 3: vim-plug plugins (~ line 110)
-" Ch 4: Coc Configuration (~ line 150)
+" Ch 2: Plugins and Extensions (~ line 80)
+" Ch 3: Mappings (~ line 130)
+" Ch 4: Coc Configuration (~ line 170)
 """"""""""""
 """"""""""""
 " Ch 1: Initial Settings
@@ -66,56 +66,24 @@ set mouse=a
 " Use syntax highlighting items as the default fold method
 set foldmethod=syntax
 set foldlevelstart=1
+set nofoldenable
 
 " Experiment with autoformatting text
 " I will likely have to set this for _only_ markdown, etc.
 " a: turn on autoformatting
 " w: trailing whitespace indicates that the paragraph continues on the next
-" line, otherwise, treat the paragraph as having ended
+" line, otherwise, treat the paragraph as having ende
 set formatoptions+=aw
 
 """"""""""""
 """"""""""""
-" Ch 2: Pucks
+" Ch 2: Plugins and Extensions
 """"""""""""
 """"""""""""
 
 """"""
-" Canvas
+" Ch 2.1: Vim-plug
 """"""
-" Split
-nnoremap <Leader>v :vsplit<CR>
-nnoremap <Leader>b :split<CR>
-" Navigate
-""" to Visible Canvas in Current Group
-nnoremap <Leader>h <C-w><Left>
-nnoremap <Leader>l <C-w><Right>
-nnoremap <Leader>j <C-w><Down>
-nnoremap <Leader>k <C-w><Up>
-""" to Tabbed Canvas in Current Group
-nnoremap <Leader><Tab> :tabnext<CR>
-" Move
-""" to Another Group
-nnoremap <Leader>H <C-w>r
-nnoremap <Leader>L <C-w>R
-nnoremap <Leader>J <C-w>R
-nnoremap <Leader>K <C-w>r
-" Close
-nnoremap <Leader>w <C-w>q
-""""""
-" Other
-""""""
-" Explore Directory Toggle
-nnoremap <Leader>e :NERDTreeToggle<CR>
-" Reload Configuration
-nnoremap <Leader>r :source $MYVIMRC<CR>
-
-""""""""""""
-""""""""""""
-" Ch 3: vim-plug Plugins
-""""""""""""
-""""""""""""
-
 call plug#begin()
 " Systemic plugins
 Plug 'preservim/nerdtree'
@@ -132,24 +100,65 @@ Plug 'vim-airline/vim-airline'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 
-" Coc Plugin (extensions installed in Coc chapter)
+" CoC plugin
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
-""""""
-" Ch 3.1: Plugin Mappings
-""""""
+"""
+" Ch 2.1.1: Vim-plug plugin settings
+"""
+
 " NERDTree
 let NERDTreeShowHidden=1
 
 " fzf
 " This adds fzf completions to vim
 set rtp+=/usr/local/opt/fzf
-" :GFiles searches the codebase filenames
-nmap <Leader>p :Files<CR>
-nmap <Leader>P :GFiles<CR>
-" :Rg uses ripgrep to search file contents
-nmap <C-p> :Rg<CR>
+
+""""""
+" Ch 2.2: CoC
+""""""
+
+let g:coc_global_extensions = ['coc-html', 'coc-css', 'coc-json',
+  \ 'coc-prettier', 'coc-tsserver', 'coc-elixir']
+
+""""""""""""
+""""""""""""
+" Ch 3: Mappings
+""""""""""""
+""""""""""""
+" Available first letters
+" a  d  g i   mno q stu   yz
+
+" Splits
+nnoremap <Leader>v :vsplit<CR>
+nnoremap <Leader>b :split<CR>
+" Moves
+nnoremap <Leader>h <C-w><Left>
+nnoremap <Leader>l <C-w><Right>
+nnoremap <Leader>j <C-w><Down>
+nnoremap <Leader>k <C-w><Up>
+" Close
+nnoremap <Leader>w <C-w>q
+" Sizing
+nnoremap <Leader>x :resize<CR> :vertical resize<CR>
+nnoremap <Leader>c <C-w>=
+" Explore Directory Toggle
+nnoremap <Leader>e :NERDTreeToggle<CR>
+
+" Search
+nmap <Leader>pf :Files<CR>
+nmap <Leader>pg :GFiles<CR>
+nmap <Leader>pr :Rg<CR>
+
+" Format
+vmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>f <Plug>(coc-format)
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+" Reload Configuration
+nnoremap <Leader>rl :source $MYVIMRC<CR>
 
 """"""""""""
 """"""""""""
@@ -157,14 +166,8 @@ nmap <C-p> :Rg<CR>
 """"""""""""
 """"""""""""
 
-" CoC Extensions
-let g:coc_global_extensions = ['coc-html', 'coc-css', 'coc-json',
-  \ 'coc-prettier', 'coc-tsserver', 'coc-elixir']
-
 " Formatting selected code.
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
-vmap <leader>f <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format)
 
 augroup mygroup
   autocmd!
@@ -174,9 +177,7 @@ augroup mygroup
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
-" 4.2: From CoC
-" Settings are taken directly from: https://github.com/neoclide/coc.nvim
-" Over time I will migrate the settings from below, to above, as I make it my own.
+" Settings below are taken directly from: https://github.com/neoclide/coc.nvim
 
 " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
 " unicode characters in the file autoload/float.vim
@@ -256,9 +257,6 @@ endfunction
 
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
 
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
