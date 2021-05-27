@@ -21,6 +21,10 @@ endif
 " Map the leader key to space
 let mapleader=' '
 
+" Remove all autocommands from the 'default autocommand group'
+" so that multipe sourcings of vimrc don't duplicate the autocommands
+autocmd!
+
 " Don't maintain compatibility with Vi, which is outdated and causes problems
 set nocompatible
 
@@ -33,22 +37,16 @@ syntax on
 filetype plugin indent on
 
 " Improved split behavior
-set splitright
-set splitbelow
+set splitright splitbelow
 
 " Show line numbers and relative numbers
-set number
-set relativenumber
+set number relativenumber
 
-" Sets how many spaces a <Tab> counts for
-set tabstop=2
-
-" Uses spaces when pressing <Tab>
-set expandtab
+" Sets how many spaces a <Tab> counts for, use spaces over <Tab>
+set tabstop=2 expandtab
 
 " Set text width to 80 and color column 81
-set textwidth=80
-set colorcolumn=+1
+set textwidth=80 colorcolumn=+1
 
 " Don't create swapfiles
 set noswapfile
@@ -64,9 +62,7 @@ set laststatus=2
 set mouse=a
 
 " Use syntax highlighting items as the default fold method
-set foldmethod=syntax
-set foldlevelstart=1
-set nofoldenable
+set foldmethod=syntax foldlevelstart=1 nofoldenable
 
 " Experiment with autoformatting text
 " I will likely have to set this for _only_ markdown, etc.
@@ -75,18 +71,29 @@ set nofoldenable
 " line, otherwise, treat the paragraph as having ende
 set formatoptions+=aw
 
+" Spellcheck Markdown files and add spelling completions
+autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us
+set complete+=kspell
+
+" Auto-save, auto-read updates that occur in a file outside vim
+set autoread autowriteall
+" Experiment with saving on leaving insert mode or changing text in normal mod
+autocmd InsertLeave,TextChanged * update
+
+" Sets the regexp engine to auto, which unbricks vim for Typescript
+set re=0
+
 """"""""""""
 """"""""""""
 " Ch 2: Plugins and Extensions
 """"""""""""
 """"""""""""
 
-""""""
-" Ch 2.1: Vim-plug
-""""""
+" Vim-plug
 call plug#begin()
 " Systemic plugins
 Plug 'preservim/nerdtree'
+Plug 'preservim/vim-pencil'
 Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -95,18 +102,21 @@ Plug 'elixir-editors/vim-elixir'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
-
+Plug 'vim-test/vim-test'
 " Markdown plugins
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
-
+" Colorschemes
+Plug 'junegunn/seoul256.vim'
+Plug 'romainl/flattened'
 " CoC plugin
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
-"""
-" Ch 2.1.1: Vim-plug plugin settings
-"""
+" Vim-plug plugin settings
+
+" vim-test
+let test#strategy = "vimterminal"
 
 " NERDTree
 let NERDTreeShowHidden=1
@@ -115,12 +125,12 @@ let NERDTreeShowHidden=1
 " This adds fzf completions to vim
 set rtp+=/usr/local/opt/fzf
 
-""""""
-" Ch 2.2: CoC
-""""""
+" CoC
+let g:coc_global_extensions = ['coc-css', 'coc-elixir', 'coc-html', 'coc-json',
+  \ 'coc-prettier', 'coc-snippets', 'coc-tsserver']
 
-let g:coc_global_extensions = ['coc-html', 'coc-css', 'coc-json',
-  \ 'coc-prettier', 'coc-tsserver', 'coc-elixir']
+" Colorscheme
+colorscheme seoul256
 
 """"""""""""
 """"""""""""
@@ -128,37 +138,57 @@ let g:coc_global_extensions = ['coc-html', 'coc-css', 'coc-json',
 """"""""""""
 """"""""""""
 " Available first letters
-" a  d  g i   mno q stu   yz
+" ab de  hijklm o     uvwxyz
+" ABCDEFGHIJ LMNOPQRSTUVWXYZ
 
-" Splits
-nnoremap <Leader>v :vsplit<CR>
-nnoremap <Leader>b :split<CR>
-" Moves
-nnoremap <Leader>h <C-w><Left>
-nnoremap <Leader>l <C-w><Right>
-nnoremap <Leader>j <C-w><Down>
-nnoremap <Leader>k <C-w><Up>
-" Close
-nnoremap <Leader>w <C-w>q
 " Sizing
-nnoremap <Leader>x :resize<CR> :vertical resize<CR>
-nnoremap <Leader>c <C-w>=
-" Explore Directory Toggle
-nnoremap <Leader>e :NERDTreeToggle<CR>
-
+nnoremap <leader>x :resize<CR> :vertical resize<CR>
+nnoremap <leader>c <C-w>=
+" Explore Directory
+nnoremap <leader>nt :NERDTreeToggle<CR>
+nnoremap <leader>nf :NERDTreeFind<CR>
 " Search
-nmap <Leader>pf :Files<CR>
-nmap <Leader>pg :GFiles<CR>
-nmap <Leader>pr :Rg<CR>
-
+nmap <leader>pbl :BLines<CR>
+nmap <leader>pf :Files<CR>
+nmap <leader>pg :GFiles<CR>
+nmap <leader>ph :History<CR>
+nmap <leader>pr :Rg<CR>
 " Format
 vmap <leader>f <Plug>(coc-format-selected)
 nmap <leader>f <Plug>(coc-format)
-
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
 " Reload Configuration
-nnoremap <Leader>rl :source $MYVIMRC<CR>
+nnoremap <leader>rl :source $MYVIMRC<CR>
+" Edit particular files
+nnoremap <leader>ev :vsplit $MYVIMRC<CR>
+nnoremap <leader>et :vsplit ~/.tmux.conf<CR>
+" Goyo toggle
+nnoremap <leader>g :Goyo<CR>
+" Exiting
+nnoremap <leader>q :q<CR>
+" Testing
+nmap <leader>tn :TestNearest<CR>
+nmap <leader>tf :TestFile<CR>
+nmap <leader>ts :TestSuite<CR>
+nmap <leader>tl :TestLast<CR>
+nmap <leader>tv :TestVisit<CR>
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+" Colorschemes
+" d for dark, l for light, s for search
+nmap <leader>sd :colorscheme seoul256<cr>
+nmap <leader>sl :colorscheme flattened_light<cr>
+nmap <leader>ss :Colors<cr>
+
 
 """"""""""""
 """"""""""""
@@ -236,14 +266,6 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
