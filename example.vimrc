@@ -68,7 +68,7 @@ set foldmethod=syntax foldlevelstart=1 nofoldenable
 " I will likely have to set this for _only_ markdown, etc.
 " a: turn on autoformatting
 " w: trailing whitespace indicates that the paragraph continues on the next
-" line, otherwise, treat the paragraph as having ende
+" line, otherwise, treat the paragraph as having ended
 set formatoptions+=aw
 
 " Spellcheck Markdown files and add spelling completions
@@ -77,11 +77,13 @@ set complete+=kspell
 
 " Auto-save, auto-read updates that occur in a file outside vim
 set autoread autowriteall
-" Experiment with saving on leaving insert mode or changing text in normal mod
 autocmd InsertLeave,TextChanged * update
 
 " Sets the regexp engine to auto, which unbricks vim for Typescript
 set re=0
+
+" Turn off word wrap
+set nowrap
 
 """"""""""""
 """"""""""""
@@ -116,7 +118,7 @@ call plug#end()
 " Vim-plug plugin settings
 
 " vim-test
-let test#strategy = "vimterminal"
+let test#strategy = 'vimterminal'
 
 " NERDTree
 let NERDTreeShowHidden=1
@@ -130,7 +132,7 @@ let g:coc_global_extensions = ['coc-css', 'coc-elixir', 'coc-html', 'coc-json',
   \ 'coc-prettier', 'coc-snippets', 'coc-tsserver']
 
 " Colorscheme
-colorscheme seoul256
+colorscheme flattened_light
 
 """"""""""""
 """"""""""""
@@ -138,21 +140,30 @@ colorscheme seoul256
 """"""""""""
 """"""""""""
 " Available first letters
-" ab de  hijklm o     uvwxyz
-" ABCDEFGHIJ LMNOPQRSTUVWXYZ
+" abc e  hijklmno     uv xyz
+" ABC EFGHIJ LMNOPQRSTUVWXYZ
 
-" Sizing
-nnoremap <leader>x :resize<CR> :vertical resize<CR>
-nnoremap <leader>c <C-w>=
+" Windows 
+nnoremap <leader>wv :resize<CR> :resize -10<CR>
+nnoremap <leader>wh :vertical resize<CR> :vertical resize -40<CR>
+nnoremap <leader>we <C-w>=
 " Explore Directory
-nnoremap <leader>nt :NERDTreeToggle<CR>
-nnoremap <leader>nf :NERDTreeFind<CR>
+nnoremap <leader>d :NERDTreeToggle<CR>
+nnoremap <leader>D :NERDTreeFind<CR>
 " Search
 nmap <leader>pbl :BLines<CR>
 nmap <leader>pf :Files<CR>
 nmap <leader>pg :GFiles<CR>
 nmap <leader>ph :History<CR>
 nmap <leader>pr :Rg<CR>
+" Lookup
+nmap <leader>lf :Files<CR>
+nmap <leader>lg :GFiles<CR>
+nmap <leader>lb :Buffers<CR>
+nmap <leader>lh :History<CR>
+nmap <leader>lr :Rg<CR>
+nmap <leader>lw :Windows<CR>
+nmap <leader>ll :Lines<CR>
 " Format
 vmap <leader>f <Plug>(coc-format-selected)
 nmap <leader>f <Plug>(coc-format)
@@ -173,7 +184,6 @@ nmap <leader>tf :TestFile<CR>
 nmap <leader>ts :TestSuite<CR>
 nmap <leader>tl :TestLast<CR>
 nmap <leader>tv :TestVisit<CR>
-
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
@@ -288,7 +298,7 @@ nmap <leader>a  <Plug>(coc-codeaction-selected)
 " Remap keys for applying codeAction to the current buffer.
 nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
+" nmap <leader>qf  <Plug>(coc-fix-current)
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
