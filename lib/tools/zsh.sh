@@ -51,6 +51,4 @@ autoload -Uz compinit
 compinit
 
 DELIMIT
-
-  source ~/.zshrc
 }
