@@ -37,6 +37,22 @@ Describe 'lib'
         The line 7 should equal 'cleaned up'
       End
     End
+
+    Describe 'ensure_dir'
+      It 'does nothing if the dir already exists'
+        mkdir temp
+        When call ensure_dir temp
+        The path temp should be exist
+        rm -rf temp
+      End
+
+      It 'creates a dir if the dir does not exist'
+        rm -rf temp
+        When call ensure_dir temp
+        The path temp should be exist
+        rm -rf temp
+      End
+    End
   End
 
   Context 'tool functions:'

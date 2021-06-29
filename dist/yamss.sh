@@ -37,12 +37,20 @@ setup_linux() {
   load_tools zsh apt snap asdf direnv
 }
 
-# Config
-
+# currently untested!
 write_configs() {
-  curl -fsSL ${ROOT_PATH}lib/configs/init.lua > $HOME/.config/nvim/init.lua
-  curl -fsSL ${ROOT_PATH}lib/configs/git.config > $HOME/.config/git/config
-  curl -fsSL ${ROOT_PATH}lib/configs/tmux.conf > $HOME/.config/tmux/tmux.conf
+  ensure_dir "$HOME/.config"
+  ensure_dir "$HOME/.config/nvim"
+  ensure_dir "$HOME/.config/git"
+  ensure_dir "$HOME/.config/tmux"
+
+  curl -fsSL ${ROOT_PATH}lib/configs/init.lua > "$HOME/.config/nvim/init.lua"
+  curl -fsSL ${ROOT_PATH}lib/configs/git.config > "$HOME/.config/git/config"
+  curl -fsSL ${ROOT_PATH}lib/configs/tmux.conf > "$HOME/.config/tmux/tmux.conf"
+}
+
+ensure_dir() {
+  if ! [ -d "$1" ]; then mkdir $1; fi
 }
 
 # Tools
