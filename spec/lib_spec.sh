@@ -40,8 +40,9 @@ Describe 'lib'
     Describe 'set_tool_functions'
       It 'generates the four function names of a given tool'
         When call set_tool_functions tul
-        local expected_value=(tul__prepare tul__setup tul__augment tul__bootstrap)
-        The variable tool_functions should equal "$expected_value" 
+        local expected='tul__prepare tul__setup tul__augment tul__bootstrap'
+        local actual="${tool_functions[@]}"
+        The variable actual should equal "$expected"
       End
     End
 
@@ -85,19 +86,17 @@ Describe 'lib'
     Describe 'load_tools'
       It 'calls load_tool on a list of tools' 
         load_tool() { echo $1; }
-        exec_tool_functions() { :; } # fancy noop
-        local mac_tools=(zsh git brew direnv tmux vim asdf)
-        local expected_tool_functions=('asdf__prepare' 'asdf__setup' 'asdf__augment' 'asdf__bootstrap')
-        When call load_tools ${mac_tools[@]}
+        exec_tool_functions() { :; }
+        When call load_tools zsh brew asdf direnv
         The line 1 should equal 'zsh'
-        The line 2 should equal 'git'
-        The line 3 should equal 'brew'
+        The line 2 should equal 'brew'
+        The line 3 should equal 'asdf'
         The line 4 should equal 'direnv'
-        The line 5 should equal 'tmux'
-        The line 6 should equal 'vim'
-        The line 7 should equal 'asdf'
-        The variable remote_tool_url should equal 'https://raw.githubusercontent.com/aegatlin/setup/master/lib/tools/asdf.sh'
-        The variable tool_functions should equal "$expected_tool_functions"
+        local url='https://raw.githubusercontent.com/aegatlin/setup/master/lib/tools/direnv.sh'
+        The variable remote_tool_url should equal "$url"
+        local expected='direnv__prepare direnv__setup direnv__augment direnv__bootstrap'
+        local actual="${tool_functions[@]}"
+        The variable actual should equal "$expected"
       End
     End
   End
