@@ -1,5 +1,3 @@
-#!/bin/zsh
-
 zsh__prepare() {
   ensure_command zsh
 }
@@ -51,10 +49,6 @@ zsh__bootstrap() {
 # load and init zsh completions with compinit
 autoload -Uz compinit
 compinit
-
-##########
-# End of yams .zshrc edits
-##########
 
 DELIMIT
 

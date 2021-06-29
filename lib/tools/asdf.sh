@@ -10,6 +10,8 @@ asdf__prepare() {
 }
 
 asdf__setup() {
+  ensure_command asdf
+
   ensure_plugin_add() {
     if ! asdf plugin list | grep -q "$1"; then
       run_command "asdf plugin add $1"
@@ -23,6 +25,11 @@ asdf__setup() {
   ensure_plugin_add postgres
   ensure_plugin_add python
   ensure_plugin_add yarn
+  ensure_plugin_add tmux
+  ensure_plugin_add neovim
+  ensure_plugin_add kotlin
+  ensure_plugin_add direnv
+  ensure_plugin_add lua
 }
 
 asdf__augment() {
@@ -37,4 +44,4 @@ fpath=(${ASDF_DIR}/completions $fpath)
 DELIMIT
 }
 
-asdf__bootstrap() {}
+asdf__bootstrap() { :; }
