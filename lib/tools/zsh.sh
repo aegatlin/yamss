@@ -26,6 +26,12 @@ alias py='python3'
 alias pr='pipenv run'
 alias nr='npm run'
 alias imps='iex -S mix phx.server'
+alias asdf_update_nvim='asdf uninstall neovim nightly && asdf install neovim nightly'
+asdf_global_latest() {
+  asdf install $1 $(asdf latest $1)
+  asdf global $1 $(asdf latest $1)
+  asdf reshim $1
+}
 
 ##########
 # PROMPT setup
