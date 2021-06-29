@@ -72,7 +72,7 @@ write_and_source_tool_file() {
 }
 
 set_tool_functions() {
-  tool_functions=("$1__prepare" "$1__setup" "$1_augment" "$1__bootstrap")
+  tool_functions=("$1__prepare" "$1__setup" "$1__augment" "$1__bootstrap")
 }
 
 exec_tool_functions() {
