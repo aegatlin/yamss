@@ -63,7 +63,7 @@ load_tool() {
 
 create_tool_file() {
   current_tool_file=$1.temp.sh
-  TEMP_FILES+=$current_tool_file
+  TEMP_FILES+=($current_tool_file)
   touch $current_tool_file
 }
 

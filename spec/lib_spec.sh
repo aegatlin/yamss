@@ -74,6 +74,15 @@ Describe 'lib'
         The variable current_tool_file should equal 'tul.temp.sh'
         The variable TEMP_FILES should include 'tul.temp.sh'
       End
+
+      It 'adds two tools to the TEMP_FILES array when called twice'
+        twice() { create_tool_file tul; create_tool_file tuul; }
+        When call twice
+        expected='tul.temp.sh tuul.temp.sh'
+        actual="${TEMP_FILES[@]}"
+        The variable actual should equal "$expected"
+        rm tul.temp.sh tuul.temp.sh
+      End
     End
 
     Describe 'load_tool'
@@ -123,7 +132,9 @@ Describe 'lib'
       before_each() {
         touch tul.temp.sh
         touch tuul.temp.sh
-        TEMP_FILES=(tul.temp.sh tuul.temp.sh)
+        TEMP_FILES=()
+        TEMP_FILES+=(tul.temp.sh)
+        TEMP_FILES+=(tuul.temp.sh)
         var1='wow'
         var2=3
         UNSET_LIST=(var1 var2 TEMP_FILES)
@@ -138,7 +149,7 @@ Describe 'lib'
         The variable UNSET_LIST should be undefined
       End 
       
-      It 'removes temporary files stored in TEMP_FILES'
+      It 'removes all temporary files stored in TEMP_FILES'
         When call clean_up
         The path 'tul.temp.sh' should not be file
         The path 'tuul.temp.sh' should not be file

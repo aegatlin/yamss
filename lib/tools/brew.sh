@@ -30,6 +30,10 @@ brew__setup() {
   ensure_brew_cask_install shiftit
   ensure_brew_cask_install karabiner-elements
   ensure_brew_cask_install firefox
+  ensure_brew_cask_install signal
+  ensure_brew_cask_install telegram
+  ensure_brew_cask_install slack
+  ensure_brew_cask_install bitwarden
 }
 
 brew__augment() {
