@@ -14,12 +14,12 @@ ROOT_PATH='https://raw.githubusercontent.com/aegatlin/setup/master/'
 setup() {
   echo "**********\nyamss setup initiated\n**********"
   if [ $(uname) = 'Darwin' ]; then
-    echo 'MacOS detected. Running local MacOS setup.'
+    echo 'MacOS detected'
     setup_mac
     write_configs
     clean_up
   elif [ $(uname) = 'Linux' ]; then
-    echo 'Linux detected. Running remote Linux setup.'
+    echo 'Linux detected'
     setup_linux
     write_configs
     clean_up
@@ -27,6 +27,7 @@ setup() {
     error_and_exit "OS detection failed: uname $(uname) not recognized"
   fi
   echo "**********\nyamss setup completed\n**********"
+  echo "Restart shell or 'source ~/.zshrc' to complete setup\n"
 }
 
 setup_mac() {
