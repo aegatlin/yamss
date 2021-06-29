@@ -2,28 +2,43 @@
 -----------
 -- Packages: ~ 10
 -- Settings: ~ 20
--- Mappings: ~ 40
--- Configuration: ~ 60
+-- Mappings: ~ 70
+-- Configuration: ~ 130
 
 -- Packages
 
 require 'paq-nvim' {
   'savq/paq-nvim',
-  'nvim-treesitter/nvim-treesitter',
-  'neovim/nvim-lspconfig',
-  'junegunn/seoul256.vim',
-  'nvim-lua/plenary.nvim',
+
+  'nvim-lua/plenary.nvim', -- Utilities
   'nvim-lua/popup.nvim',
-  'nvim-telescope/telescope.nvim',
-  'ishan9299/nvim-solarized-lua',
-  'b3nj5m1n/kommentary',
+  'famiu/nvim-reload',
+
+  'nvim-treesitter/nvim-treesitter', -- IDE Behavior
+  'neovim/nvim-lspconfig',
   'kabouzeid/nvim-lspinstall',
   'hrsh7th/nvim-compe',
+  'nvim-telescope/telescope.nvim',
+  'vim-test/vim-test',
+  'mhinz/vim-signify',
+  'hoob3rt/lualine.nvim',
+
+  'tpope/vim-surround', -- File Manipulation
+  'ggandor/lightspeed.nvim',
+  'b3nj5m1n/kommentary',
+
+  'plasticboy/vim-markdown', -- Markdown Tooling
+  'junegunn/goyo.vim',
+
+  'overcache/NeoSolarized', -- Colors
 }
 
 -- Settings
 
 vim.g.mapleader = ' '
+vim.opt.foldlevelstart = 3
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.mouse = 'a'
@@ -32,64 +47,107 @@ vim.opt.relativenumber = true
 vim.opt.wrap = false
 vim.opt.colorcolumn = '81'
 vim.opt.signcolumn = 'number'
-vim.opt.foldmethod = 'expr'
-vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.opt.swapfile = false
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
-vim.opt.completeopt = 'menuone,noselect'
-vim.cmd('colorscheme seoul256')
+vim.opt.updatetime = 400
+vim.o.completeopt = 'menuone,noselect'
+
+vim.cmd 'autocmd!' -- Remove autocmds from top-level "default" autocmd group.
+vim.cmd 'let g:goyo_width = 82'
+vim.cmd[[
+  set termguicolors
+  colorscheme NeoSolarized
+]]
+vim.cmd[[
+  autocmd BufRead,BufNewFile mix.lock,*.ex,*.exs set filetype=elixir
+  autocmd BufRead,BufNewFile *.eex,*.leex,*.sface set filetype=eelixir
+]]
+vim.cmd[[
+  autocmd FileType markdown set formatoptions+=aw complete+=kspell
+  autocmd FileType markdown setlocal spell spelllang=en_us
+]]
+-- Only update normal buffers (where buftype is empty).
+-- Examples of non-updated buffer types: 'help', 'prompt'
+vim.cmd[[ 
+  set autoread autowriteall
+  autocmd InsertLeave,TextChanged * if empty(&l:buftype) | update | endif 
+]]
+vim.cmd [[let test#strategy = 'neovim']]
 
 -- Mappings
--- post-leader availabilities
--- ab d  ghi   mnop  stuv xyz
--- ABCDEFGHIJ LMNOPQ STUVWXYZ
+-- ab d   h jk mn p  s uv xyz
+-- ABCDE  HIJ LMNOPQ S UVWXYZ
 
 local nmaps = {
-  {'<leader>cd', '<cmd>colorscheme seoul256<cr>'},
-  {'<leader>cl', '<cmd>colorscheme solarized<cr>'},
+  {'<leader>cd', '<cmd>set background=dark<cr>'},
+  {'<leader>cl', '<cmd>set background=light<cr>'},
   {'<leader>cc', [[<cmd>lua require'telescope.builtin'.colorscheme()<cr>]]},
   {'<leader>ei', ':vsp $MYVIMRC<cr>'},
+  {'<leader>F', [[<cmd>lua require'telescope.builtin'.current_buffer_fuzzy_find()<cr>]]},
+  {'<leader>fb', [[<cmd>lua require'telescope.builtin'.buffers()<cr>]]},
+  {'<leader>fd', [[<cmd>lua require'telescope.builtin'.file_browser()<cr>]]},
+  {'<leader>fF', [[<cmd>lua require'telescope.builtin'.git_files()<cr>]]},
   {'<leader>ff', [[<cmd>lua require'telescope.builtin'.find_files()<cr>]]},
   {'<leader>fg', [[<cmd>lua require'telescope.builtin'.live_grep()<cr>]]},
-  {'<leader>fb', [[<cmd>lua require'telescope.builtin'.buffers()<cr>]]},
   {'<leader>fh', [[<cmd>lua require'telescope.builtin'.help_tags()<cr>]]},
-  {'<leader>fd', [[<cmd>lua require'telescope.builtin'.file_browser()<cr>]]},
+  {'<leader>fm', [[<cmd>lua require'telescope.builtin'.man_pages()<cr>]]},
+  {'<leader>fo', [[<cmd>lua require'telescope.builtin'.oldfiles()<cr>]]},
+  {'<leader>fr', [[<cmd>lua require'telescope.builtin'.lsp_references()<cr>]]},
+  {'<leader>fld', [[<cmd>lua require'telescope.builtin'.lsp_definitions()<cr>]]},
+  {'<leader>fs', [[<cmd>lua require'telescope.builtin'.grep_string()<cr>]]},
+  {'<leader>G', '<cmd>Goyo<cr>'},
+  {'<leader>gd', '<cmd>:SignifyDiff<cr>'},
+  {'<leader>gh', '<cmd>:SignifyHunkDiff<cr>'},
+  {'<leader>gt', '<cmd>:SignifyToggle<cr>'},
+  {'<leader>gu', '<cmd>:SignifyHunkUndo<cr>'},
   {'<leader>q', ':q<CR>'},
-  {'<leader>ri', ':luafile $MYVIMRC<cr>'},
+  {'<leader>ri', '<cmd>luafile $MYVIMRC<cr>'},
+  {'<leader>rl', '<cmd>Reload<cr>'},
+  {'<leader>rs', '<cmd>Restart<cr>'},
+  {'<leader>T', ':Telescope '},
+  {'<leader>tf', '<cmd>TestFile<cr>'},
+  {'<leader>tl', '<cmd>TestLast<cr>'},
+  {'<leader>tn', '<cmd>TestNearest<cr>'},
+  {'<leader>ts', '<cmd>TestSuite<cr>'},
+  {'<leader>tv', '<cmd>TestVisit<cr>'},
   {'<leader>we', '<C-w>='},
   {'<leader>wh', ':resize<cr> :resize -10<cr>'},
   {'<leader>wu', ':resize<cr>'},
   {'<leader>wv', ':vertical resize<cr> :vertical resize -40<cr>'},
 }
 
+local imaps = {
+  {'jk', '<esc>'}
+}
+
 local lsp_maps = {
-  {'K', '<cmd>lua vim.lsp.buf.definition()<cr>'},
-  {'<leader>R', '<cmd>lua vim.lsp.buf.rename()<cr>'},
+  {'<leader>lc', '<cmd>lua vim.lsp.buf.code_action()<cr>'},
   {'<leader>ld', '<cmd>lua vim.lsp.buf.definition()<cr>'},
   {'<leader>lD', '<cmd>lua vim.lsp.buf.declaration()<cr>'},
+  {'<leader>le', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>'},
   {'<leader>lf', '<cmd>lua vim.lsp.buf.formatting()<cr>'},
   {'<leader>lh', '<cmd>lua vim.lsp.buf.hover()<cr>'},
+  {'<leader>li', '<cmd>lua vim.lsp.buf.implementation()<cr>'},
+  {'<leader>ln', '<cmd>lua vim.lsp.buf.rename()<cr>'},
   {'<leader>lr', '<cmd>lua vim.lsp.buf.references()<cr>'},
   {'<leader>lt', '<cmd>lua vim.lsp.buf.type_definition()<cr>'},
-  {'<leader>li', '<cmd>lua vim.lsp.buf.implementation()<cr>'},
-  {'<leader>lc', '<cmd>lua vim.lsp.buf.code_action()<cr>'},
 }
 
 vim.cmd[[
-  inoremap <silent><expr> <C-Space> compe#complete()
-  inoremap <silent><expr> <CR>      compe#confirm('<CR>')
-  inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-  inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
-  inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+  inoremap <expr> <C-a> compe#complete()
+  inoremap <expr> <C-s> compe#confirm('<cr>')
+  inoremap <expr> <c-e> compe#close('<c-e>')
+  inoremap <expr> <C-f> compe#scroll({ 'delta': +4 })
+  inoremap <expr> <C-d> compe#scroll({ 'delta': -4 })
 ]]
 
 local ts_maps = {
-  init_selection = '<leader>k',
-  node_incremental = '<leader>k',
-  scope_incremental = '<leader>K',
-  node_decremental = '<leader>j',
+  init_selection = '<leader>o',
+  node_incremental = '<leader>o',
+  scope_incremental = '<leader>O',
+  node_decremental = '<leader>i',
 }
 
 -- Configuration
@@ -97,6 +155,11 @@ local ts_maps = {
 for _, map in ipairs(nmaps) do
   local lhs, rhs = unpack(map)
   vim.api.nvim_set_keymap('n', lhs, rhs, {})
+end
+
+for _, map in ipairs(imaps) do
+  local lhs, rhs = unpack(map)
+  vim.api.nvim_set_keymap('i', lhs, rhs, {})
 end
 
 local lsp_config = require('lspconfig')
@@ -112,13 +175,16 @@ end
 local function setup_servers()
   lsp_install.setup()
 
-  local servers = lsp_install.installed_servers()
-
-  for _, server in pairs(servers) do
+  for _, server in pairs(lsp_install.installed_servers()) do
     local s = { on_attach = on_attach }
 
     if server == 'lua' then
       s.settings = {Lua = {diagnostics = {globals = 'vim'}}}
+    end
+
+    if server == 'elixir' then
+      local partial_path = '/lspinstall/elixir/elixir-ls/language_server.sh'
+      s.cmd = { vim.fn.stdpath('data') .. partial_path }
     end
 
     lsp_config[server].setup(s)
@@ -141,9 +207,9 @@ require 'nvim-treesitter.configs'.setup {
     enable = true,
     keymaps = {
       init_selection = ts_maps.init_selection,
-      node_incremental = '<leader>k',
-      scope_incremental = '<leader>l',
-      node_decremental = '<leader>j'
+      node_incremental = ts_maps.node_incremental,
+      scope_incremental = ts_maps.scope_incremental,
+      node_decremental = ts_maps.node_decremental,
     }
   },
   indent = { enable = true }
@@ -152,7 +218,7 @@ require 'nvim-treesitter.configs'.setup {
 require'compe'.setup {
   enabled = true;
   autocomplete = true;
-  debug = false;
+  debug = true;
   min_length = 1;
   preselect = 'enable';
   throttle_time = 80;
@@ -168,10 +234,20 @@ require'compe'.setup {
     path = true;
     buffer = true;
     calc = true;
+    spell = true;
     nvim_lsp = true;
     nvim_lua = true;
-    vsnip = true;
-    ultisnips = true;
+    vsnip = false;
+    ultisnips = false;
   };
+}
+
+require 'lualine'.setup {
+  options = {
+    icons_enabled = false,
+    theme = 'solarized_light',
+    section_separators = '',
+    component_separators = { '|' }
+  }
 }
 
