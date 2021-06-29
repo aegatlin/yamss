@@ -17,7 +17,7 @@ brew__setup() {
 
   ensure_brew_cask_install() {
     if ! brew list --cask | grep -q "$1"; then
-      run_command "brew cask install $1"
+      run_command "brew install --cask $1"
     fi
   }
 

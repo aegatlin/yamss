@@ -17,10 +17,12 @@ setup() {
     echo 'MacOS detected. Running local MacOS setup.'
     setup_mac
     write_configs
+    clean_up
   elif [ $(uname) = 'Linux' ]; then
     echo 'Linux detected. Running remote Linux setup.'
     setup_linux
     write_configs
+    clean_up
   else
     error_and_exit "OS detection failed: uname $(uname) not recognized"
   fi
