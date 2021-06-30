@@ -18,7 +18,7 @@ zsh__augment() {
 ##########
 alias g='git'
 alias t='tmux'
-alias v='vim'
+alias v='nvim'
 alias ls='ls -G'
 alias ll='ls -al'
 alias ..='cd ..'
