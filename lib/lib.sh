@@ -14,7 +14,7 @@ setup() {
   printf "**********\nyamss setup completed\n**********\n"
   printf "Restart shell or 'source ~/.zshrc' to complete setup\n"
   if [ "$(uname)" = 'Darwin' ]; then
-    printf "'source ~/.zshrc' has been copied to the paste buffer"
+    printf "'source ~/.zshrc' has been copied to the paste buffer\n"
     printf 'source ~/.zshrc' | pbcopy
   fi
 }
