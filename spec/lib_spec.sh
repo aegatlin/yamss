@@ -33,6 +33,17 @@ Describe 'lib'
       The line 5 should equal 'setup linux'
       The line 6 should equal 'wrote configs'
     End
+
+    It 'copies source ~/.zshrc into the paste buffer via pbcopy on mac'
+      uname() { echo 'Darwin'; }
+      When call setup
+      The line 11 should equal "'source ~/.zshrc' has been copied to the paste buffer"
+      unset -f uname
+      if [ "$(uname)" = 'Darwin' ]; then
+        local paste=$(pbpaste)
+        The variable paste should equal 'source ~/.zshrc'
+      fi
+    End
   End
 
   Describe 'ensure_dir'
