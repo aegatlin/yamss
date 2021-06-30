@@ -21,6 +21,10 @@ asdf__prepare() {
     git checkout "$(git describe --abbrev=0 --tags)"
     popd || exit
   fi
+
+  # Until '. $HOME/.asdf/asdf.sh' is written to ~/.zshrc
+  # source asdf.sh to access the asdf command
+  run_command "source $HOME/.asdf/asdf.sh"
 }
 
 asdf__setup() {
@@ -220,11 +224,11 @@ setup() {
 }
 
 setup_mac() {
-  load_tools zsh brew asdf direnv
+  load_tools zsh brew asdf
 }
 
 setup_linux() {
-  load_tools zsh apt snap asdf direnv
+  load_tools zsh apt asdf
 }
 
 write_configs() {

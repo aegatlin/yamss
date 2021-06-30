@@ -1,11 +1,11 @@
-.PHONY: test lint build
+.PHONY: test lint build build_lint yamss
 
-yamss: test build lint
+yamss: build build_lint
 
 test:
 	shellspec
 
-build: test
+build: lint
 	rm -rf dist
 	mkdir dist
 	touch dist/yamss.sh

@@ -20,11 +20,11 @@ setup() {
 }
 
 setup_mac() {
-  load_tools zsh brew asdf direnv
+  load_tools zsh brew asdf
 }
 
 setup_linux() {
-  load_tools zsh apt snap asdf direnv
+  load_tools zsh apt asdf
 }
 
 write_configs() {

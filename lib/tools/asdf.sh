@@ -7,6 +7,10 @@ asdf__prepare() {
     git checkout "$(git describe --abbrev=0 --tags)"
     popd || exit
   fi
+
+  # Until '. $HOME/.asdf/asdf.sh' is written to ~/.zshrc
+  # source asdf.sh to access the asdf command
+  run_command "source $HOME/.asdf/asdf.sh"
 }
 
 asdf__setup() {
