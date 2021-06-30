@@ -38,8 +38,8 @@ asdf_global_latest() {
 ##########
 autoload -Uz vcs_info
 zstyle ':vcs_info:git*' formats "%b"
-precmd() { 
-  vcs_info 
+precmd() {
+  vcs_info
 }
 setopt prompt_subst
 export PROMPT=$'\n''%F{blue}%~%f %F{red}${vcs_info_msg_0_}%f'$'\n''%F{cyan}%n@%M%f '

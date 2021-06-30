@@ -1,15 +1,193 @@
-UNSET_LIST=(
-  tool_functions
-  TOOLS_PATH
-  remote_tool_url
-  TEMP_FILES
-  current_tool_file
-  ROOT_PATH
-)
-TEMP_FILES=()
-ROOT_PATH='https://raw.githubusercontent.com/aegatlin/setup/master/'
+apt__prepare() {
+  ensure_command apt
+}
 
-# Setup
+apt__setup() {
+  apt install curl
+  apt install git
+  apt install net-tools
+  apt install nmap
+}
+
+apt__augment() { :; }
+
+apt__bootstrap() { :; }
+#!/bin/zsh
+
+asdf__prepare() {
+  if ! has_command asdf; then
+    git clone https://github.com/asdf-vm/asdf.git ~/.asdf
+    pushd ~/.asdf || exit
+    git checkout "$(git describe --abbrev=0 --tags)"
+    popd || exit
+  fi
+}
+
+asdf__setup() {
+  ensure_command asdf
+
+  ensure_plugin_add() {
+    if ! asdf plugin list | grep -q "$1"; then
+      run_command "asdf plugin add $1"
+    fi
+  }
+
+  ensure_plugin_add elixir
+  ensure_plugin_add elm
+  ensure_plugin_add erlang
+  ensure_plugin_add nodejs
+  ensure_plugin_add postgres
+  ensure_plugin_add python
+  ensure_plugin_add yarn
+  ensure_plugin_add tmux
+  ensure_plugin_add neovim
+  ensure_plugin_add kotlin
+  ensure_plugin_add direnv
+  ensure_plugin_add lua
+}
+
+asdf__augment() {
+  cat <<'DELIMIT' >>~/.zshrc
+##########
+# asdf setup
+##########
+. $HOME/.asdf/asdf.sh
+# for zsh completions, append asdf completion function locations to fpath
+fpath=(${ASDF_DIR}/completions $fpath)
+
+DELIMIT
+}
+
+asdf__bootstrap() { :; }
+brew__prepare() {
+  ensure_command /bin/bash
+
+  if ! has_command brew; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+  fi
+}
+
+brew__setup() {
+  ensure_command brew
+
+  ensure_brew_install() {
+    if ! brew list --formula | grep -q "$1"; then
+      run_command "brew install $1"
+    fi
+  }
+
+  ensure_brew_cask_install() {
+    if ! brew list --cask | grep -q "$1"; then
+      run_command "brew install --cask $1"
+    fi
+  }
+
+  ensure_brew_install git
+  ensure_brew_install mosh
+  ensure_brew_install gpg
+  ensure_brew_install imagemagick
+  ensure_brew_cask_install visual-studio-code
+  ensure_brew_cask_install iterm2
+  ensure_brew_cask_install shiftit
+  ensure_brew_cask_install karabiner-elements
+  ensure_brew_cask_install firefox
+  ensure_brew_cask_install signal
+  ensure_brew_cask_install telegram
+  ensure_brew_cask_install slack
+  ensure_brew_cask_install bitwarden
+}
+
+brew__augment() {
+  cat <<'DELIMIT' >>~/.zshrc
+##########
+# brew setup
+##########
+if type brew &>/dev/null; then
+  # for zsh completions, append brew completion functions location to FPATH
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+fi
+
+DELIMIT
+}
+
+brew__bootstrap() { :; }
+direnv__prepare() { :; }
+direnv__setup() { :; }
+
+direnv__augment() {
+  ensure_command direnv
+
+  cat <<'DELIMIT' >>~/.zshrc
+##########
+# direnv setup
+##########
+eval "$(direnv hook zsh)"
+
+DELIMIT
+}
+
+direnv__bootstrap() { :; }
+zsh__prepare() {
+  ensure_command zsh
+}
+
+zsh__setup() {
+  if ! [[ "$SHELL" == "/bin/zsh" ]]; then
+    echo "changing shell from $SHELL to /bin/zsh"
+    chsh -s /bin/zsh
+    echo "You will need to restart your terminal for shell changes to take effect"
+  fi
+}
+
+zsh__augment() {
+  rm -f ~/.zshrc
+  cat <<'DELIMIT' >~/.zshrc
+##########
+# zsh aliases
+##########
+alias g='git'
+alias t='tmux'
+alias v='vim'
+alias ls='ls -G'
+alias ll='ls -al'
+alias ..='cd ..'
+alias py='python3'
+alias pr='pipenv run'
+alias nr='npm run'
+alias imps='iex -S mix phx.server'
+alias asdf_update_nvim='asdf uninstall neovim nightly && asdf install neovim nightly'
+asdf_global_latest() {
+  asdf install $1 $(asdf latest $1)
+  asdf global $1 $(asdf latest $1)
+  asdf reshim $1
+}
+
+##########
+# PROMPT setup
+##########
+autoload -Uz vcs_info
+zstyle ':vcs_info:git*' formats "%b"
+precmd() {
+  vcs_info
+}
+setopt prompt_subst
+export PROMPT=$'\n''%F{blue}%~%f %F{red}${vcs_info_msg_0_}%f'$'\n''%F{cyan}%n@%M%f '
+
+DELIMIT
+}
+
+zsh__bootstrap() {
+  cat <<'DELIMIT' >>~/.zshrc
+##########
+# zsh completions
+##########
+# load and init zsh completions with compinit
+autoload -Uz compinit
+compinit
+
+DELIMIT
+}
+local ROOT_PATH='https://raw.githubusercontent.com/aegatlin/setup/master/'
 
 setup() {
   echo "**********\nyamss setup initiated\n**********"
@@ -38,7 +216,6 @@ setup_linux() {
   load_tools zsh apt snap asdf direnv
 }
 
-# currently untested!
 write_configs() {
   ensure_dir "$HOME/.config"
   ensure_dir "$HOME/.config/nvim"
@@ -54,47 +231,17 @@ ensure_dir() {
   if ! [ -d "$1" ]; then mkdir $1; fi
 }
 
-# Tools
-
 load_tools() {
   for tool; do
-    set_remote_tool_url $tool
-    load_tool $tool
-    set_tool_functions $tool
-    exec_tool_functions
+    local tool_functions=(
+      "${tool}__prepare"
+      "${tool}__setup"
+      "${tool}__augment"
+      "${tool}__bootstrap"
+    )
+    for f in "${tool_functions[@]}"; do $f; done
   done
 }
-
-load_tool() {
-  create_tool_file $1
-  write_and_source_tool_file
-}
-
-create_tool_file() {
-  current_tool_file=$1.temp.sh
-  TEMP_FILES+=($current_tool_file)
-  touch $current_tool_file
-}
-
-# Currently untested!
-write_and_source_tool_file() {
-  curl -fsSL $remote_tool_url > $current_tool_file
-  source $current_tool_file
-}
-
-set_tool_functions() {
-  tool_functions=("$1__prepare" "$1__setup" "$1__augment" "$1__bootstrap")
-}
-
-exec_tool_functions() {
-  for f in "${tool_functions[@]}"; do $f; done
-}
-
-set_remote_tool_url() {
-  remote_tool_url=${ROOT_PATH}lib/tools/$1.sh
-}
-
-# Helpers
 
 has_command() {
   command -v $1 1>/dev/null
@@ -111,21 +258,11 @@ run_command() {
   eval $1
 }
 
-clean_up() {
-  for f in ${TEMP_FILES[@]}; do rm $f; done
-  for v in ${UNSET_LIST[@]}; do unset $v; done
-  unset UNSET_LIST
-}
-
 error_and_exit() {
-  echo
   echo "**********"
-  echo "ERROR"
-  echo "Error message: $1"
-  echo
-  echo "Running clean up and exiting"
+  echo "yamss error message: $1"
+  echo "exiting"
   echo "**********"
-  clean_up
   exit 1
 }
 

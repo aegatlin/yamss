@@ -1,15 +1,4 @@
-UNSET_LIST=(
-  tool_functions
-  TOOLS_PATH
-  remote_tool_url
-  TEMP_FILES
-  current_tool_file
-  ROOT_PATH
-)
-TEMP_FILES=()
-ROOT_PATH='https://raw.githubusercontent.com/aegatlin/setup/master/'
-
-# Setup
+local ROOT_PATH='https://raw.githubusercontent.com/aegatlin/setup/master/'
 
 setup() {
   echo "**********\nyamss setup initiated\n**********"
@@ -38,7 +27,6 @@ setup_linux() {
   load_tools zsh apt snap asdf direnv
 }
 
-# currently untested!
 write_configs() {
   ensure_dir "$HOME/.config"
   ensure_dir "$HOME/.config/nvim"
@@ -54,47 +42,17 @@ ensure_dir() {
   if ! [ -d "$1" ]; then mkdir $1; fi
 }
 
-# Tools
-
 load_tools() {
   for tool; do
-    set_remote_tool_url $tool
-    load_tool $tool
-    set_tool_functions $tool
-    exec_tool_functions
+    local tool_functions=(
+      "${tool}__prepare"
+      "${tool}__setup"
+      "${tool}__augment"
+      "${tool}__bootstrap"
+    )
+    for f in "${tool_functions[@]}"; do $f; done
   done
 }
-
-load_tool() {
-  create_tool_file $1
-  write_and_source_tool_file
-}
-
-create_tool_file() {
-  current_tool_file=$1.temp.sh
-  TEMP_FILES+=($current_tool_file)
-  touch $current_tool_file
-}
-
-# Currently untested!
-write_and_source_tool_file() {
-  curl -fsSL $remote_tool_url > $current_tool_file
-  source $current_tool_file
-}
-
-set_tool_functions() {
-  tool_functions=("$1__prepare" "$1__setup" "$1__augment" "$1__bootstrap")
-}
-
-exec_tool_functions() {
-  for f in "${tool_functions[@]}"; do $f; done
-}
-
-set_remote_tool_url() {
-  remote_tool_url=${ROOT_PATH}lib/tools/$1.sh
-}
-
-# Helpers
 
 has_command() {
   command -v $1 1>/dev/null
@@ -111,21 +69,11 @@ run_command() {
   eval $1
 }
 
-clean_up() {
-  for f in ${TEMP_FILES[@]}; do rm $f; done
-  for v in ${UNSET_LIST[@]}; do unset $v; done
-  unset UNSET_LIST
-}
-
 error_and_exit() {
-  echo
   echo "**********"
-  echo "ERROR"
-  echo "Error message: $1"
-  echo
-  echo "Running clean up and exiting"
+  echo "yamss error message: $1"
+  echo "exiting"
   echo "**********"
-  clean_up
   exit 1
 }
 
