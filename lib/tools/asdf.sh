@@ -23,6 +23,8 @@ asdf__setup() {
 
   ensure_plugin_add shellspec
   ensure_plugin_add shellcheck
+  ensure_plugin_add fzf
+  ensure_plugin_add ripgrep
 
   ensure_plugin_add erlang
   ensure_plugin_add elixir
