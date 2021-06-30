@@ -3,8 +3,8 @@ apt__prepare() {
 }
 
 apt__setup() {
-  apt install curl
-  apt install git
+  apt install make
+  apt install zip
   apt install net-tools
   apt install nmap
 }
