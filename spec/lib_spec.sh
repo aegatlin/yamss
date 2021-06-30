@@ -5,7 +5,6 @@ Describe 'lib'
     setup_mac() { echo 'setup mac'; }
     setup_linux() { echo 'setup linux'; }
     write_configs() { echo 'wrote configs'; }
-    clean_up() { echo 'cleaned up'; }
 
     It 'informs the user at the start and finish'
       uname() { echo 'Darwin'; }
@@ -13,10 +12,10 @@ Describe 'lib'
       The line 1 should equal '**********'
       The line 2 should equal 'yamss setup initiated'
       The line 3 should equal '**********'
-      The line 8 should equal '**********'
-      The line 9 should equal 'yamss setup completed'
-      The line 10 should equal '**********'
-      The line 11 should equal "Restart shell or 'source ~/.zshrc' to complete setup"
+      The line 7 should equal '**********'
+      The line 8 should equal 'yamss setup completed'
+      The line 9 should equal '**********'
+      The line 10 should equal "Restart shell or 'source ~/.zshrc' to complete setup"
     End
 
     It 'calls setup_mac, write_configs, and clean_up when on mac'
@@ -25,7 +24,6 @@ Describe 'lib'
       The line 4 should equal 'MacOS detected'
       The line 5 should equal 'setup mac'
       The line 6 should equal 'wrote configs'
-      The line 7 should equal 'cleaned up'
     End
 
     It 'calls setup_linux, write_configs, and clean_up when on linux'
@@ -34,7 +32,6 @@ Describe 'lib'
       The line 4 should equal 'Linux detected'
       The line 5 should equal 'setup linux'
       The line 6 should equal 'wrote configs'
-      The line 7 should equal 'cleaned up'
     End
   End
 

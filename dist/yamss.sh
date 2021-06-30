@@ -197,12 +197,10 @@ setup() {
     echo 'MacOS detected'
     setup_mac
     write_configs
-    clean_up
   elif [ "$(uname)" = 'Linux' ]; then
     echo 'Linux detected'
     setup_linux
     write_configs
-    clean_up
   else
     error_and_exit "OS detection failed: uname $(uname) not recognized"
   fi
