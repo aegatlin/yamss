@@ -4,6 +4,7 @@ apt__prepare() {
 
 apt__setup() {
   apt install make
+  apt install automake
   apt install zip
   apt install net-tools
   apt install nmap
