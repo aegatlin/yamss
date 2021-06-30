@@ -13,6 +13,8 @@ apt__augment() { :; }
 
 apt__bootstrap() { :; }
 asdf__prepare() {
+  ensure_command git
+
   if ! has_command asdf; then
     git clone https://github.com/asdf-vm/asdf.git ~/.asdf
     pushd ~/.asdf || exit
@@ -129,7 +131,13 @@ DELIMIT
 
 brew__bootstrap() { :; }
 zsh__prepare() {
-  ensure_command zsh
+  if ! has_command zsh; then
+    if [ "$(uname)" = 'Linux' ]; then
+      sudo apt install zsh
+    else
+      error_and_exit 'Unable to install zsh (probably on MacOS)'
+    fi
+  fi
 }
 
 zsh__setup() {

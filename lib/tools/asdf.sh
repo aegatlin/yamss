@@ -1,4 +1,6 @@
 asdf__prepare() {
+  ensure_command git
+
   if ! has_command asdf; then
     git clone https://github.com/asdf-vm/asdf.git ~/.asdf
     pushd ~/.asdf || exit
