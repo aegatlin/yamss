@@ -1,6 +1,11 @@
-.PHONY: test
+.PHONY: test lint build
 
-yamss: test
+yamss: test build lint
+
+test:
+	shellspec
+
+build: test
 	rm -rf dist
 	mkdir dist
 	touch dist/yamss.sh
@@ -8,5 +13,9 @@ yamss: test
 	cat lib/lib.sh >> dist/yamss.sh
 	echo "setup\n" >> dist/yamss.sh
 
-test:
-	shellspec
+lint: test
+	shellcheck --shell=bash lib/lib.sh lib/tools/*
+
+build_lint:
+	shellcheck --shell=bash dist/yamss.sh
+

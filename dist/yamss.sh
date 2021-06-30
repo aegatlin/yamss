@@ -12,8 +12,6 @@ apt__setup() {
 apt__augment() { :; }
 
 apt__bootstrap() { :; }
-#!/bin/zsh
-
 asdf__prepare() {
   if ! has_command asdf; then
     git clone https://github.com/asdf-vm/asdf.git ~/.asdf
@@ -32,17 +30,23 @@ asdf__setup() {
     fi
   }
 
-  ensure_plugin_add elixir
-  ensure_plugin_add elm
-  ensure_plugin_add erlang
-  ensure_plugin_add nodejs
-  ensure_plugin_add postgres
-  ensure_plugin_add python
-  ensure_plugin_add yarn
   ensure_plugin_add tmux
   ensure_plugin_add neovim
-  ensure_plugin_add kotlin
   ensure_plugin_add direnv
+  ensure_plugin_add postgres
+
+  ensure_plugin_add shellspec
+  ensure_plugin_add shellcheck
+
+  ensure_plugin_add erlang
+  ensure_plugin_add elixir
+  ensure_plugin_add elm
+
+  ensure_plugin_add nodejs
+  ensure_plugin_add yarn
+
+  ensure_plugin_add python
+  ensure_plugin_add kotlin
   ensure_plugin_add lua
 }
 
@@ -187,16 +191,14 @@ compinit
 
 DELIMIT
 }
-local ROOT_PATH='https://raw.githubusercontent.com/aegatlin/setup/master/'
-
 setup() {
-  echo "**********\nyamss setup initiated\n**********"
-  if [ $(uname) = 'Darwin' ]; then
+  printf "**********\nyamss setup initiated\n**********\n"
+  if [ "$(uname)" = 'Darwin' ]; then
     echo 'MacOS detected'
     setup_mac
     write_configs
     clean_up
-  elif [ $(uname) = 'Linux' ]; then
+  elif [ "$(uname)" = 'Linux' ]; then
     echo 'Linux detected'
     setup_linux
     write_configs
@@ -204,8 +206,8 @@ setup() {
   else
     error_and_exit "OS detection failed: uname $(uname) not recognized"
   fi
-  echo "**********\nyamss setup completed\n**********"
-  echo "Restart shell or 'source ~/.zshrc' to complete setup\n"
+  printf "**********\nyamss setup completed\n**********\n"
+  printf "Restart shell or 'source ~/.zshrc' to complete setup\n"
 }
 
 setup_mac() {
@@ -222,13 +224,14 @@ write_configs() {
   ensure_dir "$HOME/.config/git"
   ensure_dir "$HOME/.config/tmux"
 
+  local ROOT_PATH='https://raw.githubusercontent.com/aegatlin/setup/master/'
   curl -fsSL ${ROOT_PATH}lib/configs/init.lua > "$HOME/.config/nvim/init.lua"
   curl -fsSL ${ROOT_PATH}lib/configs/git.config > "$HOME/.config/git/config"
   curl -fsSL ${ROOT_PATH}lib/configs/tmux.conf > "$HOME/.config/tmux/tmux.conf"
 }
 
 ensure_dir() {
-  if ! [ -d "$1" ]; then mkdir $1; fi
+  if ! [ -d "$1" ]; then mkdir "$1"; fi
 }
 
 load_tools() {
@@ -244,7 +247,7 @@ load_tools() {
 }
 
 has_command() {
-  command -v $1 1>/dev/null
+  command -v "$1" 1>/dev/null
 }
 
 ensure_command() {
@@ -254,8 +257,8 @@ ensure_command() {
 }
 
 run_command() {
-  echo $1
-  eval $1
+  echo "$1"
+  eval "$1"
 }
 
 error_and_exit() {

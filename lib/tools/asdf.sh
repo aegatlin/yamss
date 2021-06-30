@@ -1,5 +1,3 @@
-#!/bin/zsh
-
 asdf__prepare() {
   if ! has_command asdf; then
     git clone https://github.com/asdf-vm/asdf.git ~/.asdf
@@ -18,17 +16,23 @@ asdf__setup() {
     fi
   }
 
-  ensure_plugin_add elixir
-  ensure_plugin_add elm
-  ensure_plugin_add erlang
-  ensure_plugin_add nodejs
-  ensure_plugin_add postgres
-  ensure_plugin_add python
-  ensure_plugin_add yarn
   ensure_plugin_add tmux
   ensure_plugin_add neovim
-  ensure_plugin_add kotlin
   ensure_plugin_add direnv
+  ensure_plugin_add postgres
+
+  ensure_plugin_add shellspec
+  ensure_plugin_add shellcheck
+
+  ensure_plugin_add erlang
+  ensure_plugin_add elixir
+  ensure_plugin_add elm
+
+  ensure_plugin_add nodejs
+  ensure_plugin_add yarn
+
+  ensure_plugin_add python
+  ensure_plugin_add kotlin
   ensure_plugin_add lua
 }
 
