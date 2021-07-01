@@ -1,7 +1,7 @@
 zsh__prepare() {
   if ! has_command zsh; then
     if [ "$(uname)" = 'Linux' ]; then
-      sudo apt install zsh
+      sudo apt install --assume-yes zsh
     else
       error_and_exit 'Unable to install zsh (probably on MacOS)'
     fi
