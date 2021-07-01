@@ -3,14 +3,15 @@ setup() {
   if [ "$(uname)" = 'Darwin' ]; then
     echo 'MacOS detected'
     setup_mac
-    write_configs
   elif [ "$(uname)" = 'Linux' ]; then
     echo 'Linux detected'
     setup_linux
-    write_configs
   else
     error_and_exit "OS detection failed: uname $(uname) not recognized"
   fi
+
+  write_configs
+
   printf "**********\nyamss setup completed\n**********\n"
   printf "Restart shell or 'source ~/.zshrc' to complete setup\n"
   if [ "$(uname)" = 'Darwin' ]; then

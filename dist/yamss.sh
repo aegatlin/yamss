@@ -1,13 +1,15 @@
 apt__prepare() {
   ensure_command apt
+  apt update --assume-yes
+  apt upgrade --assume-yes
 }
 
 apt__setup() {
-  apt install make
-  apt install automake
-  apt install zip
-  apt install net-tools
-  apt install nmap
+  apt install --assume-yes make
+  apt install --assume-yes automake
+  apt install --assume-yes zip
+  apt install --assume-yes net-tools
+  apt install --assume-yes nmap
 }
 
 apt__augment() { :; }
@@ -208,14 +210,15 @@ setup() {
   if [ "$(uname)" = 'Darwin' ]; then
     echo 'MacOS detected'
     setup_mac
-    write_configs
   elif [ "$(uname)" = 'Linux' ]; then
     echo 'Linux detected'
     setup_linux
-    write_configs
   else
     error_and_exit "OS detection failed: uname $(uname) not recognized"
   fi
+
+  write_configs
+
   printf "**********\nyamss setup completed\n**********\n"
   printf "Restart shell or 'source ~/.zshrc' to complete setup\n"
   if [ "$(uname)" = 'Darwin' ]; then
