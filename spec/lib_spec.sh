@@ -72,6 +72,12 @@ Describe 'lib'
         When call outro
         The line 3 should equal 'Restart shell'
       End
+
+      It 'when shell is zsh, recommend restart or shourcing config'
+        get_shell() { echo '-zsh'; }
+        When call outro
+        The line 3 should equal "Restart shell or 'source ~/.zshrc'"
+      End
     End
   End
 

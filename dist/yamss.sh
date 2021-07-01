@@ -227,6 +227,8 @@ outro() {
     if [ "$(uname)" = 'Darwin' ]; then
       echo "Restart shell or 'source ~/.zshrc' (currently copied to paste buffer)"
       printf 'source ~/.zshrc' | pbcopy
+    else
+      echo "Restart shell or 'source ~/.zshrc'"
     fi
   else
     echo 'Restart shell'
