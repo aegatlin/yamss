@@ -252,14 +252,11 @@ ensure_dir() {
 }
 
 load_tools() {
-  for tool; do
-    local tool_functions=(
-      "${tool}__prepare"
-      "${tool}__setup"
-      "${tool}__augment"
-      "${tool}__bootstrap"
-    )
-    for f in "${tool_functions[@]}"; do $f; done
+  local postscripts=('__prepare' '__setup' '__augment' '__bootstrap')
+  for p in "${postscripts[@]}"; do
+    for tool; do
+      "$tool$p"
+    done
   done
 }
 
