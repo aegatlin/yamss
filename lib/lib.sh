@@ -11,13 +11,24 @@ setup() {
   fi
 
   write_configs
+  outro
+}
 
-  printf "**********\nyamss setup completed\n**********\n"
-  printf "Restart shell or 'source ~/.zshrc' to complete setup\n"
-  if [ "$(uname)" = 'Darwin' ]; then
-    printf "'source ~/.zshrc' has been copied to the paste buffer\n"
-    printf 'source ~/.zshrc' | pbcopy
+outro() {
+  printf "**********\nyamss setup complete\n"
+  if [ "$(get_shell)" = '-zsh' ]; then
+    if [ "$(uname)" = 'Darwin' ]; then
+      echo "Restart shell or 'source ~/.zshrc' (currently copied to paste buffer)"
+      printf 'source ~/.zshrc' | pbcopy
+    fi
+  else
+    echo 'Restart shell'
   fi
+  echo '**********'
+}
+
+get_shell() {
+  echo "$0"
 }
 
 setup_mac() {
