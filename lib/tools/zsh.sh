@@ -37,7 +37,7 @@ asdf_global_latest() {
   for tool in "$@"; do
     asdf install "$tool" $(asdf latest "$tool")
     asdf global "$tool" $(asdf latest "$tool")
-    asdf reshim "$tool"
+    asdf reshim "$tool" $(asdf latest "$tool")
   done
 }
 

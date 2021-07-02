@@ -34,11 +34,11 @@ get_shell() {
 }
 
 setup_mac() {
-  load_tools zsh brew asdf
+  load_tools zsh brew asdf nvim
 }
 
 setup_linux() {
-  load_tools zsh apt asdf
+  load_tools zsh apt asdf nvim
 }
 
 write_configs() {

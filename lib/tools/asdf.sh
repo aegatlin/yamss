@@ -33,9 +33,13 @@ asdf__setup() {
     done
   }
 
+  # neovim is an exception to the norm until it's v0.5
+  asdf plugin add neovim
+  asdf install neovim nightly
+  asdf global neovim nightly
+
   plugin_add_and_global_install_latest \
     tmux \
-    neovim \
     direnv \
     nodejs # required for nvim treesitter cli
 
@@ -57,9 +61,8 @@ asdf__augment() {
 ##########
 # asdf setup
 ##########
-# asdf itself
+# asdf itself helper functions and fpath completions
 . $HOME/.asdf/asdf.sh
-# for zsh completions, append asdf completion function locations to fpath
 fpath=(${ASDF_DIR}/completions $fpath)
 # direnv
 eval "$(direnv hook zsh)"

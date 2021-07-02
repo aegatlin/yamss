@@ -5,6 +5,7 @@ apt__prepare() {
 }
 
 apt__setup() {
+  apt install --assume-yes gcc
   apt install --assume-yes make
   apt install --assume-yes automake
   apt install --assume-yes zip
