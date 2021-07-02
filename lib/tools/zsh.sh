@@ -35,7 +35,7 @@ alias imps='iex -S mix phx.server'
 alias asdf_update_nvim='asdf uninstall neovim nightly && asdf install neovim nightly'
 asdf_global_latest() {
   for tool in "$@"; do
-    asdf install "$tool" $(asdf latest "$tool")
+    asdf install "$tool" latest
     asdf global "$tool" $(asdf latest "$tool")
     asdf reshim "$tool" $(asdf latest "$tool")
   done

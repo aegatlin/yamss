@@ -45,9 +45,9 @@ asdf__setup() {
   plugin_add_and_global_install_latest() {
     plugin_add "$@"
     for tool in "$@"; do
-      asdf install "$tool" "$(asdf latest "$tool")"
+      asdf install "$tool" latest
       asdf global "$tool" "$(asdf latest "$tool")"
-      asdf reshim "$tool"
+      asdf reshim "$tool" "$(asdf latest "$tool")"
     done
   }
 
@@ -151,7 +151,7 @@ nvim__setup() {
 }
 
 nvim__augment() { :; }
-nvim__boostrap() { :; }
+nvim__bootstrap() { :; }
 zsh__prepare() {
   if ! has_command zsh; then
     if [ "$(uname)" = 'Linux' ]; then
@@ -189,7 +189,7 @@ alias imps='iex -S mix phx.server'
 alias asdf_update_nvim='asdf uninstall neovim nightly && asdf install neovim nightly'
 asdf_global_latest() {
   for tool in "$@"; do
-    asdf install "$tool" $(asdf latest "$tool")
+    asdf install "$tool" latest
     asdf global "$tool" $(asdf latest "$tool")
     asdf reshim "$tool" $(asdf latest "$tool")
   done

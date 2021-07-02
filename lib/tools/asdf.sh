@@ -27,9 +27,9 @@ asdf__setup() {
   plugin_add_and_global_install_latest() {
     plugin_add "$@"
     for tool in "$@"; do
-      asdf install "$tool" "$(asdf latest "$tool")"
+      asdf install "$tool" latest
       asdf global "$tool" "$(asdf latest "$tool")"
-      asdf reshim "$tool"
+      asdf reshim "$tool" "$(asdf latest "$tool")"
     done
   }
 
