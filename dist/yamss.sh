@@ -11,6 +11,9 @@ apt__setup() {
   apt install --assume-yes build-essential
   apt install --assume-yes bison
   apt install --assume-yes pkg-config
+  apt install --assume-yes zip
+  apt install --assume-yes unzip
+  apt install --assume-yes automake
 
   # my packages
   apt install --assume-yes net-tools
