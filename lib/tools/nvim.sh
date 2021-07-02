@@ -8,4 +8,4 @@ nvim__setup() {
 }
 
 nvim__augment() { :; }
-nvim__boostrap() { :; }
+nvim__bootstrap() { :; }
