@@ -5,6 +5,7 @@ apt__prepare() {
 }
 
 apt__setup() {
+  apt install --assume-yes gcc
   apt install --assume-yes make
   apt install --assume-yes automake
   apt install --assume-yes zip
@@ -25,8 +26,8 @@ asdf__prepare() {
     popd || exit
   fi
 
-  # Until '. $HOME/.asdf/asdf.sh' is written to ~/.zshrc
-  # source asdf.sh to access the asdf command
+  # Until '. $HOME/.asdf/asdf.sh' is written to ~/.zshrc,
+  # source asdf.sh to have access to the asdf command
   run_command "source $HOME/.asdf/asdf.sh"
 }
 
@@ -50,10 +51,15 @@ asdf__setup() {
     done
   }
 
+  # neovim is an exception to the norm until it's v0.5
+  asdf plugin add neovim
+  asdf install neovim nightly
+  asdf global neovim nightly
+
   plugin_add_and_global_install_latest \
     tmux \
-    neovim \
     direnv \
+    nodejs # required for nvim treesitter cli
 
   plugin_add \
     elixir \
@@ -61,7 +67,6 @@ asdf__setup() {
     erlang \
     kotlin \
     lua \
-    nodejs \
     postgres \
     python \
     shellspec \
@@ -74,9 +79,8 @@ asdf__augment() {
 ##########
 # asdf setup
 ##########
-# asdf itself
+# asdf itself helper functions and fpath completions
 . $HOME/.asdf/asdf.sh
-# for zsh completions, append asdf completion function locations to fpath
 fpath=(${ASDF_DIR}/completions $fpath)
 # direnv
 eval "$(direnv hook zsh)"
@@ -137,6 +141,17 @@ DELIMIT
 }
 
 brew__bootstrap() { :; }
+nvim__prepare() { :; }
+
+nvim__setup() { 
+  git clone --depth=1 https://github.com/savq/paq-nvim.git \
+    "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/pack/paqs/start/paq-nvim
+
+  npm install -g tree-sitter-cli
+}
+
+nvim__augment() { :; }
+nvim__boostrap() { :; }
 zsh__prepare() {
   if ! has_command zsh; then
     if [ "$(uname)" = 'Linux' ]; then
@@ -176,7 +191,7 @@ asdf_global_latest() {
   for tool in "$@"; do
     asdf install "$tool" $(asdf latest "$tool")
     asdf global "$tool" $(asdf latest "$tool")
-    asdf reshim "$tool"
+    asdf reshim "$tool" $(asdf latest "$tool")
   done
 }
 
@@ -241,11 +256,11 @@ get_shell() {
 }
 
 setup_mac() {
-  load_tools zsh brew asdf
+  load_tools zsh brew asdf nvim
 }
 
 setup_linux() {
-  load_tools zsh apt asdf
+  load_tools zsh apt asdf nvim
 }
 
 write_configs() {
