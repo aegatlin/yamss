@@ -5,10 +5,14 @@ apt__prepare() {
 }
 
 apt__setup() {
-  apt install --assume-yes gcc
-  apt install --assume-yes make
-  apt install --assume-yes automake
-  apt install --assume-yes zip
+  # packages tmux depends on to build correctly
+  apt install --assume-yes libevent-dev
+  apt install --assume-yes ncurses-dev
+  apt install --assume-yes build-essential
+  apt install --assume-yes bison
+  apt install --assume-yes pkg-config
+
+  # my packages
   apt install --assume-yes net-tools
   apt install --assume-yes nmap
 }
