@@ -7,6 +7,8 @@
 
 -- Packages
 
+local paq = require 'paq-nvim'
+
 require 'paq-nvim' {
   'savq/paq-nvim',
 
@@ -32,6 +34,9 @@ require 'paq-nvim' {
 
   'overcache/NeoSolarized', -- Colors
 }
+
+paq.install()
+paq.clean()
 
 -- Settings
 
@@ -106,6 +111,7 @@ local nmaps = {
   {'<leader>ri', '<cmd>luafile $MYVIMRC<cr>'},
   {'<leader>rl', '<cmd>Reload<cr>'},
   {'<leader>rs', '<cmd>Restart<cr>'},
+  {'<leader>s', '<cmd>w<cr>'},
   {'<leader>T', ':Telescope '},
   {'<leader>tf', '<cmd>TestFile<cr>'},
   {'<leader>tl', '<cmd>TestLast<cr>'},

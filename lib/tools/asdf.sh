@@ -8,8 +8,8 @@ asdf__prepare() {
     popd || exit
   fi
 
-  # Until '. $HOME/.asdf/asdf.sh' is written to ~/.zshrc
-  # source asdf.sh to access the asdf command
+  # Until '. $HOME/.asdf/asdf.sh' is written to ~/.zshrc,
+  # source asdf.sh to have access to the asdf command
   run_command "source $HOME/.asdf/asdf.sh"
 }
 
@@ -37,6 +37,7 @@ asdf__setup() {
     tmux \
     neovim \
     direnv \
+    nodejs # required for nvim treesitter cli
 
   plugin_add \
     elixir \
@@ -44,7 +45,6 @@ asdf__setup() {
     erlang \
     kotlin \
     lua \
-    nodejs \
     postgres \
     python \
     shellspec \
