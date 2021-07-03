@@ -47,7 +47,7 @@ Describe 'lib'
       It 'when shell is not zsh, recommend shell restart'
         get_shell() { echo '-bash'; }
         When call outro
-        The line 3 should equal "restart shell ('exit') or reboot ('reboot')"
+        The line 3 should equal "restart shell ('exit') or reboot ('sudo reboot')"
       End
 
       It 'when shell is zsh, recommend restart or sourcing config with string place in the paste buffer'
@@ -70,7 +70,7 @@ Describe 'lib'
       It 'when shell is not zsh, recommend shell restart'
         get_shell() { echo '-bash'; }
         When call outro
-        The line 3 should equal "restart shell ('exit') or reboot ('reboot')"
+        The line 3 should equal "restart shell ('exit') or reboot ('sudo reboot')"
       End
 
       It 'when shell is zsh, recommend restart or shourcing config'

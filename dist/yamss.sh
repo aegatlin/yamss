@@ -269,7 +269,7 @@ outro() {
       echo "restart shell ('exit') or 'source ~/.zshrc'"
     fi
   else
-    echo "restart shell ('exit') or reboot ('reboot')"
+    echo "restart shell ('exit') or reboot ('sudo reboot')"
   fi
   echo '**********'
 }
