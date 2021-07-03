@@ -69,13 +69,9 @@ asdf__setup() {
     done
   }
 
-  # neovim is an exception to the norm until it's v0.5
-  asdf plugin add neovim
-  asdf install neovim nightly
-  asdf global neovim nightly
-
   # nodejs required for nvim treesitter cli
   plugin_add_and_global_install_latest \
+    neovim \
     tmux \
     direnv \
     nodejs
