@@ -47,13 +47,13 @@ Describe 'lib'
       It 'when shell is not zsh, recommend shell restart'
         get_shell() { echo '-bash'; }
         When call outro
-        The line 3 should equal 'Restart shell'
+        The line 3 should equal "restart shell ('exit') or reboot ('reboot')"
       End
 
       It 'when shell is zsh, recommend restart or sourcing config with string place in the paste buffer'
         get_shell() { echo '-zsh'; }
         When call outro
-        The line 3 should equal "Restart shell or 'source ~/.zshrc' (currently copied to paste buffer)"
+        The line 3 should equal "restart shell ('exit') or 'source ~/.zshrc' (currently copied to paste buffer)"
 
         # only testing on macos machines
         unset -f uname
@@ -70,13 +70,13 @@ Describe 'lib'
       It 'when shell is not zsh, recommend shell restart'
         get_shell() { echo '-bash'; }
         When call outro
-        The line 3 should equal 'Restart shell'
+        The line 3 should equal "restart shell ('exit') or reboot ('reboot')"
       End
 
       It 'when shell is zsh, recommend restart or shourcing config'
         get_shell() { echo '-zsh'; }
         When call outro
-        The line 3 should equal "Restart shell or 'source ~/.zshrc'"
+        The line 3 should equal "restart shell ('exit') or 'source ~/.zshrc'"
       End
     End
   End

@@ -18,13 +18,13 @@ outro() {
   printf "**********\nyamss setup complete\n"
   if [ "$(get_shell)" = '-zsh' ]; then
     if [ "$(uname)" = 'Darwin' ]; then
-      echo "Restart shell or 'source ~/.zshrc' (currently copied to paste buffer)"
+      echo "restart shell ('exit') or 'source ~/.zshrc' (currently copied to paste buffer)"
       printf 'source ~/.zshrc' | pbcopy
     else
-      echo "Restart shell or 'source ~/.zshrc'"
+      echo "restart shell ('exit') or 'source ~/.zshrc'"
     fi
   else
-    echo 'Restart shell'
+    echo "restart shell ('exit') or reboot ('reboot')"
   fi
   echo '**********'
 }
