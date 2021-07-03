@@ -11,6 +11,7 @@ build: lint
 	touch dist/yamss.sh
 	cat lib/tools/** > dist/yamss.sh
 	cat lib/lib.sh >> dist/yamss.sh
+	cat lib/utils.sh >> dist/yamss.sh
 	echo "setup\n" >> dist/yamss.sh
 
 lint: test

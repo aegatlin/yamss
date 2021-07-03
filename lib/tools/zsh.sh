@@ -9,10 +9,8 @@ zsh__prepare() {
 }
 
 zsh__setup() {
-  if ! [[ "$SHELL" == "/bin/zsh" ]]; then
-    echo "changing shell from $SHELL to /bin/zsh"
-    chsh -s /bin/zsh
-    echo "You will need to restart your terminal for shell changes to take effect"
+  if ! [[ "$SHELL" == "$(which zsh)" ]]; then
+    sudo chsh -s "$(which zsh)" "$USER"
   fi
 }
 

@@ -1,36 +1,34 @@
 apt__prepare() {
   ensure_command apt
-  apt update --assume-yes
-  apt upgrade --assume-yes
+
+  sudo apt update --assume-yes
+  sudo apt upgrade --assume-yes
 }
 
 apt__setup() {
-  # packages tmux depends on to build correctly
-  apt install --assume-yes libevent-dev
-  apt install --assume-yes ncurses-dev
-  apt install --assume-yes build-essential
-  apt install --assume-yes bison
-  apt install --assume-yes pkg-config
-  apt install --assume-yes zip
-  apt install --assume-yes unzip
-  apt install --assume-yes automake
+  # redundant packages do no harm, and grouping them is useful
+  local packages=()
 
-  # packages for java/kotlin
-  # also, unzip (in tmux group), and coreutils (default in Ubuntu)
-  apt install --assume-yes jq
+  # tmux dependencies
+  packages+=(
+    libevent-dev ncurses-dev build-essential bison
+    pkg-config zip unzip automake
+  )
 
-  # packages for erlang/elixir
-  # also, unzip (in tmux group)
-  apt install --assume-yes libssl-dev
-  apt install --assume-yes libncurses5-dev
+  # java/kotlin dependencies
+  packages+=(jq unzip coreutils)
 
-  # packages for postgres
-  # also, build-essential (in tmux group)
-  apt install --assume-yes libreadline-dev
+  # erlang/elixir dependencies
+  packages+=(libssl-dev libncurses5-dev unzip)
+
+  # postgres dependencies
+  packages+=(libreadline-dev build-essential)
 
   # my packages
-  apt install --assume-yes net-tools
-  apt install --assume-yes nmap
+  packages+=(net-tools nmap)
+
+  f() { sudo apt install --assume-yes "$1"; }
+  for_each f "${packages[@]}"
 }
 
 apt__augment() { :; }
