@@ -15,6 +15,19 @@ apt__setup() {
   apt install --assume-yes unzip
   apt install --assume-yes automake
 
+  # packages for java/kotlin
+  # also, unzip (in tmux group), and coreutils (default in Ubuntu)
+  apt install --assume-yes jq
+
+  # packages for erlang/elixir
+  # also, unzip (in tmux group)
+  apt install --assume-yes libssl-dev
+  apt install --assume-yes libncurses5-dev
+
+  # packages for postgres
+  # also, build-essential (in tmux group)
+  apt install --assume-yes libreadline-dev
+
   # my packages
   apt install --assume-yes net-tools
   apt install --assume-yes nmap
@@ -63,15 +76,18 @@ asdf__setup() {
   asdf install neovim nightly
   asdf global neovim nightly
 
+  # nodejs required for nvim treesitter cli
   plugin_add_and_global_install_latest \
     tmux \
     direnv \
-    nodejs # required for nvim treesitter cli
+    nodejs
 
+  # kotlin depends on java, elixir depends on erlang
   plugin_add \
     elixir \
     elm \
     erlang \
+    java \
     kotlin \
     lua \
     postgres \

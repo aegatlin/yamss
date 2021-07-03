@@ -38,15 +38,18 @@ asdf__setup() {
   asdf install neovim nightly
   asdf global neovim nightly
 
+  # nodejs required for nvim treesitter cli
   plugin_add_and_global_install_latest \
     tmux \
     direnv \
-    nodejs # required for nvim treesitter cli
+    nodejs
 
+  # kotlin depends on java, elixir depends on erlang
   plugin_add \
     elixir \
     elm \
     erlang \
+    java \
     kotlin \
     lua \
     postgres \
