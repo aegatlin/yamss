@@ -8,11 +8,6 @@ ensure_command() {
   fi
 }
 
-run_command() {
-  echo "$1"
-  eval "$1"
-}
-
 error_and_exit() {
   echo "**********"
   echo "yamss error message: $1"

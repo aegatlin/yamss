@@ -46,7 +46,7 @@ asdf__prepare() {
 
   # Until '. $HOME/.asdf/asdf.sh' is written to ~/.zshrc,
   # source asdf.sh to have access to the asdf command
-  run_command "source $HOME/.asdf/asdf.sh"
+  source "$HOME"/.asdf/asdf.sh
 }
 
 asdf__setup() {
@@ -55,7 +55,7 @@ asdf__setup() {
   plugin_add() {
     for tool in "$@"; do
       if ! asdf plugin list | grep -q "$tool"; then
-        run_command "asdf plugin add $tool"
+        asdf plugin add "$tool"
       fi
     done
   }
@@ -69,12 +69,14 @@ asdf__setup() {
     done
   }
 
-  # nodejs required for nvim treesitter cli
+  # nodejs required for nvim tree-sitter-cli install
+  # ripgrep required for nvim telescope live_grep
   plugin_add_and_global_install_latest \
-    neovim \
     tmux \
     direnv \
-    nodejs
+    nodejs \
+    ripgrep \
+    neovim \
 
   # kotlin depends on java, elixir depends on erlang
   plugin_add \
@@ -119,13 +121,13 @@ brew__setup() {
 
   ensure_brew_install() {
     if ! brew list --formula | grep -q "$1"; then
-      run_command "brew install $1"
+      brew install "$1"
     fi
   }
 
   ensure_brew_cask_install() {
     if ! brew list --cask | grep -q "$1"; then
-      run_command "brew install --cask $1"
+      brew install --cask "$1"
     fi
   }
 
@@ -324,11 +326,6 @@ ensure_command() {
   if ! has_command "$1"; then
     error_and_exit "Command not found: $1"
   fi
-}
-
-run_command() {
-  echo "$1"
-  eval "$1"
 }
 
 error_and_exit() {

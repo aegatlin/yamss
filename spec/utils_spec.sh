@@ -27,14 +27,6 @@ Describe 'utils'
     End
   End
 
-  Describe 'run_command'
-    It 'echos the command before evaluating it'
-      When call run_command "echo 'hello'"
-      The line 1 should equal "echo 'hello'"
-      The line 2 should equal 'hello'
-    End
-  End
-
   Describe 'error_and_exit'
     It 'formats any one-line error message'
       When run error_and_exit "oops"

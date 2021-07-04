@@ -11,13 +11,13 @@ brew__setup() {
 
   ensure_brew_install() {
     if ! brew list --formula | grep -q "$1"; then
-      run_command "brew install $1"
+      brew install "$1"
     fi
   }
 
   ensure_brew_cask_install() {
     if ! brew list --cask | grep -q "$1"; then
-      run_command "brew install --cask $1"
+      brew install --cask "$1"
     fi
   }
 

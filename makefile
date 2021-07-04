@@ -14,9 +14,11 @@ build: lint
 	cat lib/utils.sh >> dist/yamss.sh
 	echo "setup\n" >> dist/yamss.sh
 
+# excluding SC1091 because it attempts to follow `source`d files
+# but source is used during machine setup, which don't run in dev
 lint: test
-	shellcheck --shell=bash lib/lib.sh lib/tools/*
+	shellcheck --shell=bash --exclude=SC1091 lib/lib.sh lib/tools/*
 
 build_lint:
-	shellcheck --shell=bash dist/yamss.sh
+	shellcheck --shell=bash --exclude=SC1091 dist/yamss.sh
 
