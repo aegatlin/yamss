@@ -174,7 +174,14 @@ nvim__setup() {
 }
 
 nvim__augment() { :; }
-nvim__bootstrap() { :; }
+
+nvim__bootstrap() {
+  # this will open nvim with empty file
+  # run init.lua config, including paq.install() and lspinstall.install_server()
+  # and then run :qall (aka :qa)
+  # it's a 'hack' to install everything _before_ you open nvim for real.
+  nvim +qall
+}
 zsh__prepare() {
   if ! has_command zsh; then
     if [ "$(uname)" = 'Linux' ]; then
