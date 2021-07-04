@@ -11,11 +11,8 @@ local paq = require 'paq-nvim'
 
 require 'paq-nvim' {
   'savq/paq-nvim',
-
   'nvim-lua/plenary.nvim', -- Utilities
   'nvim-lua/popup.nvim',
-  'famiu/nvim-reload',
-
   'nvim-treesitter/nvim-treesitter', -- IDE Behavior
   'neovim/nvim-lspconfig',
   'kabouzeid/nvim-lspinstall',
@@ -24,14 +21,11 @@ require 'paq-nvim' {
   'vim-test/vim-test',
   'mhinz/vim-signify',
   'hoob3rt/lualine.nvim',
-
   'tpope/vim-surround', -- File Manipulation
   'ggandor/lightspeed.nvim',
   'b3nj5m1n/kommentary',
-
   'plasticboy/vim-markdown', -- Markdown Tooling
   'junegunn/goyo.vim',
-
   'overcache/NeoSolarized', -- Colors
 }
 
@@ -51,7 +45,6 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.wrap = false
 vim.opt.colorcolumn = '81'
-vim.opt.signcolumn = 'number'
 vim.opt.swapfile = false
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
@@ -63,7 +56,7 @@ vim.cmd 'autocmd!' -- Remove autocmds from top-level "default" autocmd group.
 vim.cmd 'let g:goyo_width = 82'
 vim.cmd[[
   set termguicolors
-  colorscheme NeoSolarized
+  silent! colorscheme NeoSolarized
 ]]
 vim.cmd[[
   autocmd BufRead,BufNewFile mix.lock,*.ex,*.exs set filetype=elixir
@@ -109,8 +102,6 @@ local nmaps = {
   {'<leader>gu', '<cmd>:SignifyHunkUndo<cr>'},
   {'<leader>q', ':q<CR>'},
   {'<leader>ri', '<cmd>luafile $MYVIMRC<cr>'},
-  {'<leader>rl', '<cmd>Reload<cr>'},
-  {'<leader>rs', '<cmd>Restart<cr>'},
   {'<leader>s', '<cmd>w<cr>'},
   {'<leader>T', ':Telescope '},
   {'<leader>tf', '<cmd>TestFile<cr>'},
