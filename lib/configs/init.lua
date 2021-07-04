@@ -168,44 +168,6 @@ for _, map in ipairs(imaps) do
   vim.api.nvim_set_keymap('i', lhs, rhs, {})
 end
 
-local lsp_config = require('lspconfig')
-local lsp_install = require('lspinstall')
-
-local on_attach = function(_, bufnr)
-  for _, map in ipairs(lsp_maps) do
-    local lhs, rhs = unpack(map)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs, {})
-  end
-end
-
-local function setup_servers()
-  lsp_install.setup()
-
-  for _, server in pairs(lsp_install.installed_servers()) do
-    local s = { on_attach = on_attach }
-
-    if server == 'lua' then
-      s.settings = {Lua = {diagnostics = {globals = 'vim'}}}
-    end
-
-    if server == 'elixir' then
-      local partial_path = '/lspinstall/elixir/elixir-ls/language_server.sh'
-      s.cmd = { vim.fn.stdpath('data') .. partial_path }
-    end
-
-    lsp_config[server].setup(s)
-  end
-end
-
-setup_servers()
-
--- Automatically reload after `:LspInstall <server>`
--- so we don't have to restart neovim
-lsp_install.post_install_hook = function ()
-  setup_servers() -- reload installed servers
-  vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
-end
-
 require 'nvim-treesitter.configs'.setup {
   ensure_installed = 'maintained',
   highlight = { enable = true },
@@ -257,3 +219,51 @@ require 'lualine'.setup {
   }
 }
 
+-- LSP configuration
+
+local lsp_config = require('lspconfig')
+local lsp_install = require('lspinstall')
+
+local required_servers = { 'bash', 'elixir', 'typescript', 'vim' }
+local installed_servers = lsp_install.installed_servers()
+
+for _, server in pairs(required_servers) do
+  if not vim.tbl_contains(installed_servers, server) then
+    lsp_install.install_server(server)
+  end
+end
+
+local on_attach = function(_, bufnr)
+  for _, map in ipairs(lsp_maps) do
+    local lhs, rhs = unpack(map)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs, {})
+  end
+end
+
+local function setup_servers()
+  lsp_install.setup()
+
+  for _, server in pairs(lsp_install.installed_servers()) do
+    local s = { on_attach = on_attach }
+
+    if server == 'lua' then
+      s.settings = {Lua = {diagnostics = {globals = 'vim'}}}
+    end
+
+    if server == 'elixir' then
+      local partial_path = '/lspinstall/elixir/elixir-ls/language_server.sh'
+      s.cmd = { vim.fn.stdpath('data') .. partial_path }
+    end
+
+    lsp_config[server].setup(s)
+  end
+end
+
+setup_servers()
+
+-- Automatically reload after `:LspInstall <server>`
+-- so we don't have to restart neovim
+lsp_install.post_install_hook = function ()
+  setup_servers() -- reload installed servers
+  vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
+end

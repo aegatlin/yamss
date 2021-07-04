@@ -133,10 +133,9 @@ brew__setup() {
   ensure_brew_install mosh
   ensure_brew_install gpg
   ensure_brew_install imagemagick
+  ensure_brew_install automake # for tmux to install successfully
   ensure_brew_cask_install visual-studio-code
   ensure_brew_cask_install iterm2
-  ensure_brew_cask_install shiftit
-  ensure_brew_cask_install karabiner-elements
   ensure_brew_cask_install firefox
   ensure_brew_cask_install signal
   ensure_brew_cask_install telegram
