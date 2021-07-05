@@ -215,7 +215,7 @@ require 'lualine'.setup {
 local lsp_config = require('lspconfig')
 local lsp_install = require('lspinstall')
 
-local required_servers = { 'bash', 'elixir', 'typescript', 'vim' }
+local required_servers = { 'bash', 'elixir', 'typescript', 'vim', 'kotlin' }
 local installed_servers = lsp_install.installed_servers()
 
 for _, server in pairs(required_servers) do
