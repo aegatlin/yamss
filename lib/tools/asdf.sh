@@ -42,13 +42,16 @@ asdf__setup() {
     ripgrep \
     neovim \
 
-  # kotlin depends on java, elixir depends on erlang
+  # java family: java, kotlin, gradle
+  # erlang family: erlang, elixir
+  # neovim family: neovim, nodejs, ripgrep(, lua)
   plugin_add \
     elixir \
     elm \
     erlang \
     java \
     kotlin \
+    gradle
     lua \
     postgres \
     python \
