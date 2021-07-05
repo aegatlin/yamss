@@ -4,6 +4,7 @@
 -- Settings: ~ 20
 -- Mappings: ~ 70
 -- Configuration: ~ 130
+--   * LSP Config: ~ 230
 
 -- Packages
 
@@ -57,6 +58,7 @@ vim.cmd 'let g:goyo_width = 82'
 vim.cmd[[
   set termguicolors
   silent! colorscheme NeoSolarized
+  set background=light
 ]]
 vim.cmd[[
   autocmd BufRead,BufNewFile mix.lock,*.ex,*.exs set filetype=elixir
@@ -210,12 +212,26 @@ require 'lualine'.setup {
   }
 }
 
+require 'telescope'.setup {
+  defaults = {
+    layout_strategy = 'flex',
+    layout_config = {
+      horizontal = {
+        width = 0.9,
+        preview_width = 0.6
+      }
+    }
+  }
+}
+
 -- LSP configuration
 
 local lsp_config = require('lspconfig')
 local lsp_install = require('lspinstall')
 
-local required_servers = { 'bash', 'elixir', 'typescript', 'vim', 'kotlin' }
+local required_servers = {
+  'bash', 'elixir',  'kotlin', 'lua', 'typescript', 'vim'
+}
 local installed_servers = lsp_install.installed_servers()
 
 for _, server in pairs(required_servers) do
