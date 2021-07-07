@@ -57,12 +57,3 @@ ensure_dir() {
   if ! [ -d "$1" ]; then mkdir "$1"; fi
 }
 
-load_tools() {
-  local postscripts=('__prepare' '__setup' '__augment' '__bootstrap')
-  for p in "${postscripts[@]}"; do
-    for tool; do
-      "$tool$p"
-    done
-  done
-}
-

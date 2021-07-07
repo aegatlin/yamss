@@ -103,26 +103,4 @@ Describe 'lib'
       rm -rf temp
     End
   End
-
-  Describe 'load_tools'
-    It 'calls tool functions on a list of tools in the appropriate order'
-      zsh__prepare() { echo 'zp'; }
-      zsh__setup() { echo 'zs'; }
-      zsh__augment() { echo 'za'; }
-      zsh__bootstrap() { echo 'zb'; }
-      brew__prepare() { echo 'bp'; }
-      brew__setup() { echo 'bs'; }
-      brew__augment() { echo 'ba'; }
-      brew__bootstrap() { echo 'bb'; }
-      When call load_tools zsh brew
-      The line 1 should equal 'zp'
-      The line 2 should equal 'bp'
-      The line 3 should equal 'zs'
-      The line 4 should equal 'bs'
-      The line 5 should equal 'za'
-      The line 6 should equal 'ba'
-      The line 7 should equal 'zb'
-      The line 8 should equal 'bb'
-    End
-  End
 End
