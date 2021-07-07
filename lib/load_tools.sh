@@ -48,7 +48,6 @@ load_tools() {
   local to_run=()
 
   run_list "${f_list[@]}"
-  run_list "${to_run[@]}"
 }
 
 is_member() {

@@ -67,6 +67,28 @@ Describe 'load_tools'
         The line 8 should equal 'bb'
       End
     End
+
+    xContext 'with after relations that go across function phases'
+      It 'calls too functions in the appropriate order'
+        a__prepare() { echo 'ap'; }
+        a__setup() { echo 'as'; }
+        a__augment() { echo 'aa'; }
+        a__bootstrap() { echo 'ab'; }
+        b__prepare() { after a__augment; echo 'bp'; }
+        b__setup() { echo 'bs'; }
+        b__augment() { echo 'ba'; }
+        b__bootstrap() { echo 'bb'; }
+        When call load_tools a b
+        The line 1 should equal 'ap'
+        The line 2 should equal 'as'
+        The line 3 should equal 'aa'
+        The line 4 should equal 'bp'
+        The line 5 should equal 'bs'
+        The line 6 should equal 'ba'
+        The line 7 should equal 'ab'
+        The line 8 should equal 'bb'
+      End
+    End
   End
 
   Describe 'is_member'
