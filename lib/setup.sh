@@ -1,11 +1,11 @@
 setup() {
   printf "**********\nyamss setup initiated\n**********\n"
-  if [ "$(uname)" = 'Darwin' ]; then
+  if is_mac; then
     echo 'MacOS detected'
-    setup_mac
-  elif [ "$(uname)" = 'Linux' ]; then
+    load_tools zsh brew asdf nvim tmux
+  elif is_ubuntu; then
     echo 'Linux detected'
-    setup_linux
+    load_tools zsh apt asdf nvim tmux
   else
     error_and_exit "OS detection failed: uname $(uname) not recognized"
   fi
@@ -17,7 +17,7 @@ setup() {
 outro() {
   printf "**********\nyamss setup complete\n"
   if [ "$(get_shell)" = '-zsh' ]; then
-    if [ "$(uname)" = 'Darwin' ]; then
+    if is_mac; then
       echo "restart shell ('exit') or 'source ~/.zshrc' (currently copied to paste buffer)"
       printf 'source ~/.zshrc' | pbcopy
     else
@@ -33,24 +33,14 @@ get_shell() {
   echo "$0"
 }
 
-setup_mac() {
-  load_tools zsh brew asdf nvim
-}
-
-setup_linux() {
-  load_tools zsh apt asdf nvim
-}
+is_mac() { [ "$(uname)" = 'Darwin' ]; }
+is_ubuntu() { [ "$(uname)" = 'Linux' ]; }
 
 write_configs() {
   ensure_dir "$HOME/.config"
-  ensure_dir "$HOME/.config/nvim"
   ensure_dir "$HOME/.config/git"
-  ensure_dir "$HOME/.config/tmux"
-
   local ROOT_PATH='https://raw.githubusercontent.com/aegatlin/setup/master/'
-  curl -fsSL ${ROOT_PATH}lib/configs/init.lua > "$HOME/.config/nvim/init.lua"
   curl -fsSL ${ROOT_PATH}lib/configs/git.config > "$HOME/.config/git/config"
-  curl -fsSL ${ROOT_PATH}lib/configs/tmux.conf > "$HOME/.config/tmux/tmux.conf"
 }
 
 ensure_dir() {

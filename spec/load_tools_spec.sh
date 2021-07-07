@@ -66,6 +66,35 @@ Describe 'load_tools'
         The line 7 should equal 'zb'
         The line 8 should equal 'bb'
       End
+
+      It 'call the tool functions in order when one tool function has multiple \
+        after declarations'
+        a__prepare() { echo 'ap'; }
+        a__setup() { echo 'as'; }
+        a__augment() { after b__augment; after c__augment; echo 'aa'; }
+        a__bootstrap() { echo 'ab'; }
+        b__prepare() { echo 'bp'; }
+        b__setup() { echo 'bs'; }
+        b__augment() { echo 'ba'; }
+        b__bootstrap() { echo 'bb'; }
+        c__prepare() { echo 'cp'; }
+        c__setup() { echo 'cs'; }
+        c__augment() { echo 'ca'; }
+        c__bootstrap() { echo 'cb'; }
+        When call load_tools a b c
+        The line 1 should equal 'ap'
+        The line 2 should equal 'bp'
+        The line 3 should equal 'cp'
+        The line 4 should equal 'as'
+        The line 5 should equal 'bs'
+        The line 6 should equal 'cs'
+        The line 7 should equal 'ba'
+        The line 8 should equal 'ca'
+        The line 9 should equal 'aa'
+        The line 10 should equal 'ab'
+        The line 11 should equal 'bb'
+        The line 12 should equal 'cb'
+      End
     End
 
     Context 'with after relations that go across function phases'

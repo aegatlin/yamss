@@ -36,7 +36,6 @@ asdf__setup() {
   # nodejs required for nvim tree-sitter-cli install
   # ripgrep required for nvim telescope live_grep
   plugin_add_and_global_install_latest \
-    tmux \
     direnv \
     nodejs \
     ripgrep \

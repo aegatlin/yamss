@@ -1,9 +1,8 @@
 Describe 'lib'
-  Include lib/lib.sh
+  Include lib/setup.sh
 
   Describe 'setup'
-    setup_mac() { echo 'setup mac'; }
-    setup_linux() { echo 'setup linux'; }
+    load_tools() { echo 'load tools'; }
     write_configs() { echo 'wrote configs'; }
     outro() { echo 'outro'; }
 
@@ -20,7 +19,7 @@ Describe 'lib'
       uname() { echo 'Darwin'; }
       When call setup
       The line 4 should equal 'MacOS detected'
-      The line 5 should equal 'setup mac'
+      The line 5 should equal 'load tools'
       The line 6 should equal 'wrote configs'
     End
 
@@ -28,7 +27,7 @@ Describe 'lib'
       uname() { echo 'Linux'; }
       When call setup
       The line 4 should equal 'Linux detected'
-      The line 5 should equal 'setup linux'
+      The line 5 should equal 'load tools'
       The line 6 should equal 'wrote configs'
     End
   End
@@ -103,4 +102,37 @@ Describe 'lib'
       rm -rf temp
     End
   End
+
+  Describe 'is_mac'
+    It 'is true in if-clauses for mac'
+      uname() { echo 'Darwin'; }
+      f() { if is_mac; then echo 'yes'; fi; }
+      When call f
+      The output should equal 'yes'
+    End
+
+    It 'is false in if-caluses for linux'
+      uname() { echo 'Linux'; }
+      f() { if is_mac; then echo 'wrong'; else echo 'right'; fi; }
+      When call f
+      The output should equal 'right'
+    End
+  End
+
+  Describe 'is_ubuntu'
+    It 'is true in if-clauses for ubuntu'
+      uname() { echo 'Linux'; }
+      f() { if is_ubuntu; then echo 'yes'; fi; }
+      When call f
+      The output should equal 'yes'
+    End
+
+    It 'is false in if-caluses for mac'
+      uname() { echo 'Darwin'; }
+      f() { if is_ubuntu; then echo 'wrong'; else echo 'right'; fi; }
+      When call f
+      The output should equal 'right'
+    End
+  End
+  
 End

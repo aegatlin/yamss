@@ -1,19 +1,12 @@
 apt__prepare() {
   ensure_command apt
-
-  sudo apt update --assume-yes
-  sudo apt upgrade --assume-yes
 }
 
 apt__setup() {
+  sudo apt update --assume-yes
+  sudo apt upgrade --assume-yes
   # redundant packages do no harm, and grouping them is useful
   local packages=()
-
-  # tmux dependencies
-  packages+=(
-    libevent-dev ncurses-dev build-essential bison
-    pkg-config zip unzip automake
-  )
 
   # java/kotlin dependencies
   packages+=(jq unzip coreutils)

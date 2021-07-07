@@ -1,19 +1,12 @@
 apt__prepare() {
   ensure_command apt
-
-  sudo apt update --assume-yes
-  sudo apt upgrade --assume-yes
 }
 
 apt__setup() {
+  sudo apt update --assume-yes
+  sudo apt upgrade --assume-yes
   # redundant packages do no harm, and grouping them is useful
   local packages=()
-
-  # tmux dependencies
-  packages+=(
-    libevent-dev ncurses-dev build-essential bison
-    pkg-config zip unzip automake
-  )
 
   # java/kotlin dependencies
   packages+=(jq unzip coreutils)
@@ -72,7 +65,6 @@ asdf__setup() {
   # nodejs required for nvim tree-sitter-cli install
   # ripgrep required for nvim telescope live_grep
   plugin_add_and_global_install_latest \
-    tmux \
     direnv \
     nodejs \
     ripgrep \
@@ -162,31 +154,61 @@ DELIMIT
 }
 
 brew__bootstrap() { :; }
-nvim__prepare() { :; }
-
-nvim__setup() { 
+nvim__prepare() {
   ensure_command git
   ensure_command npm
+}
+
+nvim__setup() {
+  after asdf__setup # need nodejs for npm
 
   if ! [ -d "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/pack/paqs ]; then
     git clone --depth=1 https://github.com/savq/paq-nvim.git \
       "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/pack/paqs/start/paq-nvim
   fi
 
-  # should come _after_ asdf__setup, which installs nodejs (ie, node, npm, etc.)
-  # no harm in calling it even if it's already present
   npm install -g tree-sitter-cli
 }
 
-nvim__augment() { :; }
+nvim__augment() {
+  ensure_dir "$HOME/.config"
+  ensure_dir "$HOME/.config/nvim"
+  local ROOT_PATH='https://raw.githubusercontent.com/aegatlin/setup/master/'
+  curl -fsSL ${ROOT_PATH}lib/configs/init.lua > "$HOME/.config/nvim/init.lua"
+}
 
 nvim__bootstrap() {
-  # this will open nvim with empty file
-  # run init.lua config, including paq.install() and lspinstall.install_server()
-  # and then run :qall (aka :qa)
-  # it's a 'hack' to install everything _before_ you open nvim for real.
-  nvim +qall
+  nvim +PaqInstall +qall
 }
+tmux__prepare() { :; }
+
+tmux__setup() {
+  after asdf__setup
+
+  if is_mac; then
+    after brew__setup
+    brew install automake
+  fi
+
+  if is_ubuntu; then
+    after apt__setup
+    sudo apt install --assume--yes libevent-dev ncurses-dev build-essential \
+      bison pkg-config zip unzip automake
+  fi
+
+  asdf plugin add tmux
+  asdf install tmux latest
+  asdf global tmux "$(asdf latest tmux)"
+}
+
+tmux__augment() {
+  ensure_dir "$HOME/.config"
+  ensure_dir "$HOME/.config/tmux"
+  local ROOT_PATH='https://raw.githubusercontent.com/aegatlin/setup/master/'
+  curl -fsSL ${ROOT_PATH}lib/configs/tmux.conf > "$HOME/.config/tmux/tmux.conf"
+}
+
+tmux__bootstrap() { :; }
 zsh__prepare() {
   if ! has_command zsh; then
     if [ "$(uname)" = 'Linux' ]; then
@@ -253,85 +275,12 @@ compinit
 
 DELIMIT
 }
-setup() {
-  printf "**********\nyamss setup initiated\n**********\n"
-  if [ "$(uname)" = 'Darwin' ]; then
-    echo 'MacOS detected'
-    setup_mac
-  elif [ "$(uname)" = 'Linux' ]; then
-    echo 'Linux detected'
-    setup_linux
-  else
-    error_and_exit "OS detection failed: uname $(uname) not recognized"
-  fi
-
-  write_configs
-  outro
-}
-
-outro() {
-  printf "**********\nyamss setup complete\n"
-  if [ "$(get_shell)" = '-zsh' ]; then
-    if [ "$(uname)" = 'Darwin' ]; then
-      echo "restart shell ('exit') or 'source ~/.zshrc' (currently copied to paste buffer)"
-      printf 'source ~/.zshrc' | pbcopy
-    else
-      echo "restart shell ('exit') or 'source ~/.zshrc'"
-    fi
-  else
-    echo "restart shell ('exit') or reboot ('sudo reboot')"
-  fi
-  echo '**********'
-}
-
-get_shell() {
-  echo "$0"
-}
-
-setup_mac() {
-  load_tools zsh brew asdf nvim
-}
-
-setup_linux() {
-  load_tools zsh apt asdf nvim
-}
-
-write_configs() {
-  ensure_dir "$HOME/.config"
-  ensure_dir "$HOME/.config/nvim"
-  ensure_dir "$HOME/.config/git"
-  ensure_dir "$HOME/.config/tmux"
-
-  local ROOT_PATH='https://raw.githubusercontent.com/aegatlin/setup/master/'
-  curl -fsSL ${ROOT_PATH}lib/configs/init.lua > "$HOME/.config/nvim/init.lua"
-  curl -fsSL ${ROOT_PATH}lib/configs/git.config > "$HOME/.config/git/config"
-  curl -fsSL ${ROOT_PATH}lib/configs/tmux.conf > "$HOME/.config/tmux/tmux.conf"
-}
-
-ensure_dir() {
-  if ! [ -d "$1" ]; then mkdir "$1"; fi
-}
-
 load_tools() {
   after() {
     if ! is_member "$1" "${ran[@]}"; then
       exit 1
     fi
     return 0
-  }
-
-  run_list() {
-    for f in "$@"; do
-      ("$f")
-      local r="$?"
-
-      if [ "$r" = 0 ]; then
-        ran+=("$f")
-        try_to_empty_to_run_list
-      else
-        to_run+=("$f")
-      fi
-    done
   }
 
   try_to_empty_to_run_list() {
@@ -350,18 +299,56 @@ load_tools() {
     fi
   }
 
-  local f_list=()
-  local postscripts=('__prepare' '__setup' '__augment' '__bootstrap')
-  for p in "${postscripts[@]}"; do
-    for tool; do
-      f_list+=("$tool$p")
-    done
-  done
-
   local ran=()
   local to_run=()
+  local phases=('__prepare' '__setup' '__augment' '__bootstrap')
+  for i in "${!phases[@]}"; do
+    local phase="${phases[$i]}"
 
-  run_list "${f_list[@]}"
+    local previous_phases=()
+    if (("$i" > 0)); then
+      previous_phases=("${phases[@]:0:i}")
+    fi
+
+    for tool; do
+      # collect previous tool phases
+      local previous_tool_phases=()
+      for pp in "${previous_phases[@]}"; do
+        previous_tool_phases+=("$tool$pp")
+      done
+
+      # if any previous tool phases are in to_run
+      # also add this tool phase to to_run and skip
+      local skip=false
+      for ptp in "${previous_tool_phases[@]}"; do
+        if [[ "${to_run[*]}" =~ $ptp ]]; then
+          skip=true
+        fi
+      done
+
+      local f="$tool$phase"
+
+      if "$skip"; then
+        to_run+=("$f")
+      else
+        # if no skip, actually run the function to see
+        # if the internal after clause exits
+        ("$f")
+        local r="$?"
+        if [ "$r" = 0 ]; then
+          # if the function ran successfully
+          # try to empty the to_run list
+          ran+=("$f")
+          try_to_empty_to_run_list
+        else
+          # if the function exited in the subshell
+          # the after clause disallowed running
+          # so add to the to_run list for later
+          to_run+=("$f")
+        fi
+      fi
+    done
+  done
 }
 
 is_member() {
@@ -374,6 +361,55 @@ is_member() {
 is_list_empty() {
   return "$#"
 }
+setup() {
+  printf "**********\nyamss setup initiated\n**********\n"
+  if is_mac; then
+    echo 'MacOS detected'
+    load_tools zsh brew asdf nvim tmux
+  elif is_ubuntu; then
+    echo 'Linux detected'
+    load_tools zsh apt asdf nvim tmux
+  else
+    error_and_exit "OS detection failed: uname $(uname) not recognized"
+  fi
+
+  write_configs
+  outro
+}
+
+outro() {
+  printf "**********\nyamss setup complete\n"
+  if [ "$(get_shell)" = '-zsh' ]; then
+    if is_mac; then
+      echo "restart shell ('exit') or 'source ~/.zshrc' (currently copied to paste buffer)"
+      printf 'source ~/.zshrc' | pbcopy
+    else
+      echo "restart shell ('exit') or 'source ~/.zshrc'"
+    fi
+  else
+    echo "restart shell ('exit') or reboot ('sudo reboot')"
+  fi
+  echo '**********'
+}
+
+get_shell() {
+  echo "$0"
+}
+
+is_mac() { [ "$(uname)" = 'Darwin' ]; }
+is_ubuntu() { [ "$(uname)" = 'Linux' ]; }
+
+write_configs() {
+  ensure_dir "$HOME/.config"
+  ensure_dir "$HOME/.config/git"
+  local ROOT_PATH='https://raw.githubusercontent.com/aegatlin/setup/master/'
+  curl -fsSL ${ROOT_PATH}lib/configs/git.config > "$HOME/.config/git/config"
+}
+
+ensure_dir() {
+  if ! [ -d "$1" ]; then mkdir "$1"; fi
+}
+
 has_command() {
   command -v "$1" 1>/dev/null
 }
