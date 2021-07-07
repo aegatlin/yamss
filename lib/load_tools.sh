@@ -6,20 +6,6 @@ load_tools() {
     return 0
   }
 
-  run_list() {
-    for f in "$@"; do
-      ("$f")
-      local r="$?"
-
-      if [ "$r" = 0 ]; then
-        ran+=("$f")
-        try_to_empty_to_run_list
-      else
-        to_run+=("$f")
-      fi
-    done
-  }
-
   try_to_empty_to_run_list() {
     if (( ${#to_run[@]} > 0 )); then
       ("${to_run[0]}")
@@ -36,18 +22,56 @@ load_tools() {
     fi
   }
 
-  local f_list=()
-  local postscripts=('__prepare' '__setup' '__augment' '__bootstrap')
-  for p in "${postscripts[@]}"; do
-    for tool; do
-      f_list+=("$tool$p")
-    done
-  done
-
   local ran=()
   local to_run=()
+  local phases=('__prepare' '__setup' '__augment' '__bootstrap')
+  for i in "${!phases[@]}"; do
+    local phase="${phases[$i]}"
 
-  run_list "${f_list[@]}"
+    local previous_phases=()
+    if (("$i" > 0)); then
+      previous_phases=("${phases[@]:0:i}")
+    fi
+
+    for tool; do
+      # collect previous tool phases
+      local previous_tool_phases=()
+      for pp in "${previous_phases[@]}"; do
+        previous_tool_phases+=("$tool$pp")
+      done
+
+      # if any previous tool phases are in to_run
+      # also add this tool phase to to_run and skip
+      local skip=false
+      for ptp in "${previous_tool_phases[@]}"; do
+        if [[ "${to_run[*]}" =~ $ptp ]]; then
+          skip=true
+        fi
+      done
+
+      local f="$tool$phase"
+
+      if "$skip"; then
+        to_run+=("$f")
+      else
+        # if no skip, actually run the function to see
+        # if the internal after clause exits
+        ("$f")
+        local r="$?"
+        if [ "$r" = 0 ]; then
+          # if the function ran successfully
+          # try to empty the to_run list
+          ran+=("$f")
+          try_to_empty_to_run_list
+        else
+          # if the function exited in the subshell
+          # the after clause disallowed running
+          # so add to the to_run list for later
+          to_run+=("$f")
+        fi
+      fi
+    done
+  done
 }
 
 is_member() {

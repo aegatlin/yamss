@@ -68,8 +68,8 @@ Describe 'load_tools'
       End
     End
 
-    xContext 'with after relations that go across function phases'
-      It 'calls too functions in the appropriate order'
+    Context 'with after relations that go across function phases'
+      It 'calls tool functions in the appropriate order'
         a__prepare() { echo 'ap'; }
         a__setup() { echo 'as'; }
         a__augment() { echo 'aa'; }
