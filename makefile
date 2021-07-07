@@ -11,7 +11,6 @@ build: lint
 	touch dist/yamss.sh
 	cat tools/** > dist/yamss.sh
 	cat lib/** >> dist/yamss.sh
-	cat lib/utils.sh >> dist/yamss.sh
 	echo "setup\n" >> dist/yamss.sh
 
 # excluding SC1091 because it attempts to follow `source`d files

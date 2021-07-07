@@ -13,10 +13,27 @@ load_tools() {
 
       if [ "$r" = 0 ]; then
         ran+=("$f")
+        try_to_empty_to_run_list
       else
         to_run+=("$f")
       fi
     done
+  }
+
+  try_to_empty_to_run_list() {
+    if (( ${#to_run[@]} > 0 )); then
+      ("${to_run[0]}")
+      local r="$?"
+      if [ "$r" = 0 ]; then
+        ran+=("${to_run[0]}")
+        if (( ${#to_run[@]} > 1 )); then
+          to_run=("${to_run[@]:1}")
+          try_to_empty_to_run_list
+        else
+          to_run=()
+        fi
+      fi
+    fi
   }
 
   local f_list=()
@@ -39,4 +56,8 @@ is_member() {
   shift
   local list=("$@")
   [[ "${list[*]}" =~ $elem ]]
+}
+
+is_list_empty() {
+  return "$#"
 }

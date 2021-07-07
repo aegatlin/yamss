@@ -46,7 +46,7 @@ Describe 'load_tools'
         The line 8 should equal 'zb'
       End
 
-      xIt 'calls the tool functions in order when the after relation function \
+      It 'calls the tool functions in order when the after relation function \
       should run last in its phase group and is not the last phase group'
         zsh__prepare() { echo 'zp'; }
         zsh__setup() { echo 'zs'; }
@@ -81,6 +81,20 @@ Describe 'load_tools'
       elem=d
       list=(a b c)
       When call is_member "$elem" "${list[@]}"
+      The status should be failure
+    End
+  End
+
+  Describe 'is_list_empty'
+    It 'returns 0 (success) if the list is empty'
+      local l=()
+      When call is_list_empty "${l[@]}"
+      The status should be success
+    End
+
+    It 'returns 1 (failure) if the list is not empty'
+      local l=(a b c)
+      When call is_list_empty "${l[@]}"
       The status should be failure
     End
   End

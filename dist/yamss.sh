@@ -327,10 +327,27 @@ load_tools() {
 
       if [ "$r" = 0 ]; then
         ran+=("$f")
+        try_to_empty_to_run_list
       else
         to_run+=("$f")
       fi
     done
+  }
+
+  try_to_empty_to_run_list() {
+    if (( ${#to_run[@]} > 0 )); then
+      ("${to_run[0]}")
+      local r="$?"
+      if [ "$r" = 0 ]; then
+        ran+=("${to_run[0]}")
+        if (( ${#to_run[@]} > 1 )); then
+          to_run=("${to_run[@]:1}")
+          try_to_empty_to_run_list
+        else
+          to_run=()
+        fi
+      fi
+    fi
   }
 
   local f_list=()
@@ -354,31 +371,9 @@ is_member() {
   local list=("$@")
   [[ "${list[*]}" =~ $elem ]]
 }
-has_command() {
-  command -v "$1" 1>/dev/null
-}
 
-ensure_command() {
-  if ! has_command "$1"; then
-    error_and_exit "Command not found: $1"
-  fi
-}
-
-error_and_exit() {
-  echo "**********"
-  echo "yamss error message: $1"
-  echo "exiting"
-  echo "**********"
-  exit 1
-}
-
-for_each() {
-  local f="$1"
-  shift
-  local ary=("$@")
-  for e in "${ary[@]}"; do
-    "$f" "$e"
-  done
+is_list_empty() {
+  return "$#"
 }
 has_command() {
   command -v "$1" 1>/dev/null
