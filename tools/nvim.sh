@@ -1,9 +1,12 @@
 nvim__prepare() {
+  message 'nvim__prepare'
+
   ensure_command git
 }
 
 nvim__setup() {
   after asdf__setup # need nodejs for npm
+  message 'nvim__setup'
 
   # nodejs required for nvim tree-sitter-cli install
   # ripgrep required for nvim telescope live_grep
@@ -23,6 +26,8 @@ nvim__setup() {
 }
 
 nvim__augment() {
+  message 'nvim__augment'
+
   ensure_dir "$HOME/.config/nvim"
   curl -fsSL "${CONFIG_URL}"/nvim/init.lua > "$HOME/.config/nvim/init.lua"
 
@@ -36,5 +41,7 @@ DELIMIT
 }
 
 nvim__bootstrap() {
+  message 'nvim__bootstrap'
+
   nvim +PaqInstall +qall
 }

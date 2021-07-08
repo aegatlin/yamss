@@ -135,4 +135,12 @@ Describe 'lib'
     End
   End
   
+  Describe 'message'
+    It 'prints a single-line message wrapper in *'
+      When call message 'brew__prepare'
+      The line 1 should equal '**********'
+      The line 2 should equal 'brew__prepare'
+      The line 3 should equal '**********'
+    End
+  End
 End

@@ -1,4 +1,6 @@
 brew__prepare() {
+  message 'brew__prepare'
+
   ensure_command /bin/bash
 
   if ! has_command brew; then
@@ -7,6 +9,8 @@ brew__prepare() {
 }
 
 brew__setup() {
+  message 'brew__setup'
+
   ensure_command brew
 
   ensure_brew_install() {
@@ -35,6 +39,8 @@ brew__setup() {
 }
 
 brew__augment() {
+  message 'brew__augment'
+
   cat <<'DELIMIT' >>~/.zshrc
 ##########
 # brew setup
@@ -47,4 +53,6 @@ fi
 DELIMIT
 }
 
-brew__bootstrap() { :; }
+brew__bootstrap() { 
+  message 'brew__bootstrap'
+}

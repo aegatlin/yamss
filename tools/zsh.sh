@@ -1,20 +1,26 @@
 zsh__prepare() {
+  message 'zsh__prepare'
+
   if ! has_command zsh; then
-    if [ "$(uname)" = 'Linux' ]; then
+    if is_ubuntu; then
       sudo apt install --assume-yes zsh
     else
-      error_and_exit 'Unable to install zsh (probably on MacOS)'
+      error_and_exit 'Unable to install zsh'
     fi
   fi
 }
 
 zsh__setup() {
+  message 'zsh__setup'
+
   if ! [[ "$SHELL" == "$(which zsh)" ]]; then
     sudo chsh -s "$(which zsh)" "$USER"
   fi
 }
 
 zsh__augment() {
+  message 'zsh__augment'
+
   rm -f ~/.zshrc
   cat <<'DELIMIT' >~/.zshrc
 ##########
@@ -54,6 +60,8 @@ DELIMIT
 }
 
 zsh__bootstrap() {
+  message 'zsh__bootstrap'
+
   cat <<'DELIMIT' >>~/.zshrc
 ##########
 # zsh completions

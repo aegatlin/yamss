@@ -1,4 +1,6 @@
 asdf__prepare() {
+  message 'asdf__prepare'
+
   ensure_command git
 
   if ! has_command asdf; then
@@ -14,6 +16,8 @@ asdf__prepare() {
 }
 
 asdf__setup() {
+  message 'asdf__setup'
+
   ensure_command asdf
 
   plugin_add() {
@@ -51,6 +55,8 @@ asdf__setup() {
 }
 
 asdf__augment() {
+  message 'asdf__augment'
+
   cat <<'DELIMIT' >>~/.zshrc
 ##########
 # asdf
@@ -61,4 +67,7 @@ fpath=(${ASDF_DIR}/completions $fpath)
 DELIMIT
 }
 
-asdf__bootstrap() { :; }
+asdf__bootstrap() {
+  message 'asdf__bootstrap'
+}
+

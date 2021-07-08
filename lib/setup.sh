@@ -1,7 +1,7 @@
 CONFIG_URL='https://raw.githubusercontent.com/aegatlin/setup/master/config'
 
 setup() {
-  printf "**********\nyamss setup initiated\n**********\n"
+  message 'yamss setup initiated'
   if is_mac; then
     echo 'MacOS detected'
     load_tools zsh brew asdf nvim tmux
@@ -46,5 +46,9 @@ write_configs() {
 
 ensure_dir() {
   if ! [ -d "$1" ]; then mkdir "$1"; fi
+}
+
+message() {
+  printf '**********\n%s\n**********\n' "$1"
 }
 

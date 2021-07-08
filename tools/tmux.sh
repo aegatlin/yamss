@@ -1,6 +1,10 @@
-tmux__prepare() { :; }
+tmux__prepare() { 
+  message 'tmux__prepare'
+}
 
 tmux__setup() {
+  message 'tmux__setup'
+
   after asdf__setup
 
   if is_mac; then
@@ -20,9 +24,13 @@ tmux__setup() {
 }
 
 tmux__augment() {
+  message 'tmux_augment'
+
   ensure_dir "$HOME/.config"
   ensure_dir "$HOME/.config/tmux"
   curl -fsSL "${CONFIG_URL}"/tmux/tmux.conf > "$HOME/.config/tmux/tmux.conf"
 }
 
-tmux__bootstrap() { :; }
+tmux__bootstrap() { 
+  message 'tmux__bootstrap'
+}

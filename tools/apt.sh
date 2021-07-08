@@ -1,8 +1,12 @@
 apt__prepare() {
+  message 'apt__prepare'
+
   ensure_command apt
 }
 
 apt__setup() {
+  message 'apt__setup'
+
   sudo apt update --assume-yes
   sudo apt upgrade --assume-yes
   # redundant packages do no harm, and grouping them is useful
@@ -24,6 +28,10 @@ apt__setup() {
   for_each f "${packages[@]}"
 }
 
-apt__augment() { :; }
+apt__augment() { 
+  message 'apt__augment'
+}
 
-apt__bootstrap() { :; }
+apt__bootstrap() { 
+  message 'apt__bootstrap'
+}

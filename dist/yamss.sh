@@ -1,8 +1,12 @@
 apt__prepare() {
+  message 'apt__prepare'
+
   ensure_command apt
 }
 
 apt__setup() {
+  message 'apt__setup'
+
   sudo apt update --assume-yes
   sudo apt upgrade --assume-yes
   # redundant packages do no harm, and grouping them is useful
@@ -24,10 +28,16 @@ apt__setup() {
   for_each f "${packages[@]}"
 }
 
-apt__augment() { :; }
+apt__augment() { 
+  message 'apt__augment'
+}
 
-apt__bootstrap() { :; }
+apt__bootstrap() { 
+  message 'apt__bootstrap'
+}
 asdf__prepare() {
+  message 'asdf__prepare'
+
   ensure_command git
 
   if ! has_command asdf; then
@@ -43,6 +53,8 @@ asdf__prepare() {
 }
 
 asdf__setup() {
+  message 'asdf__setup'
+
   ensure_command asdf
 
   plugin_add() {
@@ -80,6 +92,8 @@ asdf__setup() {
 }
 
 asdf__augment() {
+  message 'asdf__augment'
+
   cat <<'DELIMIT' >>~/.zshrc
 ##########
 # asdf
@@ -90,8 +104,13 @@ fpath=(${ASDF_DIR}/completions $fpath)
 DELIMIT
 }
 
-asdf__bootstrap() { :; }
+asdf__bootstrap() {
+  message 'asdf__bootstrap'
+}
+
 brew__prepare() {
+  message 'brew__prepare'
+
   ensure_command /bin/bash
 
   if ! has_command brew; then
@@ -100,6 +119,8 @@ brew__prepare() {
 }
 
 brew__setup() {
+  message 'brew__setup'
+
   ensure_command brew
 
   ensure_brew_install() {
@@ -128,6 +149,8 @@ brew__setup() {
 }
 
 brew__augment() {
+  message 'brew__augment'
+
   cat <<'DELIMIT' >>~/.zshrc
 ##########
 # brew setup
@@ -140,13 +163,18 @@ fi
 DELIMIT
 }
 
-brew__bootstrap() { :; }
+brew__bootstrap() { 
+  message 'brew__bootstrap'
+}
 nvim__prepare() {
+  message 'nvim__prepare'
+
   ensure_command git
 }
 
 nvim__setup() {
   after asdf__setup # need nodejs for npm
+  message 'nvim__setup'
 
   # nodejs required for nvim tree-sitter-cli install
   # ripgrep required for nvim telescope live_grep
@@ -166,6 +194,8 @@ nvim__setup() {
 }
 
 nvim__augment() {
+  message 'nvim__augment'
+
   ensure_dir "$HOME/.config/nvim"
   curl -fsSL "${CONFIG_URL}"/nvim/init.lua > "$HOME/.config/nvim/init.lua"
 
@@ -179,11 +209,17 @@ DELIMIT
 }
 
 nvim__bootstrap() {
+  message 'nvim__bootstrap'
+
   nvim +PaqInstall +qall
 }
-tmux__prepare() { :; }
+tmux__prepare() { 
+  message 'tmux__prepare'
+}
 
 tmux__setup() {
+  message 'tmux__setup'
+
   after asdf__setup
 
   if is_mac; then
@@ -203,29 +239,39 @@ tmux__setup() {
 }
 
 tmux__augment() {
+  message 'tmux_augment'
+
   ensure_dir "$HOME/.config"
   ensure_dir "$HOME/.config/tmux"
   curl -fsSL "${CONFIG_URL}"/tmux/tmux.conf > "$HOME/.config/tmux/tmux.conf"
 }
 
-tmux__bootstrap() { :; }
+tmux__bootstrap() { 
+  message 'tmux__bootstrap'
+}
 zsh__prepare() {
+  message 'zsh__prepare'
+
   if ! has_command zsh; then
-    if [ "$(uname)" = 'Linux' ]; then
+    if is_ubuntu; then
       sudo apt install --assume-yes zsh
     else
-      error_and_exit 'Unable to install zsh (probably on MacOS)'
+      error_and_exit 'Unable to install zsh'
     fi
   fi
 }
 
 zsh__setup() {
+  message 'zsh__setup'
+
   if ! [[ "$SHELL" == "$(which zsh)" ]]; then
     sudo chsh -s "$(which zsh)" "$USER"
   fi
 }
 
 zsh__augment() {
+  message 'zsh__augment'
+
   rm -f ~/.zshrc
   cat <<'DELIMIT' >~/.zshrc
 ##########
@@ -265,6 +311,8 @@ DELIMIT
 }
 
 zsh__bootstrap() {
+  message 'zsh__bootstrap'
+
   cat <<'DELIMIT' >>~/.zshrc
 ##########
 # zsh completions
@@ -364,7 +412,7 @@ is_list_empty() {
 CONFIG_URL='https://raw.githubusercontent.com/aegatlin/setup/master/config'
 
 setup() {
-  printf "**********\nyamss setup initiated\n**********\n"
+  message 'yamss setup initiated'
   if is_mac; then
     echo 'MacOS detected'
     load_tools zsh brew asdf nvim tmux
@@ -409,6 +457,10 @@ write_configs() {
 
 ensure_dir() {
   if ! [ -d "$1" ]; then mkdir "$1"; fi
+}
+
+message() {
+  printf '**********\n%s\n**********\n' "$1"
 }
 
 has_command() {
