@@ -10,7 +10,7 @@ asdf__prepare() {
 
   # Until '. $HOME/.asdf/asdf.sh' is written to ~/.zshrc,
   # source asdf.sh to have access to the asdf command
-  source "$HOME"/.asdf/asdf.sh
+  add_source "$HOME"/.asdf/asdf.sh
 }
 
 asdf__setup() {

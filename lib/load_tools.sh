@@ -1,3 +1,5 @@
+TOOL_SOURCES=()
+
 load_tools() {
   after() {
     if ! is_member "$1" "${ran[@]}"; then
@@ -12,6 +14,7 @@ load_tools() {
       local r="$?"
       if [ "$r" = 0 ]; then
         ran+=("${to_run[0]}")
+        run_sources
         if (( ${#to_run[@]} > 1 )); then
           to_run=("${to_run[@]:1}")
           try_to_empty_to_run_list
@@ -60,8 +63,10 @@ load_tools() {
         local r="$?"
         if [ "$r" = 0 ]; then
           # if the function ran successfully
-          # try to empty the to_run list
+          # run any sources the function added via add_source
+          # try to empty the to_run list via try_to_empty_to_run_list
           ran+=("$f")
+          run_sources
           try_to_empty_to_run_list
         else
           # if the function exited in the subshell
@@ -83,4 +88,17 @@ is_member() {
 
 is_list_empty() {
   return "$#"
+}
+
+add_source() {
+  TOOL_SOURCES+=("$1")
+}
+
+run_sources() {
+  # shellcheck source=/dev/null
+  for t in "${TOOL_SOURCES[@]}"; do
+    source "$t"
+  done
+
+  TOOL_SOURCES=()
 }

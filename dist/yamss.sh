@@ -45,7 +45,7 @@ asdf__prepare() {
 
   # Until '. $HOME/.asdf/asdf.sh' is written to ~/.zshrc,
   # source asdf.sh to have access to the asdf command
-  source "$HOME"/.asdf/asdf.sh
+  add_source "$HOME"/.asdf/asdf.sh
 }
 
 asdf__setup() {
@@ -314,6 +314,8 @@ compinit
 
 DELIMIT
 }
+TOOL_SOURCES=()
+
 load_tools() {
   after() {
     if ! is_member "$1" "${ran[@]}"; then
@@ -328,6 +330,7 @@ load_tools() {
       local r="$?"
       if [ "$r" = 0 ]; then
         ran+=("${to_run[0]}")
+        run_sources
         if (( ${#to_run[@]} > 1 )); then
           to_run=("${to_run[@]:1}")
           try_to_empty_to_run_list
@@ -335,6 +338,14 @@ load_tools() {
           to_run=()
         fi
       fi
+    fi
+  }
+
+  set_previous_phases() {
+    previous_phases=()
+
+    if (("$i" > 0)); then
+      previous_phases=("${phases[@]:0:i}")
     fi
   }
 
@@ -376,8 +387,10 @@ load_tools() {
         local r="$?"
         if [ "$r" = 0 ]; then
           # if the function ran successfully
-          # try to empty the to_run list
+          # run any sources the function added via add_source
+          # try to empty the to_run list via try_to_empty_to_run_list
           ran+=("$f")
+          run_sources
           try_to_empty_to_run_list
         else
           # if the function exited in the subshell
@@ -399,6 +412,19 @@ is_member() {
 
 is_list_empty() {
   return "$#"
+}
+
+add_source() {
+  TOOL_SOURCES+=("$1")
+}
+
+run_sources() {
+  # shellcheck source=/dev/null
+  for t in "${TOOL_SOURCES[@]}"; do
+    source "$t"
+  done
+
+  TOOL_SOURCES=()
 }
 CONFIG_URL='https://raw.githubusercontent.com/aegatlin/setup/master/config'
 
