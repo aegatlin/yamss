@@ -62,17 +62,8 @@ asdf__setup() {
     done
   }
 
-  # nodejs required for nvim tree-sitter-cli install
-  # ripgrep required for nvim telescope live_grep
-  plugin_add_and_global_install_latest \
-    direnv \
-    nodejs \
-    ripgrep \
-    neovim \
-
   # java family: java, kotlin, gradle
   # erlang family: erlang, elixir
-  # neovim family: neovim, nodejs, ripgrep(, lua)
   plugin_add \
     elixir \
     elm \
@@ -91,13 +82,10 @@ asdf__setup() {
 asdf__augment() {
   cat <<'DELIMIT' >>~/.zshrc
 ##########
-# asdf setup
+# asdf
 ##########
-# asdf itself helper functions and fpath completions
 . $HOME/.asdf/asdf.sh
 fpath=(${ASDF_DIR}/completions $fpath)
-# direnv
-eval "$(direnv hook zsh)"
 
 DELIMIT
 }
@@ -155,11 +143,19 @@ DELIMIT
 brew__bootstrap() { :; }
 nvim__prepare() {
   ensure_command git
-  ensure_command npm
 }
 
 nvim__setup() {
   after asdf__setup # need nodejs for npm
+
+  # nodejs required for nvim tree-sitter-cli install
+  # ripgrep required for nvim telescope live_grep
+  local tools=(neovim direnv ripgrep nodejs)
+  for tool in "${tools[@]}"; do
+    asdf plugin add "$tool"
+    asdf install "$tool" latest
+    asdf global "$tool" "$(asdf "$tool" latest)"
+  done
 
   if ! [ -d "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/pack/paqs ]; then
     git clone --depth=1 https://github.com/savq/paq-nvim.git \
@@ -170,10 +166,16 @@ nvim__setup() {
 }
 
 nvim__augment() {
-  ensure_dir "$HOME/.config"
   ensure_dir "$HOME/.config/nvim"
-  local ROOT_PATH='https://raw.githubusercontent.com/aegatlin/setup/master/'
-  curl -fsSL ${ROOT_PATH}lib/configs/init.lua > "$HOME/.config/nvim/init.lua"
+  curl -fsSL "${CONFIG_URL}"/nvim/init.lua > "$HOME/.config/nvim/init.lua"
+
+  cat <<'DELIMIT' >>~/.zshrc
+##########
+# direnv
+##########
+eval "$(direnv hook zsh)"
+
+DELIMIT
 }
 
 nvim__bootstrap() {

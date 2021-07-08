@@ -33,17 +33,8 @@ asdf__setup() {
     done
   }
 
-  # nodejs required for nvim tree-sitter-cli install
-  # ripgrep required for nvim telescope live_grep
-  plugin_add_and_global_install_latest \
-    direnv \
-    nodejs \
-    ripgrep \
-    neovim \
-
   # java family: java, kotlin, gradle
   # erlang family: erlang, elixir
-  # neovim family: neovim, nodejs, ripgrep(, lua)
   plugin_add \
     elixir \
     elm \
@@ -62,13 +53,10 @@ asdf__setup() {
 asdf__augment() {
   cat <<'DELIMIT' >>~/.zshrc
 ##########
-# asdf setup
+# asdf
 ##########
-# asdf itself helper functions and fpath completions
 . $HOME/.asdf/asdf.sh
 fpath=(${ASDF_DIR}/completions $fpath)
-# direnv
-eval "$(direnv hook zsh)"
 
 DELIMIT
 }
