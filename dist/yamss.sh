@@ -14,11 +14,11 @@ apt__setup() {
   apt_helper_install net-tools nmap # cool tools I like
 }
 
-apt__augment() { 
+apt__augment() {
   message 'apt__augment'
 }
 
-apt__bootstrap() { 
+apt__bootstrap() {
   message 'apt__bootstrap'
 }
 
@@ -110,7 +110,7 @@ fi
 DELIMIT
 }
 
-brew__bootstrap() { 
+brew__bootstrap() {
   message 'brew__bootstrap'
 }
 
@@ -121,7 +121,6 @@ brew_helper_install() {
     fi
   done
 }
-
 nvim__prepare() {
   message 'nvim__prepare'
 }
@@ -169,7 +168,7 @@ nvim__bootstrap() {
   nvim --headless +PaqInstall +qall
   nvim --headless +'TSInstallSync maintained' +qall
 }
-tmux__prepare() { 
+tmux__prepare() {
   message 'tmux__prepare'
 }
 
@@ -201,7 +200,7 @@ tmux__augment() {
   curl -fsSL "${CONFIG_URL}"/tmux/tmux.conf > "$HOME/.config/tmux/tmux.conf"
 }
 
-tmux__bootstrap() { 
+tmux__bootstrap() {
   message 'tmux__bootstrap'
 }
 zsh__prepare() {

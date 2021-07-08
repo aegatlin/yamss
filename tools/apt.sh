@@ -14,11 +14,11 @@ apt__setup() {
   apt_helper_install net-tools nmap # cool tools I like
 }
 
-apt__augment() { 
+apt__augment() {
   message 'apt__augment'
 }
 
-apt__bootstrap() { 
+apt__bootstrap() {
   message 'apt__bootstrap'
 }
 

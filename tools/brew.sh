@@ -29,7 +29,7 @@ fi
 DELIMIT
 }
 
-brew__bootstrap() { 
+brew__bootstrap() {
   message 'brew__bootstrap'
 }
 
@@ -40,4 +40,3 @@ brew_helper_install() {
     fi
   done
 }
-

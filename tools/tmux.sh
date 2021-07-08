@@ -1,4 +1,4 @@
-tmux__prepare() { 
+tmux__prepare() {
   message 'tmux__prepare'
 }
 
@@ -30,6 +30,6 @@ tmux__augment() {
   curl -fsSL "${CONFIG_URL}"/tmux/tmux.conf > "$HOME/.config/tmux/tmux.conf"
 }
 
-tmux__bootstrap() { 
+tmux__bootstrap() {
   message 'tmux__bootstrap'
 }
