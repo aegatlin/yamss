@@ -21,3 +21,8 @@ lint: test
 build_lint:
 	shellcheck --shell=bash --exclude=SC1091 dist/yamss.sh
 
+# This is what a fmt function _would_ look like
+# but some of the formatting decisions don't make sense to me
+# so I'm leaving it commented for now.
+# format:
+# 	shfmt -w -i 2 -ci -bn lib/* tools/*
