@@ -24,30 +24,10 @@ asdf__setup() {
     done
   }
 
-  plugin_add_and_global_install_latest() {
-    plugin_add "$@"
-    for tool in "$@"; do
-      asdf install "$tool" latest
-      asdf global "$tool" "$(asdf latest "$tool")"
-      asdf reshim "$tool" "$(asdf latest "$tool")"
-    done
-  }
-
-  # java family: java, kotlin, gradle
-  # erlang family: erlang, elixir
-  plugin_add \
-    elixir \
-    elm \
-    erlang \
-    java \
-    kotlin \
-    gradle
-    lua \
-    postgres \
-    python \
-    shellspec \
-    shellcheck \
-    yarn
+  plugin_add erlang elixir
+  plugin_add java kotlin gradle
+  plugin_add shellspec shellcheck
+  plugin_add elm lua postgres python yarn
 }
 
 asdf__augment() {
