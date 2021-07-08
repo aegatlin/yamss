@@ -1,8 +1,6 @@
 brew__prepare() {
   message 'brew__prepare'
 
-  ensure_command /bin/bash
-
   if ! has_command brew; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
   fi
@@ -11,31 +9,9 @@ brew__prepare() {
 brew__setup() {
   message 'brew__setup'
 
-  ensure_command brew
-
-  ensure_brew_install() {
-    if ! brew list --formula | grep -q "$1"; then
-      brew install "$1"
-    fi
-  }
-
-  ensure_brew_cask_install() {
-    if ! brew list --cask | grep -q "$1"; then
-      brew install --cask "$1"
-    fi
-  }
-
-  ensure_brew_install git
-  ensure_brew_install mosh
-  ensure_brew_install gpg
-  ensure_brew_install imagemagick
-  ensure_brew_cask_install visual-studio-code
-  ensure_brew_cask_install iterm2
-  ensure_brew_cask_install firefox
-  ensure_brew_cask_install signal
-  ensure_brew_cask_install telegram
-  ensure_brew_cask_install slack
-  ensure_brew_cask_install bitwarden
+  brew_helper_install git mosh gpg imagemagick
+  brew_helper_install iterm2 firefox signal telegram slack bitwarden \
+    visual-studio-code zoom
 }
 
 brew__augment() {
@@ -56,3 +32,12 @@ DELIMIT
 brew__bootstrap() { 
   message 'brew__bootstrap'
 }
+
+brew_helper_install() {
+  for package in "$@"; do
+    if ! brew list | grep -q "$package"; then
+      brew install "$package"
+    fi
+  done
+}
+

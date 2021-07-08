@@ -3,9 +3,7 @@ zsh__prepare() {
 
   if ! has_command zsh; then
     if is_ubuntu; then
-      sudo apt install --assume-yes zsh
-    else
-      error_and_exit 'Unable to install zsh'
+      apt_helper_install zsh
     fi
   fi
 }

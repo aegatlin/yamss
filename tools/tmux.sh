@@ -4,20 +4,20 @@ tmux__prepare() {
 
 tmux__setup() {
   after asdf__setup
-  if is_mac; then after brew__setup; fi
-  if is_ubuntu; then after apt__setup; fi
+  if is_mac; then after brew__prepare; fi
+
   message 'tmux__setup'
 
   if is_mac; then
-    brew install automake
+    brew_helper_install automake
   fi
 
   if is_ubuntu; then
-    sudo apt install --assume--yes libevent-dev ncurses-dev build-essential \
+    apt_helper_install ncurses-dev build-essential \
       bison pkg-config zip unzip automake
   fi
 
-  asdf plugin add tmux
+  asdf_helper_plugin_add tmux
   asdf install tmux latest
   asdf global tmux "$(asdf latest tmux)"
 }

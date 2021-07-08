@@ -7,23 +7,11 @@ apt__setup() {
 
   sudo apt update --assume-yes
   sudo apt upgrade --assume-yes
-  # redundant packages do no harm, and grouping them is useful
-  local packages=()
 
-  # java/kotlin dependencies
-  packages+=(jq unzip coreutils)
-
-  # erlang/elixir dependencies
-  packages+=(libssl-dev libncurses5-dev unzip)
-
-  # postgres dependencies
-  packages+=(libreadline-dev build-essential)
-
-  # my packages
-  packages+=(net-tools nmap)
-
-  f() { sudo apt install --assume-yes "$1"; }
-  for p in "${packages[@]}"; do f "$p"; done
+  apt_helper_install jq unzip coreutils # java & kotlin
+  apt_helper_install libssl-dev libncurses5-dev unzip # erlang & elixir
+  apt_helper_install libreadline-dev build-essential # postgres
+  apt_helper_install net-tools nmap # cool tools I like
 }
 
 apt__augment() { 
@@ -32,4 +20,14 @@ apt__augment() {
 
 apt__bootstrap() { 
   message 'apt__bootstrap'
+}
+
+# Warning from apt itself:
+# WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+apt_helper_install() {
+  for package in "$@"; do
+    if ! apt list --installed | grep -q "$package"; then
+      sudo apt install --assume-yes "$package"
+    fi
+  done
 }

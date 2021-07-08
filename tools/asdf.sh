@@ -16,18 +16,10 @@ asdf__prepare() {
 asdf__setup() {
   message 'asdf__setup'
 
-  plugin_add() {
-    for tool in "$@"; do
-      if ! asdf plugin list | grep -q "$tool"; then
-        asdf plugin add "$tool"
-      fi
-    done
-  }
-
-  plugin_add erlang elixir
-  plugin_add java kotlin gradle
-  plugin_add shellspec shellcheck
-  plugin_add elm lua postgres python yarn
+  asdf_helper_plugin_add erlang elixir
+  asdf_helper_plugin_add java kotlin gradle
+  asdf_helper_plugin_add shellspec shellcheck
+  asdf_helper_plugin_add elm lua postgres python yarn
 }
 
 asdf__augment() {
@@ -47,3 +39,10 @@ asdf__bootstrap() {
   message 'asdf__bootstrap'
 }
 
+asdf_helper_plugin_add() {
+  for tool in "$@"; do
+    if ! asdf plugin list | grep -q "$tool"; then
+      asdf plugin add "$tool"
+    fi
+  done
+}

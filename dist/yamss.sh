@@ -7,23 +7,11 @@ apt__setup() {
 
   sudo apt update --assume-yes
   sudo apt upgrade --assume-yes
-  # redundant packages do no harm, and grouping them is useful
-  local packages=()
 
-  # java/kotlin dependencies
-  packages+=(jq unzip coreutils)
-
-  # erlang/elixir dependencies
-  packages+=(libssl-dev libncurses5-dev unzip)
-
-  # postgres dependencies
-  packages+=(libreadline-dev build-essential)
-
-  # my packages
-  packages+=(net-tools nmap)
-
-  f() { sudo apt install --assume-yes "$1"; }
-  for p in "${packages[@]}"; do f "$p"; done
+  apt_helper_install jq unzip coreutils # java & kotlin
+  apt_helper_install libssl-dev libncurses5-dev unzip # erlang & elixir
+  apt_helper_install libreadline-dev build-essential # postgres
+  apt_helper_install net-tools nmap # cool tools I like
 }
 
 apt__augment() { 
@@ -32,6 +20,16 @@ apt__augment() {
 
 apt__bootstrap() { 
   message 'apt__bootstrap'
+}
+
+# Warning from apt itself:
+# WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+apt_helper_install() {
+  for package in "$@"; do
+    if ! apt list --installed | grep -q "$package"; then
+      sudo apt install --assume-yes "$package"
+    fi
+  done
 }
 asdf__prepare() {
   message 'asdf__prepare'
@@ -51,18 +49,10 @@ asdf__prepare() {
 asdf__setup() {
   message 'asdf__setup'
 
-  plugin_add() {
-    for tool in "$@"; do
-      if ! asdf plugin list | grep -q "$tool"; then
-        asdf plugin add "$tool"
-      fi
-    done
-  }
-
-  plugin_add erlang elixir
-  plugin_add java kotlin gradle
-  plugin_add shellspec shellcheck
-  plugin_add elm lua postgres python yarn
+  asdf_helper_plugin_add erlang elixir
+  asdf_helper_plugin_add java kotlin gradle
+  asdf_helper_plugin_add shellspec shellcheck
+  asdf_helper_plugin_add elm lua postgres python yarn
 }
 
 asdf__augment() {
@@ -82,10 +72,15 @@ asdf__bootstrap() {
   message 'asdf__bootstrap'
 }
 
+asdf_helper_plugin_add() {
+  for tool in "$@"; do
+    if ! asdf plugin list | grep -q "$tool"; then
+      asdf plugin add "$tool"
+    fi
+  done
+}
 brew__prepare() {
   message 'brew__prepare'
-
-  ensure_command /bin/bash
 
   if ! has_command brew; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
@@ -95,31 +90,9 @@ brew__prepare() {
 brew__setup() {
   message 'brew__setup'
 
-  ensure_command brew
-
-  ensure_brew_install() {
-    if ! brew list --formula | grep -q "$1"; then
-      brew install "$1"
-    fi
-  }
-
-  ensure_brew_cask_install() {
-    if ! brew list --cask | grep -q "$1"; then
-      brew install --cask "$1"
-    fi
-  }
-
-  ensure_brew_install git
-  ensure_brew_install mosh
-  ensure_brew_install gpg
-  ensure_brew_install imagemagick
-  ensure_brew_cask_install visual-studio-code
-  ensure_brew_cask_install iterm2
-  ensure_brew_cask_install firefox
-  ensure_brew_cask_install signal
-  ensure_brew_cask_install telegram
-  ensure_brew_cask_install slack
-  ensure_brew_cask_install bitwarden
+  brew_helper_install git mosh gpg imagemagick
+  brew_helper_install iterm2 firefox signal telegram slack bitwarden \
+    visual-studio-code zoom
 }
 
 brew__augment() {
@@ -140,6 +113,15 @@ DELIMIT
 brew__bootstrap() { 
   message 'brew__bootstrap'
 }
+
+brew_helper_install() {
+  for package in "$@"; do
+    if ! brew list | grep -q "$package"; then
+      brew install "$package"
+    fi
+  done
+}
+
 nvim__prepare() {
   message 'nvim__prepare'
 }
@@ -152,9 +134,9 @@ nvim__setup() {
   # ripgrep required for nvim telescope live_grep
   local tools=(neovim direnv ripgrep nodejs)
   for tool in "${tools[@]}"; do
-    asdf plugin add "$tool"
+    asdf_helper_plugin_add "$tool"
     asdf install "$tool" latest
-    asdf global "$tool" "$(asdf "$tool" latest)"
+    asdf global "$tool" "$(asdf latest "$tool")"
   done
 
   if ! [ -d "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/pack/paqs ]; then
@@ -191,20 +173,20 @@ tmux__prepare() {
 
 tmux__setup() {
   after asdf__setup
-  if is_mac; then after brew__setup; fi
-  if is_ubuntu; then after apt__setup; fi
+  if is_mac; then after brew__prepare; fi
+
   message 'tmux__setup'
 
   if is_mac; then
-    brew install automake
+    brew_helper_install automake
   fi
 
   if is_ubuntu; then
-    sudo apt install --assume--yes libevent-dev ncurses-dev build-essential \
+    apt_helper_install ncurses-dev build-essential \
       bison pkg-config zip unzip automake
   fi
 
-  asdf plugin add tmux
+  asdf_helper_plugin_add tmux
   asdf install tmux latest
   asdf global tmux "$(asdf latest tmux)"
 }
@@ -225,9 +207,7 @@ zsh__prepare() {
 
   if ! has_command zsh; then
     if is_ubuntu; then
-      sudo apt install --assume-yes zsh
-    else
-      error_and_exit 'Unable to install zsh'
+      apt_helper_install zsh
     fi
   fi
 }
