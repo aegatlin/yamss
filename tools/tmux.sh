@@ -3,17 +3,16 @@ tmux__prepare() {
 }
 
 tmux__setup() {
+  after asdf__setup
+  if is_mac; then after brew__setup; fi
+  if is_ubuntu; then after apt__setup; fi
   message 'tmux__setup'
 
-  after asdf__setup
-
   if is_mac; then
-    after brew__setup
     brew install automake
   fi
 
   if is_ubuntu; then
-    after apt__setup
     sudo apt install --assume--yes libevent-dev ncurses-dev build-essential \
       bison pkg-config zip unzip automake
   fi

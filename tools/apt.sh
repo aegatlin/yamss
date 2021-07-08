@@ -1,7 +1,5 @@
 apt__prepare() {
   message 'apt__prepare'
-
-  ensure_command apt
 }
 
 apt__setup() {
@@ -25,7 +23,7 @@ apt__setup() {
   packages+=(net-tools nmap)
 
   f() { sudo apt install --assume-yes "$1"; }
-  for_each f "${packages[@]}"
+  for p in "${packages[@]}"; do f "$p"; done
 }
 
 apt__augment() { 

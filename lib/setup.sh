@@ -9,7 +9,8 @@ setup() {
     echo 'Linux detected'
     load_tools zsh apt asdf nvim tmux
   else
-    error_and_exit "OS detection failed: uname $(uname) not recognized"
+    message "OS detection failed: uname $(uname) not recognized"
+    exit 1
   fi
 
   write_configs
@@ -52,3 +53,6 @@ message() {
   printf '**********\n%s\n**********\n' "$1"
 }
 
+has_command() {
+  command -v "$1" 1>/dev/null
+}

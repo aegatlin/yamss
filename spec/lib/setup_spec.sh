@@ -143,4 +143,16 @@ Describe 'lib'
       The line 3 should equal '**********'
     End
   End
+
+  Describe 'has_command'
+    It 'returns 0 (success) when command is present on machine'
+      When call has_command echo
+      The status should be success
+    End
+
+    It 'returns 1 (failure) when the command is not present on the machine'
+     When call has_command echp
+     The status should be failure
+    End
+  End
 End

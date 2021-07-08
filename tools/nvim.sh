@@ -1,7 +1,5 @@
 nvim__prepare() {
   message 'nvim__prepare'
-
-  ensure_command git
 }
 
 nvim__setup() {

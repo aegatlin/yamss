@@ -1,7 +1,5 @@
 apt__prepare() {
   message 'apt__prepare'
-
-  ensure_command apt
 }
 
 apt__setup() {
@@ -25,7 +23,7 @@ apt__setup() {
   packages+=(net-tools nmap)
 
   f() { sudo apt install --assume-yes "$1"; }
-  for_each f "${packages[@]}"
+  for p in "${packages[@]}"; do f "$p"; done
 }
 
 apt__augment() { 
@@ -38,9 +36,7 @@ apt__bootstrap() {
 asdf__prepare() {
   message 'asdf__prepare'
 
-  ensure_command git
-
-  if ! has_command asdf; then
+  if ! [ -d ~/.asdf ]; then
     git clone https://github.com/asdf-vm/asdf.git ~/.asdf
     pushd ~/.asdf || exit
     git checkout "$(git describe --abbrev=0 --tags)"
@@ -54,8 +50,6 @@ asdf__prepare() {
 
 asdf__setup() {
   message 'asdf__setup'
-
-  ensure_command asdf
 
   plugin_add() {
     for tool in "$@"; do
@@ -168,8 +162,6 @@ brew__bootstrap() {
 }
 nvim__prepare() {
   message 'nvim__prepare'
-
-  ensure_command git
 }
 
 nvim__setup() {
@@ -218,17 +210,16 @@ tmux__prepare() {
 }
 
 tmux__setup() {
+  after asdf__setup
+  if is_mac; then after brew__setup; fi
+  if is_ubuntu; then after apt__setup; fi
   message 'tmux__setup'
 
-  after asdf__setup
-
   if is_mac; then
-    after brew__setup
     brew install automake
   fi
 
   if is_ubuntu; then
-    after apt__setup
     sudo apt install --assume--yes libevent-dev ncurses-dev build-essential \
       bison pkg-config zip unzip automake
   fi
@@ -420,7 +411,8 @@ setup() {
     echo 'Linux detected'
     load_tools zsh apt asdf nvim tmux
   else
-    error_and_exit "OS detection failed: uname $(uname) not recognized"
+    message "OS detection failed: uname $(uname) not recognized"
+    exit 1
   fi
 
   write_configs
@@ -465,29 +457,6 @@ message() {
 
 has_command() {
   command -v "$1" 1>/dev/null
-}
-
-ensure_command() {
-  if ! has_command "$1"; then
-    error_and_exit "Command not found: $1"
-  fi
-}
-
-error_and_exit() {
-  echo "**********"
-  echo "yamss error message: $1"
-  echo "exiting"
-  echo "**********"
-  exit 1
-}
-
-for_each() {
-  local f="$1"
-  shift
-  local ary=("$@")
-  for e in "${ary[@]}"; do
-    "$f" "$e"
-  done
 }
 setup
 

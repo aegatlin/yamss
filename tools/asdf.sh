@@ -1,9 +1,7 @@
 asdf__prepare() {
   message 'asdf__prepare'
 
-  ensure_command git
-
-  if ! has_command asdf; then
+  if ! [ -d ~/.asdf ]; then
     git clone https://github.com/asdf-vm/asdf.git ~/.asdf
     pushd ~/.asdf || exit
     git checkout "$(git describe --abbrev=0 --tags)"
@@ -17,8 +15,6 @@ asdf__prepare() {
 
 asdf__setup() {
   message 'asdf__setup'
-
-  ensure_command asdf
 
   plugin_add() {
     for tool in "$@"; do
