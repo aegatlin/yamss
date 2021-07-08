@@ -9,13 +9,13 @@ load_tools() {
   }
 
   try_to_empty_to_run_list() {
-    if (( ${#to_run[@]} > 0 )); then
+    if ((${#to_run[@]} > 0)); then
       ("${to_run[0]}")
       local r="$?"
       if [ "$r" = 0 ]; then
         ran+=("${to_run[0]}")
         run_sources
-        if (( ${#to_run[@]} > 1 )); then
+        if ((${#to_run[@]} > 1)); then
           to_run=("${to_run[@]:1}")
           try_to_empty_to_run_list
         else
