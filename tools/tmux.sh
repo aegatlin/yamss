@@ -22,8 +22,7 @@ tmux__setup() {
 tmux__augment() {
   ensure_dir "$HOME/.config"
   ensure_dir "$HOME/.config/tmux"
-  local ROOT_PATH='https://raw.githubusercontent.com/aegatlin/setup/master/'
-  curl -fsSL ${ROOT_PATH}lib/configs/tmux.conf > "$HOME/.config/tmux/tmux.conf"
+  curl -fsSL "${CONFIG_URL}"/tmux/tmux.conf > "$HOME/.config/tmux/tmux.conf"
 }
 
 tmux__bootstrap() { :; }

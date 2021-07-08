@@ -1,3 +1,5 @@
+CONFIG_URL='https://raw.githubusercontent.com/aegatlin/setup/master/config'
+
 setup() {
   printf "**********\nyamss setup initiated\n**********\n"
   if is_mac; then
@@ -39,8 +41,7 @@ is_ubuntu() { [ "$(uname)" = 'Linux' ]; }
 write_configs() {
   ensure_dir "$HOME/.config"
   ensure_dir "$HOME/.config/git"
-  local ROOT_PATH='https://raw.githubusercontent.com/aegatlin/setup/master/'
-  curl -fsSL ${ROOT_PATH}lib/configs/git.config > "$HOME/.config/git/config"
+  curl -fsSL ${CONFIG_URL}/git/git.config > "$HOME/.config/git/config"
 }
 
 ensure_dir() {

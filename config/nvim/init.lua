@@ -118,7 +118,9 @@ local nmaps = {
 }
 
 local imaps = {
-  {'jk', '<esc>'}
+  {'jk', '<esc>'},
+  {'df', '<esc>'},
+  {'kj', '<esc>'},
 }
 
 local lsp_maps = {

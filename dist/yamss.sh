@@ -130,7 +130,6 @@ brew__setup() {
   ensure_brew_install mosh
   ensure_brew_install gpg
   ensure_brew_install imagemagick
-  ensure_brew_install automake # for tmux to install successfully
   ensure_brew_cask_install visual-studio-code
   ensure_brew_cask_install iterm2
   ensure_brew_cask_install firefox
@@ -204,8 +203,7 @@ tmux__setup() {
 tmux__augment() {
   ensure_dir "$HOME/.config"
   ensure_dir "$HOME/.config/tmux"
-  local ROOT_PATH='https://raw.githubusercontent.com/aegatlin/setup/master/'
-  curl -fsSL ${ROOT_PATH}lib/configs/tmux.conf > "$HOME/.config/tmux/tmux.conf"
+  curl -fsSL "${CONFIG_URL}"/tmux/tmux.conf > "$HOME/.config/tmux/tmux.conf"
 }
 
 tmux__bootstrap() { :; }
@@ -361,6 +359,8 @@ is_member() {
 is_list_empty() {
   return "$#"
 }
+CONFIG_URL='https://raw.githubusercontent.com/aegatlin/setup/master/config'
+
 setup() {
   printf "**********\nyamss setup initiated\n**********\n"
   if is_mac; then
@@ -402,8 +402,7 @@ is_ubuntu() { [ "$(uname)" = 'Linux' ]; }
 write_configs() {
   ensure_dir "$HOME/.config"
   ensure_dir "$HOME/.config/git"
-  local ROOT_PATH='https://raw.githubusercontent.com/aegatlin/setup/master/'
-  curl -fsSL ${ROOT_PATH}lib/configs/git.config > "$HOME/.config/git/config"
+  curl -fsSL ${CONFIG_URL}/git/git.config > "$HOME/.config/git/config"
 }
 
 ensure_dir() {
