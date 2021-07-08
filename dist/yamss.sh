@@ -145,6 +145,7 @@ nvim__setup() {
   fi
 
   npm install -g tree-sitter-cli
+  asdf reshim # asdf won't detect the npm install while in a subshell
 }
 
 nvim__augment() {
@@ -165,7 +166,8 @@ DELIMIT
 nvim__bootstrap() {
   message 'nvim__bootstrap'
 
-  nvim +PaqInstall +qall
+  nvim --headless +PaqInstall +qall
+  nvim --headless +'TSInstallSync maintained' +qall
 }
 tmux__prepare() { 
   message 'tmux__prepare'
@@ -238,7 +240,6 @@ alias py='python3'
 alias pr='pipenv run'
 alias nr='npm run'
 alias imps='iex -S mix phx.server'
-alias asdf_update_nvim='asdf uninstall neovim nightly && asdf install neovim nightly'
 asdf_global_latest() {
   for tool in "$@"; do
     asdf install "$tool" latest

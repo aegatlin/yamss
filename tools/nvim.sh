@@ -21,6 +21,7 @@ nvim__setup() {
   fi
 
   npm install -g tree-sitter-cli
+  asdf reshim # asdf won't detect the npm install while in a subshell
 }
 
 nvim__augment() {
@@ -41,5 +42,6 @@ DELIMIT
 nvim__bootstrap() {
   message 'nvim__bootstrap'
 
-  nvim +PaqInstall +qall
+  nvim --headless +PaqInstall +qall
+  nvim --headless +'TSInstallSync maintained' +qall
 }
