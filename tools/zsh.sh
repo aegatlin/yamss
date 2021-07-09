@@ -20,7 +20,7 @@ zsh__augment() {
   message 'zsh__augment'
 
   rm -f ~/.zshrc
-  cat <<'DELIMIT' >~/.zshrc
+  cat << 'DELIMIT' > ~/.zshrc
 ##########
 # zsh aliases
 ##########
@@ -59,7 +59,7 @@ DELIMIT
 zsh__bootstrap() {
   message 'zsh__bootstrap'
 
-  cat <<'DELIMIT' >>~/.zshrc
+  cat << 'DELIMIT' >> ~/.zshrc
 ##########
 # zsh completions
 ##########

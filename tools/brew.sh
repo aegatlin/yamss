@@ -9,15 +9,23 @@ brew__prepare() {
 brew__setup() {
   message 'brew__setup'
 
-  brew_helper_install git mosh gpg imagemagick
+  brew_helper_install git
+
+  # required to asdf install nodejs properly
+  brew_helper_install gpg
+
+  # casks/apps I use regularly
   brew_helper_install iterm2 firefox signal telegram slack bitwarden \
     visual-studio-code zoom
+
+  # command line tools I like
+  brew_helper_install mosh tree imagemagick
 }
 
 brew__augment() {
   message 'brew__augment'
 
-  cat <<'DELIMIT' >>~/.zshrc
+  cat << 'DELIMIT' >> ~/.zshrc
 ##########
 # brew setup
 ##########

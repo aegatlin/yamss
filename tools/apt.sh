@@ -8,10 +8,17 @@ apt__setup() {
   sudo apt update --assume-yes
   sudo apt upgrade --assume-yes
 
-  apt_helper_install jq unzip coreutils # java & kotlin
-  apt_helper_install libssl-dev libncurses5-dev unzip # erlang & elixir
-  apt_helper_install libreadline-dev build-essential # postgres
-  apt_helper_install net-tools nmap # cool tools I like
+  # dependencies for java, kotlin, etc
+  apt_helper_install jq unzip coreutils
+
+  # dependencies for erlang, elixir, etc
+  apt_helper_install libssl-dev libncurses5-dev unzip
+
+  # dependencies for postgres
+  apt_helper_install libreadline-dev build-essential
+
+  # command line tools I like
+  apt_helper_install mosh net-tools nmap
 }
 
 apt__augment() {

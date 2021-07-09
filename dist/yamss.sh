@@ -8,10 +8,17 @@ apt__setup() {
   sudo apt update --assume-yes
   sudo apt upgrade --assume-yes
 
-  apt_helper_install jq unzip coreutils # java & kotlin
-  apt_helper_install libssl-dev libncurses5-dev unzip # erlang & elixir
-  apt_helper_install libreadline-dev build-essential # postgres
-  apt_helper_install net-tools nmap # cool tools I like
+  # dependencies for java, kotlin, etc
+  apt_helper_install jq unzip coreutils
+
+  # dependencies for erlang, elixir, etc
+  apt_helper_install libssl-dev libncurses5-dev unzip
+
+  # dependencies for postgres
+  apt_helper_install libreadline-dev build-essential
+
+  # command line tools I like
+  apt_helper_install mosh net-tools nmap
 }
 
 apt__augment() {
@@ -58,7 +65,7 @@ asdf__setup() {
 asdf__augment() {
   message 'asdf__augment'
 
-  cat <<'DELIMIT' >>~/.zshrc
+  cat << 'DELIMIT' >> ~/.zshrc
 ##########
 # asdf
 ##########
@@ -90,15 +97,23 @@ brew__prepare() {
 brew__setup() {
   message 'brew__setup'
 
-  brew_helper_install git mosh gpg imagemagick
+  brew_helper_install git
+
+  # required to asdf install nodejs properly
+  brew_helper_install gpg
+
+  # casks/apps I use regularly
   brew_helper_install iterm2 firefox signal telegram slack bitwarden \
     visual-studio-code zoom
+
+  # command line tools I like
+  brew_helper_install mosh tree imagemagick
 }
 
 brew__augment() {
   message 'brew__augment'
 
-  cat <<'DELIMIT' >>~/.zshrc
+  cat << 'DELIMIT' >> ~/.zshrc
 ##########
 # brew setup
 ##########
@@ -153,7 +168,7 @@ nvim__augment() {
   ensure_dir "$HOME/.config/nvim"
   curl -fsSL "${CONFIG_URL}"/nvim/init.lua > "$HOME/.config/nvim/init.lua"
 
-  cat <<'DELIMIT' >>~/.zshrc
+  cat << 'DELIMIT' >> ~/.zshrc
 ##########
 # direnv
 ##########
@@ -225,7 +240,7 @@ zsh__augment() {
   message 'zsh__augment'
 
   rm -f ~/.zshrc
-  cat <<'DELIMIT' >~/.zshrc
+  cat << 'DELIMIT' > ~/.zshrc
 ##########
 # zsh aliases
 ##########
@@ -264,7 +279,7 @@ DELIMIT
 zsh__bootstrap() {
   message 'zsh__bootstrap'
 
-  cat <<'DELIMIT' >>~/.zshrc
+  cat << 'DELIMIT' >> ~/.zshrc
 ##########
 # zsh completions
 ##########

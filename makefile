@@ -1,4 +1,4 @@
-.PHONY: test lint build build_lint yamss
+.PHONY: test lint build build_lint yamss format format_tools format_lib
 
 yamss: build build_lint
 
@@ -21,8 +21,10 @@ lint: test
 build_lint:
 	shellcheck --shell=bash --exclude=SC1091 dist/yamss.sh
 
-# This is what a fmt function _would_ look like
-# but some of the formatting decisions don't make sense to me
-# so I'm leaving it commented for now.
-# format:
-# 	shfmt -w -i 2 -ci -bn lib/* tools/*
+format: format_tools format_lib
+
+format_tools:
+	shfmt -w -i 2 -ci -bn -sr tools/*
+
+format_lib:
+	shfmt -w -i 2 -ci -bn -sr lib/*

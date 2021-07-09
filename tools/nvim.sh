@@ -30,7 +30,7 @@ nvim__augment() {
   ensure_dir "$HOME/.config/nvim"
   curl -fsSL "${CONFIG_URL}"/nvim/init.lua > "$HOME/.config/nvim/init.lua"
 
-  cat <<'DELIMIT' >>~/.zshrc
+  cat << 'DELIMIT' >> ~/.zshrc
 ##########
 # direnv
 ##########

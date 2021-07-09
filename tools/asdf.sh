@@ -25,7 +25,7 @@ asdf__setup() {
 asdf__augment() {
   message 'asdf__augment'
 
-  cat <<'DELIMIT' >>~/.zshrc
+  cat << 'DELIMIT' >> ~/.zshrc
 ##########
 # asdf
 ##########
