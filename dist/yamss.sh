@@ -449,7 +449,7 @@ message() {
 }
 
 has_command() {
-  command -v "$1" 1>/dev/null
+  command -v "$1" 1> /dev/null
 }
 setup
 
