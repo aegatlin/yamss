@@ -15,7 +15,12 @@ apt__setup() {
   apt_helper_install libssl-dev libncurses5-dev unzip
 
   # dependencies for postgres
-  apt_helper_install libreadline-dev build-essential
+  apt_helper_install libreadline-dev build-essential zlib1g-dev
+
+  # dependencies for python
+  apt_helper_install make build-essential libssl-dev zlib1g-dev libbz2-dev \
+    libreadline-dev libsqlite3-dev wget curl llvm libncursesw5-dev xz-utils \
+    tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 
   # command line tools I like
   apt_helper_install mosh net-tools nmap
