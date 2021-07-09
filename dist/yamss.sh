@@ -58,7 +58,7 @@ asdf__setup() {
 
   asdf_helper_plugin_add erlang elixir
   asdf_helper_plugin_add java kotlin gradle
-  asdf_helper_plugin_add shellspec shellcheck
+  asdf_helper_plugin_add shellspec shellcheck shfmt
   asdf_helper_plugin_add elm lua postgres python yarn
 }
 
