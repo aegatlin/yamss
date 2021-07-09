@@ -396,7 +396,7 @@ run_sources() {
 CONFIG_URL='https://raw.githubusercontent.com/aegatlin/setup/master/config'
 
 setup() {
-  message 'yamss setup initiated'
+  message 'yamss begin'
   if is_mac; then
     echo 'MacOS detected'
     load_tools zsh brew asdf nvim tmux
@@ -413,18 +413,8 @@ setup() {
 }
 
 outro() {
-  printf "**********\nyamss setup complete\n"
-  if [ "$(get_shell)" = '-zsh' ]; then
-    if is_mac; then
-      echo "restart shell ('exit') or 'source ~/.zshrc' (currently copied to paste buffer)"
-      printf 'source ~/.zshrc' | pbcopy
-    else
-      echo "restart shell ('exit') or 'source ~/.zshrc'"
-    fi
-  else
-    echo "restart shell ('exit') or reboot ('sudo reboot')"
-  fi
-  echo '**********'
+  message 'yamss end'
+  message "(you should probably \`exit\` or \`reboot\` now)"
 }
 
 get_shell() {
@@ -445,7 +435,7 @@ ensure_dir() {
 }
 
 message() {
-  printf '**********\n%s\n**********\n' "$1"
+  printf '* %s\n**********\n' "$1"
 }
 
 has_command() {
