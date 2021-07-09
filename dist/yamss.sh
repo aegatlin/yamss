@@ -304,6 +304,9 @@ asdf_global_latest() {
   done
 }
 
+# this is NOT the active prompt
+# the active prompt uses starship
+# this is the zsh-only fallback prompt
 ##########
 # PROMPT setup
 ##########
