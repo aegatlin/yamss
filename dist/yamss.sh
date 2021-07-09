@@ -188,6 +188,43 @@ nvim__bootstrap() {
   nvim --headless +PaqInstall +qall
   nvim --headless +'TSInstallSync maintained' +qall
 }
+starship__prepare() {
+  message 'startship__prepare'
+}
+
+starship__setup() {
+  message 'startship__setup'
+  after asdf__setup
+
+  # only the "frontend" needs to have access to the appropriate fonts
+  # for blink.sh on mobile devices, you do it through the UI
+  # for iterm2 on mac, it is also through the UI, and is saved in config
+  if is_mac; then
+    brew tap homebrew/cask-fonts
+    brew install font-fira-code-nerd-font
+  fi
+
+  asdf_helper_plugin_add starship
+  asdf install starship latest
+  asdf global starship "$(asdf latest starship)"
+}
+
+starship__augment() {
+  message 'startship__augment'
+  after zsh__augment
+
+  cat << 'DELIMIT' >> ~/.zshrc
+##########
+# starship
+##########
+eval "$(starship init zsh)"
+
+DELIMIT
+}
+
+starship__bootstrap() {
+  message 'startship__bootstrap'
+}
 tmux__prepare() {
   message 'tmux__prepare'
 }
@@ -404,10 +441,10 @@ setup() {
   message 'yamss begin'
   if is_mac; then
     echo 'MacOS detected'
-    load_tools zsh brew asdf nvim tmux
+    load_tools zsh brew asdf nvim tmux starship
   elif is_ubuntu; then
     echo 'Linux detected'
-    load_tools zsh apt asdf nvim tmux
+    load_tools zsh apt asdf nvim tmux starship
   else
     message "OS detection failed: uname $(uname) not recognized"
     exit 1

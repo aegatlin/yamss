@@ -4,10 +4,10 @@ setup() {
   message 'yamss begin'
   if is_mac; then
     echo 'MacOS detected'
-    load_tools zsh brew asdf nvim tmux
+    load_tools zsh brew asdf nvim tmux starship
   elif is_ubuntu; then
     echo 'Linux detected'
-    load_tools zsh apt asdf nvim tmux
+    load_tools zsh apt asdf nvim tmux starship
   else
     message "OS detection failed: uname $(uname) not recognized"
     exit 1
