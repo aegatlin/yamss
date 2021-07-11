@@ -117,11 +117,18 @@ local nmaps = {
   {'<leader>wv', ':vertical resize<cr> :vertical resize -40<cr>'},
 }
 
-local imaps = {
-  {'jk', '<esc>'},
-  {'df', '<esc>'},
-  {'kj', '<esc>'},
-}
+for _, map in ipairs(nmaps) do
+  local lhs, rhs = table.unpack(map)
+  vim.api.nvim_set_keymap('n', lhs, rhs, {})
+end
+
+-- there used to be values here and likely again will be
+local imaps = { }
+
+for _, map in ipairs(imaps) do
+  local lhs, rhs = table.unpack(map)
+  vim.api.nvim_set_keymap('i', lhs, rhs, {})
+end
 
 local lsp_maps = {
   {'<leader>lc', '<cmd>lua vim.lsp.buf.code_action()<cr>'},
@@ -152,16 +159,6 @@ local ts_maps = {
 }
 
 -- Configuration
-
-for _, map in ipairs(nmaps) do
-  local lhs, rhs = unpack(map)
-  vim.api.nvim_set_keymap('n', lhs, rhs, {})
-end
-
-for _, map in ipairs(imaps) do
-  local lhs, rhs = unpack(map)
-  vim.api.nvim_set_keymap('i', lhs, rhs, {})
-end
 
 require 'nvim-treesitter.configs'.setup {
   ensure_installed = 'maintained',
