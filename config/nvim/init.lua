@@ -1,10 +1,10 @@
 -- Chapters
 -----------
 -- Packages: ~ 10
--- Settings: ~ 20
--- Mappings: ~ 70
--- Configuration: ~ 130
---   * LSP Config: ~ 230
+-- Settings: ~ 40
+-- Mappings: ~ 90
+-- Configuration: ~ 170
+--   * LSP Config: ~ 240
 
 -- Packages
 
@@ -22,6 +22,7 @@ require 'paq-nvim' {
   'vim-test/vim-test',
   'mhinz/vim-signify',
   'hoob3rt/lualine.nvim',
+  'tpope/vim-vinegar', -- directory exploration
   'tpope/vim-surround', -- File Manipulation
   'ggandor/lightspeed.nvim',
   'b3nj5m1n/kommentary',
@@ -36,6 +37,8 @@ paq.clean()
 -- Settings
 
 vim.g.mapleader = ' '
+vim.g.netrw_bufsettings = 'noma nomod nonu nowrap ro nobl number relativenumber'
+vim.g.netrw_liststyle = 3
 vim.opt.foldlevelstart = 3
 vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
@@ -51,7 +54,8 @@ vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 vim.opt.updatetime = 400
-vim.o.completeopt = 'menuone,noselect'
+vim.opt.completeopt = 'menuone,noinsert,noselect'
+vim.opt.shortmess:append('c')
 
 vim.cmd 'autocmd!' -- Remove autocmds from top-level "default" autocmd group.
 vim.cmd 'let g:goyo_width = 82'
@@ -68,12 +72,14 @@ vim.cmd[[
   autocmd FileType markdown set formatoptions+=aw complete+=kspell
   autocmd FileType markdown setlocal spell spelllang=en_us
 ]]
+
 -- Only update normal buffers (where buftype is empty).
 -- Examples of non-updated buffer types: 'help', 'prompt'
-vim.cmd[[ 
-  set autoread autowriteall
-  autocmd InsertLeave,TextChanged * if empty(&l:buftype) | update | endif 
+vim.cmd[[
+  set autowriteall
+  autocmd InsertLeave,TextChanged * if empty(&l:buftype) | update | endif
 ]]
+
 vim.cmd [[let test#strategy = 'neovim']]
 
 -- Mappings
@@ -102,6 +108,7 @@ local nmaps = {
   {'<leader>gh', '<cmd>:SignifyHunkDiff<cr>'},
   {'<leader>gt', '<cmd>:SignifyToggle<cr>'},
   {'<leader>gu', '<cmd>:SignifyHunkUndo<cr>'},
+  {'<leader>h', '<cmd>noh<cr>'},
   {'<leader>q', ':q<CR>'},
   {'<leader>ri', '<cmd>luafile $MYVIMRC<cr>'},
   {'<leader>s', '<cmd>w<cr>'},
@@ -118,7 +125,7 @@ local nmaps = {
 }
 
 for _, map in ipairs(nmaps) do
-  local lhs, rhs = table.unpack(map)
+  local lhs, rhs = unpack(map)
   vim.api.nvim_set_keymap('n', lhs, rhs, {})
 end
 
@@ -126,13 +133,25 @@ end
 local imaps = { }
 
 for _, map in ipairs(imaps) do
-  local lhs, rhs = table.unpack(map)
+  local lhs, rhs = unpack(map)
   vim.api.nvim_set_keymap('i', lhs, rhs, {})
 end
+
+vim.cmd [[
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <C-space> compe#complete()
+inoremap <expr> <cr> compe#confirm('<cr>')
+inoremap <expr> <c-e> compe#close('<c-e>')
+inoremap <expr> <C-f> compe#scroll({ 'delta': +4 })
+inoremap <expr> <C-d> compe#scroll({ 'delta': -4 })
+]]
 
 local lsp_maps = {
   {'<leader>lc', '<cmd>lua vim.lsp.buf.code_action()<cr>'},
   {'<leader>ld', '<cmd>lua vim.lsp.buf.definition()<cr>'},
+  {'<leader>ldv', '<cmd>vsplit <bar> lua vim.lsp.buf.definition()<cr>'},
+  {'<leader>ldt', '<cmd>tab vsplit <bar> lua vim.lsp.buf.definition()<cr>'},
   {'<leader>lD', '<cmd>lua vim.lsp.buf.declaration()<cr>'},
   {'<leader>le', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>'},
   {'<leader>lf', '<cmd>lua vim.lsp.buf.formatting()<cr>'},
@@ -142,14 +161,6 @@ local lsp_maps = {
   {'<leader>lr', '<cmd>lua vim.lsp.buf.references()<cr>'},
   {'<leader>lt', '<cmd>lua vim.lsp.buf.type_definition()<cr>'},
 }
-
-vim.cmd[[
-  inoremap <expr> <C-a> compe#complete()
-  inoremap <expr> <C-s> compe#confirm('<cr>')
-  inoremap <expr> <c-e> compe#close('<c-e>')
-  inoremap <expr> <C-f> compe#scroll({ 'delta': +4 })
-  inoremap <expr> <C-d> compe#scroll({ 'delta': -4 })
-]]
 
 local ts_maps = {
   init_selection = '<leader>o',
@@ -202,6 +213,8 @@ require'compe'.setup {
   };
 }
 
+-- hack until lualine bug is fixed
+require("plenary.reload").reload_module("lualine", true)
 require 'lualine'.setup {
   options = {
     icons_enabled = false,
