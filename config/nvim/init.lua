@@ -22,7 +22,7 @@ require 'paq-nvim' {
   'vim-test/vim-test',
   'mhinz/vim-signify',
   'hoob3rt/lualine.nvim',
-  'tpope/vim-vinegar', -- directory exploration
+  'tpope/vim-vinegar',
   'tpope/vim-surround', -- File Manipulation
   'ggandor/lightspeed.nvim',
   'b3nj5m1n/kommentary',
@@ -37,6 +37,7 @@ paq.clean()
 -- Settings
 
 vim.g.mapleader = ' '
+-- defaults for bufsettings plus overrides of number and relativenumber
 vim.g.netrw_bufsettings = 'noma nomod nonu nowrap ro nobl number relativenumber'
 vim.g.netrw_liststyle = 3
 vim.opt.foldlevelstart = 3
@@ -82,27 +83,11 @@ vim.cmd[[
 
 vim.cmd [[let test#strategy = 'neovim']]
 
--- Mappings
--- ab d   h jk mn p  s uv xyz
--- ABCDE  HIJ LMNOPQ S UVWXYZ
-
 local nmaps = {
   {'<leader>cd', '<cmd>set background=dark<cr>'},
   {'<leader>cl', '<cmd>set background=light<cr>'},
   {'<leader>cc', [[<cmd>lua require'telescope.builtin'.colorscheme()<cr>]]},
   {'<leader>ei', ':vsp $MYVIMRC<cr>'},
-  {'<leader>F', [[<cmd>lua require'telescope.builtin'.current_buffer_fuzzy_find()<cr>]]},
-  {'<leader>fb', [[<cmd>lua require'telescope.builtin'.buffers()<cr>]]},
-  {'<leader>fd', [[<cmd>lua require'telescope.builtin'.file_browser()<cr>]]},
-  {'<leader>fF', [[<cmd>lua require'telescope.builtin'.git_files()<cr>]]},
-  {'<leader>ff', [[<cmd>lua require'telescope.builtin'.find_files()<cr>]]},
-  {'<leader>fg', [[<cmd>lua require'telescope.builtin'.live_grep()<cr>]]},
-  {'<leader>fh', [[<cmd>lua require'telescope.builtin'.help_tags()<cr>]]},
-  {'<leader>fm', [[<cmd>lua require'telescope.builtin'.man_pages()<cr>]]},
-  {'<leader>fo', [[<cmd>lua require'telescope.builtin'.oldfiles()<cr>]]},
-  {'<leader>fr', [[<cmd>lua require'telescope.builtin'.lsp_references()<cr>]]},
-  {'<leader>fld', [[<cmd>lua require'telescope.builtin'.lsp_definitions()<cr>]]},
-  {'<leader>fs', [[<cmd>lua require'telescope.builtin'.grep_string()<cr>]]},
   {'<leader>G', '<cmd>Goyo<cr>'},
   {'<leader>gd', '<cmd>:SignifyDiff<cr>'},
   {'<leader>gh', '<cmd>:SignifyHunkDiff<cr>'},
@@ -122,6 +107,19 @@ local nmaps = {
   {'<leader>wh', ':resize<cr> :resize -10<cr>'},
   {'<leader>wu', ':resize<cr>'},
   {'<leader>wv', ':vertical resize<cr> :vertical resize -40<cr>'},
+  {'<leader><leader>a', [[<cmd>lua require'telescope.builtin'.builtin()<cr>]]},
+  {'<leader><leader>b', [[<cmd>lua require'telescope.builtin'.buffers()<cr>]]},
+  {'<leader><leader>c', [[<cmd>lua require'telescope.builtin'.current_buffer_fuzzy_find()<cr>]]},
+  {'<leader><leader>d', [[<cmd>lua require'telescope.builtin'.file_browser()<cr>]]},
+  {'<leader><leader>g', [[<cmd>lua require'telescope.builtin'.git_files()<cr>]]},
+  {'<leader><leader>f', [[<cmd>lua require'telescope.builtin'.find_files()<cr>]]},
+  {'<leader><leader>h', [[<cmd>lua require'telescope.builtin'.help_tags()<cr>]]},
+  {'<leader><leader>lr', [[<cmd>lua require'telescope.builtin'.lsp_references()<cr>]]},
+  {'<leader><leader>ld', [[<cmd>lua require'telescope.builtin'.lsp_definitions()<cr>]]},
+  {'<leader><leader>m', [[<cmd>lua require'telescope.builtin'.man_pages()<cr>]]},
+  {'<leader><leader>o', [[<cmd>lua require'telescope.builtin'.oldfiles()<cr>]]},
+  {'<leader><leader>r', [[<cmd>lua require'telescope.builtin'.live_grep()<cr>]]},
+  {'<leader><leader>s', [[<cmd>lua require'telescope.builtin'.grep_string()<cr>]]},
 }
 
 for _, map in ipairs(nmaps) do
