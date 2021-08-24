@@ -23,6 +23,7 @@ require 'paq-nvim' {
   'mhinz/vim-signify',
   'hoob3rt/lualine.nvim',
   'tpope/vim-vinegar',
+  'kyazdani42/nvim-tree.lua',
   'tpope/vim-surround', -- File Manipulation
   'ggandor/lightspeed.nvim',
   'b3nj5m1n/kommentary',
@@ -40,6 +41,8 @@ vim.g.mapleader = ' '
 -- defaults for bufsettings plus overrides of number and relativenumber
 vim.g.netrw_bufsettings = 'noma nomod nonu nowrap ro nobl number relativenumber'
 vim.g.netrw_liststyle = 3
+vim.g.netrw_preview = 1
+vim.g.netrw_altv = 1
 vim.opt.foldlevelstart = 3
 vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
@@ -88,6 +91,9 @@ local nmaps = {
   {'<leader>cl', '<cmd>set background=light<cr>'},
   {'<leader>cc', [[<cmd>lua require'telescope.builtin'.colorscheme()<cr>]]},
   {'<leader>ei', ':vsp $MYVIMRC<cr>'},
+  {'<leader>et', '<cmd>NvimTreeToggle<cr>'},
+  {'<leader>er', '<cmd>lua NTToggle()<cr>'},
+  {'<leader>ef', '<cmd>NvimTreeFindFile<cr>'},
   {'<leader>G', '<cmd>Goyo<cr>'},
   {'<leader>gd', '<cmd>:SignifyDiff<cr>'},
   {'<leader>gh', '<cmd>:SignifyHunkDiff<cr>'},
