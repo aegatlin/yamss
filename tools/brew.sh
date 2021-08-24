@@ -16,7 +16,7 @@ brew__setup() {
 
   # casks/apps I use regularly
   brew_helper_install iterm2 firefox signal telegram slack bitwarden \
-    visual-studio-code zoom
+    visual-studio-code zoom discord
 
   # command line tools I like
   brew_helper_install mosh tree imagemagick
