@@ -27,8 +27,8 @@ nvim__setup() {
 nvim__augment() {
   message 'nvim__augment'
 
-  ensure_dir "$HOME/.config/nvim"
-  curl -fsSL "${CONFIG_URL}"/nvim/init.lua > "$HOME/.config/nvim/init.lua"
+  ensure_config_dir nvim
+  config_put nvim/init.lua
 
   cat << 'DELIMIT' >> ~/.zshrc
 ##########

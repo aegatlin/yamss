@@ -64,6 +64,33 @@ Describe 'lib'
     End
   End
 
+  Describe 'ensure_config_dir'
+    It 'creates a dir in the config dir'
+      When call ensure_config_dir test_dir
+      The path "$HOME/.config/test_dir" should be exist
+      rm -rf $HOME/.config/test_dir
+    End
+  End
+
+  Describe 'config_put'
+    # I'm testing that the URL passed in to curl is written
+    # to the desired config file. It's a hacky way to test
+    # that (a) the url is configured correctly, and (b) that
+    # the file is written to appropriately
+    It 'writes config files from remote to local'
+      curl() { echo "$2"; }
+      f() {
+        ensure_config_dir test # is _always_ called before config_put
+        config_put test/config
+        cat "$HOME/.config/test/config"
+      }
+      When call f
+      The path "$HOME/.config/test/config" should be exist
+      The output should equal "$CONFIG_URL/test/config"
+      rm -rf $HOME/.config/test
+    End
+  End
+
   Describe 'is_mac'
     It 'is true in if-clauses for mac'
       uname() { echo 'Darwin'; }

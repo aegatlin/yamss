@@ -109,7 +109,7 @@ brew__setup() {
 
   # casks/apps I use regularly
   brew_helper_install iterm2 firefox signal telegram slack bitwarden \
-    visual-studio-code zoom
+    visual-studio-code zoom discord
 
   # command line tools I like
   brew_helper_install mosh tree imagemagick
@@ -141,6 +141,24 @@ brew_helper_install() {
     fi
   done
 }
+git__prepare() {
+  message 'git__prepare'
+}
+
+git__setup() {
+  message 'git__setup'
+}
+
+git__augment() {
+  message 'git__augment'
+
+  ensure_config_dir git
+  config_put git/config
+}
+
+git__bootstrap() {
+  message 'git__bootstrap'
+}
 nvim__prepare() {
   message 'nvim__prepare'
 }
@@ -170,8 +188,8 @@ nvim__setup() {
 nvim__augment() {
   message 'nvim__augment'
 
-  ensure_dir "$HOME/.config/nvim"
-  curl -fsSL "${CONFIG_URL}"/nvim/init.lua > "$HOME/.config/nvim/init.lua"
+  ensure_config_dir nvim
+  config_put nvim/init.lua
 
   cat << 'DELIMIT' >> ~/.zshrc
 ##########
@@ -252,9 +270,8 @@ tmux__setup() {
 tmux__augment() {
   message 'tmux_augment'
 
-  ensure_dir "$HOME/.config"
-  ensure_dir "$HOME/.config/tmux"
-  curl -fsSL "${CONFIG_URL}"/tmux/tmux.conf > "$HOME/.config/tmux/tmux.conf"
+  ensure_config_dir tmux
+  config_put tmux/tmux.conf
 }
 
 tmux__bootstrap() {
@@ -439,15 +456,18 @@ run_sources() {
   TOOL_SOURCES=()
 }
 CONFIG_URL='https://raw.githubusercontent.com/aegatlin/setup/master/config'
+CONFIG_FOLDER="$HOME/.config"
 
+# current setup assumptions:
+#   - git is pre-installed
 setup() {
   message 'yamss begin'
   if is_mac; then
     echo 'MacOS detected'
-    load_tools zsh brew asdf nvim tmux starship
+    load_tools git zsh brew asdf nvim tmux starship
   elif is_ubuntu; then
     echo 'Linux detected'
-    load_tools zsh apt asdf nvim tmux starship
+    load_tools git zsh apt asdf nvim tmux starship
   else
     message "OS detection failed: uname $(uname) not recognized"
     exit 1
@@ -469,10 +489,13 @@ get_shell() {
 is_mac() { [ "$(uname)" = 'Darwin' ]; }
 is_ubuntu() { [ "$(uname)" = 'Linux' ]; }
 
-write_configs() {
-  ensure_dir "$HOME/.config"
-  ensure_dir "$HOME/.config/git"
-  curl -fsSL ${CONFIG_URL}/git/git.config > "$HOME/.config/git/config"
+ensure_config_dir() {
+  ensure_dir "$CONFIG_FOLDER"
+  ensure_dir "$CONFIG_FOLDER"/"$1"
+}
+
+config_put() {
+  curl -fsSL "$CONFIG_URL"/"$1" > "$CONFIG_FOLDER/$1"
 }
 
 ensure_dir() {

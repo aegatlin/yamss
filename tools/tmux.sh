@@ -25,9 +25,8 @@ tmux__setup() {
 tmux__augment() {
   message 'tmux_augment'
 
-  ensure_dir "$HOME/.config"
-  ensure_dir "$HOME/.config/tmux"
-  curl -fsSL "${CONFIG_URL}"/tmux/tmux.conf > "$HOME/.config/tmux/tmux.conf"
+  ensure_config_dir tmux
+  config_put tmux/tmux.conf
 }
 
 tmux__bootstrap() {
