@@ -16,7 +16,6 @@ setup() {
     exit 1
   fi
 
-  write_configs
   outro
 }
 

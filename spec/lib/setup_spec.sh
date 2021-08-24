@@ -3,7 +3,6 @@ Describe 'lib'
 
   Describe 'setup'
     load_tools() { echo 'load tools'; }
-    write_configs() { echo 'wrote configs'; }
     outro() { echo 'outro'; }
 
     It 'informs the user at the start and finish'
@@ -11,23 +10,21 @@ Describe 'lib'
       When call setup
       The line 1 should equal '* yamss begin'
       The line 2 should equal '**********'
-      The line 6 should equal 'outro'
+      The line 5 should equal 'outro'
     End
 
-    It 'calls setup_mac, write_configs, and clean_up when on mac'
+    It 'calls setup_mac and clean_up when on mac'
       uname() { echo 'Darwin'; }
       When call setup
       The line 3 should equal 'MacOS detected'
       The line 4 should equal 'load tools'
-      The line 5 should equal 'wrote configs'
     End
 
-    It 'calls setup_linux, write_configs, and clean_up when on linux'
+    It 'calls setup_linux and clean_up when on linux'
       uname() { echo 'Linux'; }
       When call setup
       The line 3 should equal 'Linux detected'
       The line 4 should equal 'load tools'
-      The line 5 should equal 'wrote configs'
     End
   End
 
